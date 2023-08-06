@@ -51,4 +51,9 @@ class LoginController extends Controller
             return to_route('login')->with('error','Anda tidak memiliki akses');
         }
     }
+
+    protected function loggedOut(Request $request)
+    {
+        return to_route('login');
+    }
 }
