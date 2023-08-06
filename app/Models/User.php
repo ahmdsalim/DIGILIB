@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Buku;
+use App\Models\Baca;
+use App\Models\Rating;
+use App\Models\Koleksi;
 
 class User extends Authenticatable
 {
@@ -22,6 +26,8 @@ class User extends Authenticatable
         'uuid',
         'email',
         'password',
+        'userable_id',
+        'userable_type',
         'role',
         'active'
     ];
@@ -46,4 +52,31 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+    public function userable()
+    {
+        return $this->morphTo();
+    }
+
+    public function buku()
+    {
+        return $this->hasOne(Buku::class, 'email', 'email');
+    }
+
+    public function baca()
+    {
+        return $this->hasMany(Baca::class, 'email', 'email');
+    }
+
+    public function rating()
+    {
+        return $this->hasOne(Rating::class, 'email', 'email');
+    }
+
+    public function koleksi()
+    {
+        return $this->hasMany(Koleksi::class, 'email', 'email');
+    }
+
 }
