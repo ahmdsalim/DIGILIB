@@ -12,7 +12,7 @@ class SekolahController extends Controller
      */
     public function index()
     {
-        //
+        return view('sekolah.home');
     }
 
     /**
