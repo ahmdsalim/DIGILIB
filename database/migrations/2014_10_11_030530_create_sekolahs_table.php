@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('sekolahs', function (Blueprint $table) {
             $table->id();
             $table->string('npsn')->unique();
-            $table->string('nama_sekolah');
+            $table->string('nama');
             $table->string('jenjang');
             $table->string('alamat');
             $table->string('provinsi');
             $table->string('kota');
             $table->string('kecamatan');
             $table->string('kelurahan');
-            $table->string('telepon_sekolah');
+            $table->string('telepon');
             $table->timestamps();
         });
     }
