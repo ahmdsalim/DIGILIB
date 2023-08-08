@@ -12,7 +12,7 @@ class BukuController extends Controller
      */
     public function index()
     {
-        return view('sekolah.buku.buku');
+        return view('buku.buku');
     }
 
     /**
@@ -20,7 +20,7 @@ class BukuController extends Controller
      */
     public function create()
     {
-        return view('sekolah.buku.tambah-buku');
+        return view('buku.tambah-buku');
     }
 
     /**
@@ -44,7 +44,7 @@ class BukuController extends Controller
      */
     public function edit(Buku $buku)
     {
-        return view('sekolah.buku.edit-buku');
+        return view('buku.edit-buku');
     }
 
     /**
