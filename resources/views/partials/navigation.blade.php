@@ -7,7 +7,7 @@
                 <div class="mt-2 d-mn-max"></div>
                 <!-- Profile picture  -->
                 <div class="mininav-toggle text-center py-2">
-                    <img class="mainnav__avatar img-md rounded-circle border" src="assets/img/profile-photos/1.png"
+                    <img class="mainnav__avatar img-md rounded-circle border" src="{{asset('assets/img/profile-photos/1.png')}}"
                         alt="Profile Picture">
                 </div>
                 <div class="mininav-content collapse d-mn-max">
@@ -51,7 +51,6 @@
             <div class="mainnav__categoriy py-3">
                 <h6 class="mainnav__caption mt-0 px-3 fw-bold">Navigation</h6>
                 <ul class="mainnav__menu nav flex-column">
-                    <!-- Link with submenu -->
                     <li class="nav-item">
                         <a href="{{ route('login') }}" class="nav-link mininav-toggle {{ str_contains(Route::current()->getName(), 'home') ? 'active' : '' }}"><svg
                                 xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 36 36"
@@ -66,7 +65,17 @@
                             <span class="nav-label mininav-content ms-1">Dashbaord</span>
                         </a>
                     </li>
-                    <!-- END : Link with submenu -->
+                    <li class="nav-item">
+                        <a href="{{route('users.index')}}" class="nav-link mininav-toggle"><svg fill="none" stroke="currentColor"
+                                stroke-width="1.5" width="18" height="18" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="margin-right: 4px;">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z">
+                                </path>
+                            </svg>
+                            <span class="nav-label mininav-content ms-1">User</span>
+                        </a>
+                    </li>
                     <!-- Link with submenu -->
                     <li class="nav-item has-sub">
                         <a href="#" class="mininav-toggle nav-link collapsed"><svg
@@ -97,17 +106,6 @@
                                 </path>
                             </svg>
                             <span class="nav-label mininav-content ms-1">Buku</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link mininav-toggle"><svg fill="none" stroke="currentColor"
-                                stroke-width="1.5" width="18" height="18" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="margin-right: 4px;">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z">
-                                </path>
-                            </svg>
-                            <span class="nav-label mininav-content ms-1">User</span>
                         </a>
                     </li>
                     <li class="nav-item">
