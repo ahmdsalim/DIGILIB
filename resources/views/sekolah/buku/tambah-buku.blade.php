@@ -26,6 +26,10 @@
         -moz-appearance: textfield;
     }
 </style>
+<style>
+
+</style>
+
 @section('content')
     <div class="content__boxed">
         <div class="content__wrap">
@@ -34,11 +38,10 @@
                     <div class="col-md-12 mb-3">
                         <div class="card h-100">
                             <div class="card-body">
-
                                 <h5 class="card-title">Tambah Buku</h5>
-
                                 <!-- Block styled form -->
-                                <form class="row g-3">
+                                <form class="row g-3" action="{{ route('buku.store') }}" method="post" class="needs-validation" novalidate>
+                                    @csrf>
                                     <div class="col-12">
                                         <div class="form-group">
                                             <div class="col-lg-12">
@@ -56,31 +59,49 @@
                                         </div>
                                     </div>
                                     <div class="col-12">
+                                        <label for="kategori" class="form-label">Kategori</label>
+                                        <select id="kategori" name="kategori" id="" class="form-control">
+                                            <option value="">Pilih Kategori</option>
+                                            <option value="">Elektronik</option>
+                                            <option value="">Novel</option>
+                                            <option value="">Sains</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
                                         <label for="_dm-inputAddress" class="form-label">Judul Buku</label>
-                                        <input id="_dm-inputAddress" type="text" class="form-control"
+                                        <input id="_dm-inputAddress" name="judul" type="text" class="form-control"
                                             placeholder="Masukan Judul Buku">
                                     </div>
                                     <div class="col-12">
                                         <label for="_dm-inputAddress" class="form-label">Pengarang</label>
-                                        <input id="_dm-inputAddress" type="text" class="form-control"
+                                        <input id="_dm-inputAddress" name="pengarang" type="text" class="form-control"
                                             placeholder="Masukan Pengarang">
                                     </div>
                                     <div class="col-12">
                                         <label for="_dm-inputAddress" class="form-label">Penerbit</label>
-                                        <input id="_dm-inputAddress" type="text" class="form-control"
+                                        <input id="_dm-inputAddress" name="penerbit" type="text" class="form-control"
                                             placeholder="Masukan Penerbit">
                                     </div>
                                     <div class="col-12">
+                                        <label for="_dm-inputAddress" class="form-label">Tahun Terbit</label>
+                                        <input id="_dm-inputAddress" name="tahun_terbit" type="text" class="form-control"
+                                            placeholder="Masukan Tahun Terbit">
+                                    </div>
+                                    <div class="col-12">
                                         <label for="_dm-inputAddress" class="form-label">No ISBN</label>
-                                        <input id="_dm-inputAddress" type="text" class="form-control"
+                                        <input id="_dm-inputAddress" name="no_isbn" type="text" class="form-control"
                                             placeholder="Masukan No ISBN">
                                     </div>
                                     <div class="col-12">
                                         <label for="_dm-inputAddress" class="form-label">Jumlah Halaman</label>
-                                        <input id="_dm-inputAddress" type="number" onkeydown="preventNegativeInput(event)"
+                                        <input id="_dm-inputAddress" name="jumlah_halaman" type="number" onkeydown="preventNegativeInput(event)"
                                             class="form-control" placeholder="Masukan Jumlah Halaman">
                                     </div>
-
+                                    <div class="col-12">
+                                        <label for="_dm-inputAddress" class="form-label">URL PDF</label>
+                                        <input id="_dm-inputAddress" name="url_pdf" type="number" onkeydown="preventNegativeInput(event)"
+                                            class="form-control" placeholder="Masukan URL PDF">
+                                    </div>
                                     <div class="row mt-3 ">
                                         <div class="col-md-6 col-sm-12 mb-2 d-grid ">
                                             <a href="{{ route('buku.index') }}" class="btn btn-primary">Batal</a>
@@ -119,5 +140,29 @@
                 event.preventDefault();
             }
         }
+    </script>
+    <script>
+        /*
+    We want to preview images, so we need to register the Image Preview plugin
+    */
+        FilePond.registerPlugin(
+
+            // encodes the file as base64 data
+            FilePondPluginFileEncode,
+
+            // validates the size of the file
+            FilePondPluginFileValidateSize,
+
+            // corrects mobile image orientation
+            FilePondPluginImageExifOrientation,
+
+            // previews dropped images
+            FilePondPluginImagePreview
+        );
+
+        // Select the file input and use create() to turn it into a pond
+        FilePond.create(
+            document.querySelector('input')
+        );
     </script>
 @endsection

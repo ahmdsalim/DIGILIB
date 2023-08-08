@@ -46,7 +46,7 @@ class LoginController extends Controller
         if($user->role == 'owner') {
             return to_route('home');
         } elseif ($user->role == 'sekolah') {
-            return to_route('sekolah.home');
+            return to_route('sekolah.index');
         } else {
             Auth::user()->logout();
             return to_route('login')->with('error','Anda tidak memiliki akses');
