@@ -49,11 +49,12 @@
             <!-- End - Profile widget -->
             <!-- Navigation Category -->
             <div class="mainnav__categoriy py-3">
-                <h6 class="mainnav__caption mt-0 px-3 fw-bold">Navigation</h6>
+                <h6 class="mainnav__caption mt-0 px-3 fw-bold">Navigasi</h6>
                 <ul class="mainnav__menu nav flex-column">
                     <!-- Link with submenu -->
                     <li class="nav-item">
-                        <a href="{{ route('login') }}" class="nav-link mininav-toggle {{ str_contains(Route::current()->getName(), 'home') ? 'active' : '' }}"><svg
+                        <a href="{{ route('login') }}"
+                            class="nav-link mininav-toggle {{ str_contains(Route::current()->getName(), 'home') ? 'active' : '' }}"><svg
                                 xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 36 36"
                                 style="margin-right : 4px;">
                                 <path fill="currentColor" d="m25.18 12.32l-5.91 5.81a3 3 0 1 0 1.41 1.42l5.92-5.81Z"
@@ -68,28 +69,31 @@
                     </li>
                     <!-- END : Link with submenu -->
                     <!-- Link with submenu -->
-                    <li class="nav-item has-sub">
-                        <a href="#" class="mininav-toggle nav-link collapsed"><svg
-                                xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 256 256"
-                                style="margin-right:4px;">
-                                <path fill="currentColor"
-                                    d="M192.14 42.55C174.94 33.17 152.16 28 128 28s-46.94 5.17-64.14 14.55C45.89 52.35 36 65.65 36 80v96c0 14.35 9.89 27.65 27.86 37.45c17.2 9.38 40 14.55 64.14 14.55s46.94-5.17 64.14-14.55c18-9.8 27.86-23.1 27.86-37.45V80c0-14.35-9.89-27.65-27.86-37.45ZM212 176c0 11.29-8.41 22.1-23.69 30.43C172.27 215.18 150.85 220 128 220s-44.27-4.82-60.31-13.57C52.41 198.1 44 187.29 44 176v-26.52c4.69 5.93 11.37 11.34 19.86 16c17.2 9.38 40 14.55 64.14 14.55s46.94-5.17 64.14-14.55c8.49-4.63 15.17-10 19.86-16Zm0-48c0 11.29-8.41 22.1-23.69 30.43C172.27 167.18 150.85 172 128 172s-44.27-4.82-60.31-13.57C52.41 150.1 44 139.29 44 128v-26.52c4.69 5.93 11.37 11.34 19.86 16c17.2 9.38 40 14.55 64.14 14.55s46.94-5.17 64.14-14.55c8.49-4.63 15.17-10 19.86-16Zm-23.69-17.57C172.27 119.18 150.85 124 128 124s-44.27-4.82-60.31-13.57C52.41 102.1 44 91.29 44 80s8.41-22.1 23.69-30.43C83.73 40.82 105.15 36 128 36s44.27 4.82 60.31 13.57C203.59 57.9 212 68.71 212 80s-8.41 22.1-23.69 30.43Z" />
-                            </svg>
-                            <span class="nav-label ms-1">Data Master</span>
-                        </a>
-                        <!-- Layouts submenu list -->
-                        <ul class="mininav-content nav collapse">
-                            <li class="nav-item">
-                                <a href="layouts/minimal-navigation/index.html" class="nav-link">Kategori</a>
-                            </li>
-                        </ul>
-                        <!-- END : Layouts submenu list -->
-                    </li>
+                    @if (Auth::check() && Auth::user()->role == 'owner')
+                        <li class="nav-item has-sub">
+                            <a href="#" class="mininav-toggle nav-link collapsed"><svg
+                                    xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                    viewBox="0 0 256 256" style="margin-right:4px;">
+                                    <path fill="currentColor"
+                                        d="M192.14 42.55C174.94 33.17 152.16 28 128 28s-46.94 5.17-64.14 14.55C45.89 52.35 36 65.65 36 80v96c0 14.35 9.89 27.65 27.86 37.45c17.2 9.38 40 14.55 64.14 14.55s46.94-5.17 64.14-14.55c18-9.8 27.86-23.1 27.86-37.45V80c0-14.35-9.89-27.65-27.86-37.45ZM212 176c0 11.29-8.41 22.1-23.69 30.43C172.27 215.18 150.85 220 128 220s-44.27-4.82-60.31-13.57C52.41 198.1 44 187.29 44 176v-26.52c4.69 5.93 11.37 11.34 19.86 16c17.2 9.38 40 14.55 64.14 14.55s46.94-5.17 64.14-14.55c8.49-4.63 15.17-10 19.86-16Zm0-48c0 11.29-8.41 22.1-23.69 30.43C172.27 167.18 150.85 172 128 172s-44.27-4.82-60.31-13.57C52.41 150.1 44 139.29 44 128v-26.52c4.69 5.93 11.37 11.34 19.86 16c17.2 9.38 40 14.55 64.14 14.55s46.94-5.17 64.14-14.55c8.49-4.63 15.17-10 19.86-16Zm-23.69-17.57C172.27 119.18 150.85 124 128 124s-44.27-4.82-60.31-13.57C52.41 102.1 44 91.29 44 80s8.41-22.1 23.69-30.43C83.73 40.82 105.15 36 128 36s44.27 4.82 60.31 13.57C203.59 57.9 212 68.71 212 80s-8.41 22.1-23.69 30.43Z" />
+                                </svg>
+                                <span class="nav-label ms-1">Data Master</span>
+                            </a>
+                            <!-- Layouts submenu list -->
+                            <ul class="mininav-content nav collapse">
+                                <li class="nav-item">
+                                    <a href="layouts/minimal-navigation/index.html" class="nav-link">Kategori</a>
+                                </li>
+                            </ul>
+                            <!-- END : Layouts submenu list -->
+                        </li>
+                    @endif
                     <!-- END : Link with submenu -->
                     <!-- Regular menu link -->
                     <li class="nav-item ">
-                        <a href="{{ route('buku.index') }}" class="nav-link mininav-toggle {{ str_contains(Route::current()->getName(), 'buku') ? 'active' : '' }}"><svg fill="none"
-                                stroke="currentColor" stroke-width="1.5" width="18" height="18"
+                        <a href="{{ route('buku.index') }}"
+                            class="nav-link mininav-toggle {{ str_contains(Route::current()->getName(), 'buku') ? 'active' : '' }}"><svg
+                                fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"
                                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
                                 style="margin-right: 4px">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -100,7 +104,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link mininav-toggle"><svg fill="none" stroke="currentColor"
+                        <a href="{{ route('user.index') }}" class="nav-link mininav-toggle {{ str_contains(Route::current()->getName(), 'user') ? 'active' : '' }}"><svg fill="none" stroke="currentColor"
                                 stroke-width="1.5" width="18" height="18" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="margin-right: 4px;">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -110,19 +114,21 @@
                             <span class="nav-label mininav-content ms-1">User</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link mininav-toggle"><svg xmlns="http://www.w3.org/2000/svg"
-                                width="18" height="18" viewBox="0 0 512 512" style="margin-right: 4px;">
-                                <path fill="none" stroke="currentColor" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="32"
-                                    d="M32 192L256 64l224 128l-224 128L32 192z" />
-                                <path fill="none" stroke="currentColor" stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="32"
-                                    d="M112 240v128l144 80l144-80V240m80 128V192M256 320v128" />
-                            </svg>
-                            <span class="nav-label mininav-content ms-1">Sekolah</span>
-                        </a>
-                    </li>
+                    @if (Auth::check() && Auth::user()->role == 'owner')
+                        <li class="nav-item">
+                            <a href="#" class="nav-link mininav-toggle"><svg xmlns="http://www.w3.org/2000/svg"
+                                    width="18" height="18" viewBox="0 0 512 512" style="margin-right: 4px;">
+                                    <path fill="none" stroke="currentColor" stroke-linecap="round"
+                                        stroke-linejoin="round" stroke-width="32"
+                                        d="M32 192L256 64l224 128l-224 128L32 192z" />
+                                    <path fill="none" stroke="currentColor" stroke-linecap="round"
+                                        stroke-linejoin="round" stroke-width="32"
+                                        d="M112 240v128l144 80l144-80V240m80 128V192M256 320v128" />
+                                </svg>
+                                <span class="nav-label mininav-content ms-1">Sekolah</span>
+                            </a>
+                        </li>
+                    @endif
                     <li class="nav-item">
                         <a href="#" class="nav-link mininav-toggle"><svg xmlns="http://www.w3.org/2000/svg"
                                 width="18" height="18" viewBox="0 0 256 256" style="margin-right: 4px;">

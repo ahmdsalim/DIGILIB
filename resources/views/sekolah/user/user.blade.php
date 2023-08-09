@@ -2,7 +2,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb mb-0">
         <li class="breadcrumb-item"><a href="{{ route('sekolah.index') }}">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('buku.index') }}">Buku</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('user.index') }}">User</a></li>
     </ol>
 @endsection
 
@@ -25,7 +25,7 @@
                             <div class="row">
                                 <!-- Left toolbar -->
                                 <div class="col-md-6 d-flex gap-1 align-items-center mb-3">
-                                    <a href="{{ route('buku.create') }}"
+                                    <a href="{{ route('user.create') }}"
                                         class="btn btn-primary hstack gap-2 align-self-center">
                                         <i class="demo-psi-add fs-5"></i>
                                         <span class="vr"></span>
@@ -67,11 +67,11 @@
                                 <div class="col-md-6 d-flex gap-1 align-items-center justify-content-md-end mb-3">
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-primary dropdown-toggle"
-                                            data-bs-toggle="dropdown" aria-expanded="false">Status</button>
+                                            data-bs-toggle="dropdown" aria-expanded="false">Role</button>
                                         <ul class="dropdown-menu" style="">
                                             <li><a class="dropdown-item" href="#">Semua</a></li>
-                                            <li><a class="dropdown-item" href="#">Publish</a></li>
-                                            <li><a class="dropdown-item" href="#">Pending</a></li>
+                                            <li><a class="dropdown-item" href="#">Guru</a></li>
+                                            <li><a class="dropdown-item" href="#">Siswa</a></li>
                                         </ul>
                                     </div>
                                     <div class="header-searchbox">
@@ -106,12 +106,9 @@
                                         <thead>
                                             <tr>
                                                 <th class="text-center">No</th>
-                                                <th>Foto</th>
-                                                <th>Judul</th>
-                                                <th>Kategori</th>
-                                                <th>Pengarang</th>
-                                                <th>Penerbit</th>
-                                                <th>No ISBN</th>
+                                                <th>Nama</th>
+                                                <th>Email</th>
+                                                <th>Role</th>
                                                 <th class="text-center">Status</th>
                                                 <th class="text-center">Aksi</th>
                                             </tr>
@@ -119,15 +116,11 @@
                                         <tbody>
                                             <tr>
                                                 <th class="text-center">1</th>
-                                                <td></td>
-                                                <td>Java Fundamental</td>
-                                                <td>Teknologi</td>
-                                                <td>Ahmad</td>
-                                                <td>PT. Baca Dulu</td>
-                                                <td>00001</td>
+                                                <td>Akmal</td>
+                                                <td>akmal123@digilib.com</td>
+                                                <td>Siswa</td>
                                                 <td class="fs-5">
-                                                    <div class="badge d-block bg-success">Publish</div>
-                                                </td>
+                                                    <div class="badge d-block bg-success">Active</div>
                                                 <td>
                                                     <div class="text-nowrap text-center">
                                                         <a href="#" class="btn btn-icon btn-sm btn-light"><svg
@@ -151,15 +144,11 @@
                                             </tr>
                                             <tr>
                                                 <th class="text-center">2</th>
-                                                <td></td>
-                                                <td>React Native </td>
-                                                <td>Teknologi</td>
-                                                <td>Eka</td>
-                                                <td>PT. Baca Dulu</td>
-                                                <td>00002</td>
+                                                <td>Ahmad</td>
+                                                <td>ahmadashbr@digilib.com</td>
+                                                <td>Guru</td>
                                                 <td class="fs-5">
-                                                    <div class="badge d-block bg-success">Publish</div>
-                                                </td>
+                                                    <div class="badge d-block bg-success">Active</div>
                                                 <td>
                                                     <div class="text-nowrap text-center">
                                                         <a href="#" class="btn btn-icon btn-sm btn-light"><svg
@@ -183,15 +172,11 @@
                                             </tr>
                                             <tr>
                                                 <th class="text-center">3</th>
-                                                <td></td>
-                                                <td>PHP Fundamental</td>
-                                                <td>Teknologi</td>
-                                                <td>Emul</td>
-                                                <td>PT. Baca Dulu</td>
-                                                <td>00003</td>
+                                                <td>Viki</td>
+                                                <td>vikimantep@digilib.com</td>
+                                                <td>Siswa</td>
                                                 <td class="fs-5">
-                                                    <div class="badge d-block bg-danger">Pending</div>
-                                                </td>
+                                                    <div class="badge d-block bg-success">Active</div>
                                                 <td>
                                                     <div class="text-nowrap text-center">
                                                         <a href="#" class="btn btn-icon btn-sm btn-light"><svg

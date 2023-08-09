@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\SekolahController;
+use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -26,4 +28,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::resource('sekolah', SekolahController::class);
 Route::resource('buku', BukuController::class);
+Route::resource('user', UserController::class);
 
