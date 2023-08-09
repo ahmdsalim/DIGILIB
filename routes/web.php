@@ -17,7 +17,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('landingpage');
+});
+
+Route::get('/all/buku', function () {
+    return view('bukuterbaru');
 });
 
 Auth::routes();
@@ -26,4 +30,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::resource('sekolah', SekolahController::class);
 Route::resource('buku', BukuController::class);
+
 
