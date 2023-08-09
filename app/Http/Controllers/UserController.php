@@ -12,8 +12,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data['users'] = User::paginate(25);
-        return view('owner.user.user', $data);
+        //
     }
 
     /**
@@ -37,14 +36,13 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $data['user'] = $user;
-        return view('owner.user.show-user', $data);
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $user)
     {
         //
     }
@@ -61,6 +59,44 @@ class UserController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
+    {
+        //
+    }
+
+    public function ownerIndex()
+    {
+        $data['users'] = User::paginate(25);
+        return view('owner.user.user', $data);
+    }
+
+    public function ownerCreate()
+    {
+        return view('owner.user.form-user');
+    }
+
+    public function ownerStore(Request $request)
+    {
+        //
+    }
+
+    public function ownerShow(User $user)
+    {
+        $data['user'] = $user;
+        return view('owner.user.show-user', $data);
+    }
+
+    public function ownerEdit(User $user)
+    {
+        $data['user'] = $user;
+        return view('owner.user.form-user', $data);
+    }
+
+    public function ownerUpdate(Request $request, string $id)
+    {
+        //
+    }
+
+    public function ownerDestroy(string $id)
     {
         //
     }

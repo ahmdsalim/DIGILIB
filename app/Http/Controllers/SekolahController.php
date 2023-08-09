@@ -62,4 +62,15 @@ class SekolahController extends Controller
     {
         //
     }
+
+    public function getSekolah()
+    {
+        $data = Sekolah::whereNotExists(function ($query) {
+            $query->select('1')
+                ->from('users')
+                ->whereRaw('users.userable_id = sekolahs.id');
+        });
+
+        return response()->json($data);
+    }
 }

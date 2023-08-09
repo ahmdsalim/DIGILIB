@@ -3,6 +3,8 @@
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\SekolahController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\GuruController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -29,3 +31,18 @@ Route::resource('sekolah', SekolahController::class);
 Route::resource('buku', BukuController::class);
 
 Route::resource('users', UserController::class);
+
+Route::prefix('owner')->name('owner.')->group(function() {
+	Route::get('users', [UserController::class, 'indexAll'])->name('user.index');
+	Route::get('users/create', [UserController::class, 'ownerCreate'])->name('user.create');
+	Route::get('users/{user}', [UserController::class, 'ownerShow'])->name('user.show');
+	Route::post('users/store', [UserController::class, 'ownerStore'])->name('user.store');
+	Route::get('users/edit/{user}', [UserController::class, 'ownerEdit'])->name('user.edit');
+	Route::put('users/update/{user}', [UserController::class, 'ownerUpdate'])->name('user.update');
+	Route::delete('users/delete/{user}', [UserController::class, 'ownerDestroy'])->name('user.delete');
+});
+Route::prefix('api')->middleware('auth')->group(function() {
+	Route::get('getSekolah', [SekolahController::class, 'getSekolah'])->name('api.getSekolah');
+	Route::get('getSiswa', [SiswaController::class, 'getSiswa'])->name('api.getSiswa');
+	Route::get('getGuru', [GuruController::class, 'getGuru'])->name('api.getGuru');
+});

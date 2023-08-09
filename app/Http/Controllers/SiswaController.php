@@ -62,4 +62,15 @@ class SiswaController extends Controller
     {
         //
     }
+
+    public function getSiswa()
+    {
+        $data = Siswa::whereNotExists(function($query) {
+            $query->select(1)
+                ->from('users')
+                ->whereRaw('users.userable_id = siswas.id');
+        });
+
+        return response()->json($data);
+    }
 }
