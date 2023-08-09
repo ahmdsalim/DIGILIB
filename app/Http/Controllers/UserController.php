@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -11,9 +12,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $tittle = 'User';
-        $header = 'Data ' . $tittle;
-        return view('sekolah.user.user', compact('tittle', 'header'));
+        $data['users'] = User::paginate(25);
+        return view('owner.user.user', $data);
     }
 
     /**
@@ -21,9 +21,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $tittle = 'User';
-        $header = 'Tambah ' . $tittle;
-        return view('sekolah.user.user', compact('tittle', 'header'));
+        //
     }
 
     /**
@@ -37,9 +35,10 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user)
     {
-        //
+        $data['user'] = $user;
+        return view('owner.user.show-user', $data);
     }
 
     /**
@@ -47,9 +46,7 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $tittle = 'User';
-        $header = 'Edit ' . $tittle;
-        return view('sekolah.user.user', compact('tittle', 'header'));
+        //
     }
 
     /**

@@ -30,3 +30,4 @@ Route::resource('sekolah', SekolahController::class);
 Route::resource('buku', BukuController::class);
 Route::resource('user', UserController::class);
 
+Route::resource('users', UserController::class);

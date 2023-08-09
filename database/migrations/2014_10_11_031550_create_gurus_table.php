@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('gurus', function (Blueprint $table) {
             $table->id();
             $table->string('nip')->unique();
-            $table->string('nama_guru');
-            $table->string('jk_guru');
-            $table->string('telepon_guru');
+            $table->string('nama');
+            $table->string('jk');
+            $table->string('telepon');
             $table->string('npsn');
             $table->timestamps();
 

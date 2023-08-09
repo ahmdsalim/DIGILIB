@@ -7,7 +7,7 @@
                 <div class="mt-2 d-mn-max"></div>
                 <!-- Profile picture  -->
                 <div class="mininav-toggle text-center py-2">
-                    <img class="mainnav__avatar img-md rounded-circle border" src="assets/img/profile-photos/1.png"
+                    <img class="mainnav__avatar img-md rounded-circle border" src="{{asset('assets/img/profile-photos/1.png')}}"
                         alt="Profile Picture">
                 </div>
                 <div class="mininav-content collapse d-mn-max">
@@ -51,7 +51,6 @@
             <div class="mainnav__categoriy py-3">
                 <h6 class="mainnav__caption mt-0 px-3 fw-bold">Navigasi</h6>
                 <ul class="mainnav__menu nav flex-column">
-                    <!-- Link with submenu -->
                     <li class="nav-item">
                         <a href="{{ route('login') }}"
                             class="nav-link mininav-toggle {{ str_contains(Route::current()->getName(), 'home') ? 'active' : '' }}"><svg
@@ -67,7 +66,6 @@
                             <span class="nav-label mininav-content ms-1">Dashbaord</span>
                         </a>
                     </li>
-                    <!-- END : Link with submenu -->
                     <!-- Link with submenu -->
                     @if (Auth::check() && Auth::user()->role == 'owner')
                         <li class="nav-item has-sub">

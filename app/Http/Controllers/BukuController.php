@@ -13,8 +13,8 @@ class BukuController extends Controller
     public function index()
     {
         $tittle = 'Buku';
-        $header = 'Data '.$tittle;
-        return view('buku.buku',compact('tittle','header'));
+        $header = 'Data ' . $tittle;
+        return view('buku.buku', compact('tittle', 'header'));
     }
 
     /**
@@ -23,8 +23,8 @@ class BukuController extends Controller
     public function create()
     {
         $tittle = 'Buku';
-        $header = 'Tambah '.$tittle;
-        return view('buku.buku',compact('tittle','header'));
+        $header = 'Tambah ' . $tittle;
+        return view('buku.buku', compact('tittle', 'header'));
     }
 
     /**
@@ -32,7 +32,6 @@ class BukuController extends Controller
      */
     public function store(Request $request)
     {
-        
     }
 
     /**
@@ -49,8 +48,9 @@ class BukuController extends Controller
     public function edit(Buku $buku)
     {
         $tittle = 'Buku';
-        $header = 'Edit '.$tittle;
-        return view('buku.buku',compact('tittle','header'));    }
+        $header = 'Edit ' . $tittle;
+        return view('buku.buku', compact('tittle', 'header'));
+    }
 
     /**
      * Update the specified resource in storage.
