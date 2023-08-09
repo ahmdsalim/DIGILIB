@@ -5,7 +5,7 @@
          <div class="brand-wrap">
             <!-- Brand logo -->
             <a href="index.html" class="brand-img stretched-link">
-            <img src="assets/img/logo.svg" alt="Nifty Logo" class="Nifty logo" width="40" height="40">
+            <img src="{{asset('assets/img/logo.svg')}}" alt="Nifty Logo" class="Nifty logo" width="40" height="40">
             </a>
             <!-- Brand title -->
             <div class="brand-title">Nifty</div>

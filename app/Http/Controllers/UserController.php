@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Buku;
 use Illuminate\Http\Request;
+use App\Models\User;
 
-class BukuController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $tittle = 'Buku';
-        $header = 'Data ' . $tittle;
-        return view('buku.buku', compact('tittle', 'header'));
+        $data['users'] = User::paginate(25);
+        return view('owner.user.user', $data);
     }
 
     /**
@@ -22,9 +21,7 @@ class BukuController extends Controller
      */
     public function create()
     {
-        $tittle = 'Buku';
-        $header = 'Tambah ' . $tittle;
-        return view('buku.buku', compact('tittle', 'header'));
+        //
     }
 
     /**
@@ -32,30 +29,30 @@ class BukuController extends Controller
      */
     public function store(Request $request)
     {
+        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Buku $buku)
+    public function show(User $user)
     {
-        //
+        $data['user'] = $user;
+        return view('owner.user.show-user', $data);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Buku $buku)
+    public function edit(string $id)
     {
-        $tittle = 'Buku';
-        $header = 'Edit ' . $tittle;
-        return view('buku.buku', compact('tittle', 'header'));
+        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Buku $buku)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -63,7 +60,7 @@ class BukuController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Buku $buku)
+    public function destroy(string $id)
     {
         //
     }
