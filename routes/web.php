@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\SekolahController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\GuruController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -29,17 +29,18 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::resource('sekolah', SekolahController::class);
 Route::resource('buku', BukuController::class);
+Route::resource('user', UserController::class);
 
 Route::resource('users', UserController::class);
 
 Route::prefix('owner')->name('owner.')->group(function() {
-	Route::get('users', [UserController::class, 'indexAll'])->name('user.index');
-	Route::get('users/create', [UserController::class, 'ownerCreate'])->name('user.create');
-	Route::get('users/{user}', [UserController::class, 'ownerShow'])->name('user.show');
-	Route::post('users/store', [UserController::class, 'ownerStore'])->name('user.store');
-	Route::get('users/edit/{user}', [UserController::class, 'ownerEdit'])->name('user.edit');
-	Route::put('users/update/{user}', [UserController::class, 'ownerUpdate'])->name('user.update');
-	Route::delete('users/delete/{user}', [UserController::class, 'ownerDestroy'])->name('user.delete');
+	Route::get('users', [UserController::class, 'ownerIndex'])->name('users.index');
+	Route::get('users/create', [UserController::class, 'ownerCreate'])->name('users.create');
+	Route::get('users/{user}', [UserController::class, 'ownerShow'])->name('users.show');
+	Route::post('users/store', [UserController::class, 'ownerStore'])->name('users.store');
+	Route::get('users/edit/{user}', [UserController::class, 'ownerEdit'])->name('users.edit');
+	Route::put('users/update/{user}', [UserController::class, 'ownerUpdate'])->name('users.update');
+	Route::delete('users/delete/{user}', [UserController::class, 'ownerDestroy'])->name('users.delete');
 });
 Route::prefix('api')->middleware('auth')->group(function() {
 	Route::get('getSekolah', [SekolahController::class, 'getSekolah'])->name('api.getSekolah');

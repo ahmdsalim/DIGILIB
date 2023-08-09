@@ -3,12 +3,12 @@
     <ol class="breadcrumb mb-0">
         <li class="breadcrumb-item"><a href="{{ route('sekolah.index') }}">Home</a></li>
         <li class="breadcrumb-item"><a href="{{ route('buku.index') }}">Buku</a></li>
-        <li class="breadcrumb-item active" aria-current="page"><a href="#">Tambah Buku</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">{{ $header }}</a></li>
     </ol>
 @endsection
 
 @section('pagetitle')
-    <h1 class="page-title mb-0 mt-2">Buku</h1>
+    <h1 class="page-title mb-0 mt-2">{{ $tittle }}</h1>
     {{-- <p class="lead">
         A widget is an element of a graphical user interface that displays information or provides a specific way for a user
         to interact.
@@ -38,7 +38,7 @@
                     <div class="col-md-12 mb-3">
                         <div class="card h-100">
                             <div class="card-body">
-                                <h5 class="card-title">Update Buku</h5>
+                                <h5 class="card-title">{{ $header }}</h5>
                                 <!-- Block styled form -->
                                 <form class="row g-3" action="{{ route('buku.update') }}" method="post"
                                     class="needs-validation" novalidate>

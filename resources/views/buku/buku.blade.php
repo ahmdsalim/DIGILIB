@@ -7,7 +7,7 @@
 @endsection
 
 @section('pagetitle')
-    <h1 class="page-title mb-0 mt-2">Buku</h1>
+    <h1 class="page-title mb-0 mt-2">{{ $tittle }}</h1>
     {{-- <p class="lead">
         A widget is an element of a graphical user interface that displays information or provides a specific way for a user
         to interact.
@@ -21,7 +21,7 @@
                 <div class="col-xl-12 mb-3">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title mb-3">Data Buku</h5>
+                            <h5 class="card-title mb-3">{{ $header }}</h5>
                             <div class="row">
                                 <!-- Left toolbar -->
                                 <div class="col-md-6 d-flex gap-1 align-items-center mb-3">
