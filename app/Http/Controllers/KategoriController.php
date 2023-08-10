@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kategori;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class KategoriController extends Controller
 {
@@ -12,7 +13,10 @@ class KategoriController extends Controller
      */
     public function index()
     {
-        //
+        $tittle = 'Kategori';
+        $header = 'Data '.$tittle;
+        $data = Kategori::paginate(25);
+        return view('kategori.kategori',compact('data','tittle','header'));
     }
 
     /**
@@ -20,7 +24,9 @@ class KategoriController extends Controller
      */
     public function create()
     {
-        //
+        $tittle = 'Kategori';
+        $header = 'Tambah '.$tittle;
+        return view('kategori.tambah-kategori',compact('tittle','header'));
     }
 
     /**
@@ -28,7 +34,31 @@ class KategoriController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'kategori' => 'required|unique:kategoris',
+            ],
+            [
+                'kategori.required' => 'kategori tidak boleh kosong',
+                'kategori.unique' => 'kategori ' . $request->kategori . ' sudah digunakan',
+            ],
+        );
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $kategori = new Kategori();
+        $kategori->kategori = $request->kategori;
+        $kategori->slug = '12345';
+        $kategori->save();
+        return redirect()
+            ->route('kategori.index')
+            ->with('success', 'Data Telah Berhasil Di Tambahkan');
     }
 
     /**
@@ -42,24 +72,53 @@ class KategoriController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Kategori $kategori)
+    public function edit($id)
     {
-        //
+        $tittle = 'Kategori';
+        $header = 'Edit '.$tittle;
+        $data = Kategori::find($id);
+        return view('kategori.edit-kategori',compact('data','tittle','header'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Kategori $kategori)
+    public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'kategori' => 'required|unique:kategoris',
+            ],
+            [
+                'kategori.required' => 'kategori tidak boleh kosong',
+                'kategori.unique' => 'kategori ' . $request->kategori . ' sudah digunakan',
+            ],
+        );
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $data = Kategori::find($id);
+        $data->update($request->all());
+        return redirect()
+            ->route('kategori.index')
+            ->with('success', 'Data Telah Berhasil Di Ubah');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Kategori $kategori)
+    public function destroy($id)
     {
-        //
+        $data = Kategori::find($id);
+        $data->delete();
+        return redirect()
+            ->route('kategori.index')
+            ->with('success', 'Data Telah Berhasil Di Hapus');
     }
 }
