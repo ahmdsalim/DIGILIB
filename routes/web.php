@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\SekolahController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\UserController;
@@ -28,22 +29,19 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource('sekolah', SekolahController::class);
-Route::resource('buku', BukuController::class);
-Route::resource('user', UserController::class);
 
-Route::resource('users', UserController::class);
-
-Route::prefix('owner')->name('owner.')->group(function() {
-	Route::get('users', [UserController::class, 'ownerIndex'])->name('users.index');
-	Route::get('users/create', [UserController::class, 'ownerCreate'])->name('users.create');
-	Route::get('users/{user}', [UserController::class, 'ownerShow'])->name('users.show');
-	Route::post('users/store', [UserController::class, 'ownerStore'])->name('users.store');
-	Route::get('users/edit/{user}', [UserController::class, 'ownerEdit'])->name('users.edit');
-	Route::put('users/update/{user}', [UserController::class, 'ownerUpdate'])->name('users.update');
-	Route::delete('users/delete/{user}', [UserController::class, 'ownerDestroy'])->name('users.destroy');
-});
 Route::prefix('api')->middleware('auth')->group(function() {
 	Route::get('getSekolah', [SekolahController::class, 'getSekolah'])->name('api.getSekolah');
 	Route::get('getSiswa', [SiswaController::class, 'getSiswa'])->name('api.getSiswa');
 	Route::get('getGuru', [GuruController::class, 'getGuru'])->name('api.getGuru');
 });
+Route::controller(BukuController::class)->group(function () {
+    Route::get('/buku/request', [BukuController::class, 'request'])->name('buku.request');
+    Route::post('/buku/request/{id}', [BukuController::class, 'requestUpdate'])->name('buku.requestUpdate');
+    Route::resource('buku', BukuController::class);
+});
+
+Route::resource('user', UserController::class);
+Route::resource('kategori', KategoriController::class);
+
+Route::resource('users', UserController::class);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Validator;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -13,7 +14,29 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+    
+        if (Auth::user()->role === 'owner') {
+            $query = User::query();
+            $data['search'] = $request->input('search');
+            $search = $data['search'];
+            if($request->has('search') && !empty($request->input('search'))){
+                $query->where(function ($query) use ($search) {
+                    $query->where('email', 'like', "%{$search}%")
+                        ->orWhere('nama', 'like', "%{$search}%")
+                        ->orWhere('role', 'like', "%{$search}%");
+                });
+            }
+
+            $data['users'] = $query->paginate(25);
+            return view('owner.user.user', $data);
+        } elseif (Auth::user()->role === 'sekolah') {
+            $tittle = 'User';
+            $header = 'Data '.$tittle;
+            return view('sekolah.user.user',compact('tittle','header'));
+        } else {
+            
+        }
+        
     }
 
     /**
@@ -21,72 +44,13 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('user.form-user');
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(User $user)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(User $user)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
-
-    public function ownerIndex(Request $request)
-    {
-        $query = User::query();
-        $data['search'] = $request->input('search');
-        $search = $data['search'];
-        if($request->has('search') && !empty($request->input('search'))){
-            $query->where(function ($query) use ($search) {
-                $query->where('email', 'like', "%{$search}%")
-                      ->orWhere('nama', 'like', "%{$search}%")
-                      ->orWhere('role', 'like', "%{$search}%");
-            });
-        }
-
-        $data['users'] = $query->paginate(25);
-        return view('owner.user.user', $data);
-    }
-
-    public function ownerCreate()
-    {
-        return view('owner.user.form-user');
-    }
-
-    public function ownerStore(Request $request)
     {
         $validator = Validator::make($request->all(),[
             'nama' => 'required|string|max:128',
@@ -116,27 +80,36 @@ class UserController extends Controller
             $saved = User::create($new);
 
             if(!$saved){
-                return to_route('owner.users.index')->with('failed','Gagal');
+                return to_route('users.index')->with('failed','Gagal');
             }
-            return to_route('owner.users.index')->with('success','Berhasil');
+            return to_route('users.index')->with('success','Berhasil');
         } else {
             return redirect()->back()->withErrors($validator)->withInput();
         }
     }
 
-    public function ownerShow(User $user)
+    /**
+     * Display the specified resource.
+     */
+    public function show(User $user)
     {
         $data['user'] = $user;
         return view('owner.user.show-user', $data);
     }
 
-    public function ownerEdit(User $user)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(User $user)
     {
         $data['user'] = $user;
         return view('owner.user.form-user', $data);
     }
 
-    public function ownerUpdate(Request $request, User $user)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
     {
         $validator = Validator::make($request->all(),[
             'nama' => 'required|string|max:128',
@@ -169,16 +142,18 @@ class UserController extends Controller
             $saved = $user->update($new);
 
             if(!$saved){
-                return to_route('owner.users.index')->with('failed','Gagal');
+                return to_route('users.index')->with('failed','Gagal');
             }
-            return to_route('owner.users.index')->with('success','Berhasil');
+            return to_route('users.index')->with('success','Berhasil');
         } else {
             return redirect()->back()->withErrors($validator);
         }
-
     }
 
-    public function ownerDestroy(string $id)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
     {
         //
     }

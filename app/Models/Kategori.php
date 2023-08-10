@@ -10,9 +10,10 @@ use App\Models\Buku;
 class Kategori extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 
     public function buku()
     {
-    	return $this->belongsTo(Buku::class);
+    	return $this->hasMany(Buku::class);
     }
 }

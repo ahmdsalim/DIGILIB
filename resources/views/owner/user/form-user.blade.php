@@ -2,7 +2,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb mb-0">
         <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('owner.users.index') }}">User</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('users.index') }}">User</a></li>
         <li class="breadcrumb-item active" aria-current="page">@if (isset($user)) Edit @else Tambah @endif User</li>
     </ol>
 @endsection
@@ -25,10 +25,10 @@
                                 <h5 class="card-title">@if (isset($user)) Edit @else Tambah @endif User</h5>
                                 <!-- Block styled form -->
                                 @if (isset($user))
-                                <form class="row g-3" method="post" action="{{ route('owner.users.update', $user->id) }}">
+                                <form class="row g-3" method="post" action="{{ route('users.update', $user->id) }}">
                                 @method('PUT')
                                 @else
-                                <form class="row g-3" method="post" action="{{ route('owner.users.store') }}">
+                                <form class="row g-3" method="post" action="{{ route('users.store') }}">
                                 @endif
                                 @csrf
                                    <div class="col-12">
