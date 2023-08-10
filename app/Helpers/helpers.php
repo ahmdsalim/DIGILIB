@@ -15,3 +15,15 @@ if (!function_exists('generateUuid')) {
 	    return Uuid::uuid4()->toString();
 	}
 }
+
+if (!function_exists('getmodelclass')) {
+	function getmodelClass($role)
+	{
+		return match ($role) {
+	        'sekolah' => App\Models\Sekolah::class,
+	        'siswa' => App\Models\siswa::class,
+	        'guru' => App\Models\Guru::class,
+	        default => '',
+	    };
+	}
+}

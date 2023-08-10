@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Sekolah;
 use Illuminate\Http\Request;
+use DB;
 
 class SekolahController extends Controller
 {
@@ -66,10 +67,10 @@ class SekolahController extends Controller
     public function getSekolah()
     {
         $data = Sekolah::whereNotExists(function ($query) {
-            $query->select('1')
+            $query->selectRaw('1')
                 ->from('users')
                 ->whereRaw('users.userable_id = sekolahs.id');
-        });
+        })->get();
 
         return response()->json($data);
     }

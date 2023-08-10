@@ -40,7 +40,7 @@ Route::prefix('owner')->name('owner.')->group(function() {
 	Route::post('users/store', [UserController::class, 'ownerStore'])->name('users.store');
 	Route::get('users/edit/{user}', [UserController::class, 'ownerEdit'])->name('users.edit');
 	Route::put('users/update/{user}', [UserController::class, 'ownerUpdate'])->name('users.update');
-	Route::delete('users/delete/{user}', [UserController::class, 'ownerDestroy'])->name('users.delete');
+	Route::delete('users/delete/{user}', [UserController::class, 'ownerDestroy'])->name('users.destroy');
 });
 Route::prefix('api')->middleware('auth')->group(function() {
 	Route::get('getSekolah', [SekolahController::class, 'getSekolah'])->name('api.getSekolah');
