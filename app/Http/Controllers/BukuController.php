@@ -117,6 +117,10 @@ class BukuController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     */
+
+    /**
      * Show the form for creating a new resource.
      */
 
@@ -218,7 +222,7 @@ class BukuController extends Controller
                 $image_name = md5(rand(1000, 10000));
                 $ext = strtolower($file->getClientOriginalExtension()); // Menggunakan getgetClientOriginalExtension() untuk mendapatkan ekstensi file
                 $image_full_name = $image_name . '.' . $ext;
-                $upload_path = 'public/img/slide/';
+                $upload_path = 'img/slide/';
                 $image_url = $upload_path . $image_full_name;
                 $file->move($upload_path, $image_full_name);
                 $images[] = $image_url;
@@ -228,19 +232,22 @@ class BukuController extends Controller
         // upload thumbnail
         if ($request->hasFile('thumbnail')) {
             $thumbnail_name = md5(rand(1000, 10000)) . '.' . $request->file('thumbnail')->getClientOriginalExtension();
-            $request->file('thumbnail')->move('thumbnail-buku/', $thumbnail_name);
+            $request->file('thumbnail')->move('img/thumbnail-buku/', $thumbnail_name);
             $buku->thumbnail = $thumbnail_name;
         }
 
         $destination = 'files';
 
-        if ($request->hasFile('upload_file')) {
-            $file = $request->file('upload_file');
+        if ($request->hasFile('url_pdf')) {
+            $file = $request->file('url_pdf');
             $extension = $file->getClientOriginalExtension();
-            $file_name = $request->judul . $extension;
+
+            $slug = Buku::all()->first()->slug; // Mengambil slug dari data pertama
+            $file_name = $slug . '.' . $extension;
 
             $file->move($destination, $file_name);
         }
+
         $upload_file = $file_name;
 
         $buku->slide = implode('|', $images); // Mengganti $image menjadi $images
