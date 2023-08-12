@@ -78,7 +78,7 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($data as $index => $buku)
-                                                <tr>
+                                                <tr class="align-middle">
                                                     <th scope="row">{{ $index + $data->firstItem() }}</th>
                                                     <td>
                                                         <img src="{{ asset('thumbnail-buku/' . $buku->thumbnail) }}"
@@ -93,15 +93,31 @@
                                                         @if ($buku->publish == 1)
                                                             <div class="badge d-block bg-success">Publish</div>
                                                         @else
-                                                            <div class="badge d-block bg-danger">Pending</div>
+                                                            <div class="badge d-block bg-secondary">Pending</div>
                                                         @endif
                                                     </td>
                                                     <td>
-                                                    <form action="{{ route('buku.requestUpdate', $buku->id) }}" method="POST">
-                                                        @csrf
-                                                        {{-- @method('put') --}}
-                                                        <button type="submit" class="btn btn-sm btn-success">Terima</button>
-                                                    </form>
+                                                        <div class="d-flex gap-2 justify-content-center">
+                                                            <form action="{{ route('buku.requestUpdate', $buku->id) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                @method('PUT') {{-- Tambahkan ini untuk menggunakan method PUT --}}
+                                                                <input type="hidden" name="action" value="terima">
+                                                                {{-- Nilai "terima" untuk tombol Terima --}}
+                                                                    <button type="submit"
+                                                                        class="btn btn-sm btn-primary">Terima</button>
+                                                            </form>
+                                                            <form action="{{ route('buku.requestUpdate', $buku->id) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                @method('PUT') {{-- Tambahkan ini untuk menggunakan method PUT --}}
+                                                                <input type="hidden" name="action" value="tolak">
+                                                                {{-- Nilai "tolak" untuk tombol Tolak --}}
+                                                                    <button type="submit"
+                                                                        class="btn btn-sm btn-danger">Tolak</button>
+                                                            </form>
+                                                        </div>
+
                                                     </td>
                                                 </tr>
                                             @endforeach

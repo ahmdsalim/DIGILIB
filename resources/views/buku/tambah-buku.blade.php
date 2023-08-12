@@ -109,13 +109,13 @@
                                     </div>
                                     <div class="col-12">
                                         <label for="_dm-inputAddress" class="form-label">Pengarang</label>
-                                        <input id="_dm-inputAddress" name="penulis" placeholder="Masukan pengarang"
-                                            value="{{ old('penulis') }}"
+                                        <input id="_dm-inputAddress" name="pengarang" placeholder="Masukan pengarang"
+                                            value="{{ old('pengarang') }}"
                                             class="form-control 
-                                        @error('penulis')
+                                        @error('pengarang')
                                             is-invalid
                                         @enderror">
-                                        @error('penulis')
+                                        @error('pengarang')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
                                             </div>
@@ -181,7 +181,7 @@
                                         </div>
                                         <div class="col-12">
                                             <label for="_dm-inputAddress" class="form-label">URL PDF</label>
-                                            <input id="_dm-inputAddress" name="url_pdf" placeholder="Masukan url pdf"
+                                            <input id="_dm-inputAddress" type="file" name="url_pdf" placeholder="Masukan url pdf"  accept="application/pdf"
                                                 value="{{ old('url_pdf') }}"
                                                 class="form-control 
                                         @error('url_pdf')

@@ -8,7 +8,7 @@
             <img src="{{asset('assets/img/logo.svg')}}" alt="Nifty Logo" class="Nifty logo" width="40" height="40">
             </a>
             <!-- Brand title -->
-            <div class="brand-title">Nifty</div>
+            <div class="brand-title">DIGILIB</div>
             <!-- You can also use IMG or SVG instead of a text element. -->
          </div>
       </div>

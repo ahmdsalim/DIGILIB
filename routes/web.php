@@ -31,7 +31,7 @@ Route::resource('sekolah', SekolahController::class);
 
 Route::controller(BukuController::class)->group(function () {
     Route::get('/buku/request', [BukuController::class, 'request'])->name('buku.request');
-    Route::post('/buku/request/{id}', [BukuController::class, 'requestUpdate'])->name('buku.requestUpdate');
+    Route::put('/buku/request/{id}', [BukuController::class, 'requestUpdate'])->name('buku.requestUpdate');
     Route::resource('buku', BukuController::class);
 });
 

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Buku;
 use App\Models\Kategori;
+use Spatie\PdfToImage\Pdf;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -13,12 +15,105 @@ class BukuController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $tittle = 'Buku';
         $header = 'Data ' . $tittle;
-        $data = Buku::paginate(25);
-        return view('buku.buku', compact('data', 'tittle', 'header'));
+        $kosong = '';
+        $status = '';
+
+        if (Auth::user()->role === 'owner') {
+            //jika masuk sebagai owner
+            $status = $request->input('status'); // Get the filter parameter
+
+            if ($request->has('search')) {
+                if ($status === null || $status === 'publish' || $status === 'rejected' || $status === 'pending') {
+                    $data = Buku::where('judul', 'LIKE', '%' . $request->search . '%')
+                        ->orWhere('no_isbn', 'LIKE', '%' . $request->search . '%')
+                        ->orWhere('penulis', 'LIKE', '%' . $request->search . '%')
+                        ->orWhere('penerbit', 'LIKE', '%' . $request->search . '%')
+                        ->orderBy('status', 'desc')
+                        ->orderBy('judul', 'asc')
+                        ->paginate(25);
+
+                    if ($data->isEmpty()) {
+                        $kosong = 'Data tidak tersedia';
+                    }
+                }
+            } else {
+                $status = $request->input('status'); // Get the filter parameter
+
+                if ($status === null || $status === 'Semua') {
+                    $data = Buku::orderBy('status', 'desc')
+                        ->orderBy('judul', 'asc') // Mengurutkan berdasarkan judul buku secara ascending
+                        ->paginate(25);
+                    if ($data->isEmpty()) {
+                        $kosong = 'Data tidak tersedia';
+                    }
+                } else {
+                    $publishStatus = $status; //ambil nilai publish true
+                    //persyaratan publish nya benar
+                    $data = Buku::where('status', $publishStatus)
+                        ->orderBy('status', 'desc')
+                        ->orderBy('judul', 'asc') // Mengurutkan berdasarkan judul buku secara ascending
+                        ->paginate(25);
+                    if ($data->isEmpty()) {
+                        $kosong = 'Data tidak tersedia';
+                    }
+                }
+            }
+        } else {
+            //jika masuk sebagai sekolah
+            $status = $request->input('status'); // Get the filter parameter
+
+            if ($request->has('search')) {
+                if ($status === null || $status === 'publish' || $status === 'rejected' || $status === 'pending') {
+                    $data = Buku::where('judul', 'LIKE', '%' . $request->search . '%')
+                        ->orWhere('no_isbn', 'LIKE', '%' . $request->search . '%')
+                        ->orWhere('penulis', 'LIKE', '%' . $request->search . '%')
+                        ->orWhere('penerbit', 'LIKE', '%' . $request->search . '%')
+                        ->orderBy('publish', 'desc')
+                        ->orderBy('judul', 'asc')
+                        ->paginate(25);
+
+                    if ($data->isEmpty()) {
+                        $kosong = 'Data tidak tersedia';
+                    }
+                }
+            } else {
+                $status = $request->input('status'); // Get the filter parameter
+
+                if ($status === null || $status === 'Semua') {
+                    $emailPengguna = Auth::user()->email; //ambil email dari user
+
+                    //persyaratan berdasarakan email
+                    $data = Buku::where('email', $emailPengguna)
+                        ->orderBy('status', 'desc')
+                        ->orderBy('judul', 'asc')
+                        ->paginate(25);
+
+                    if ($data->isEmpty()) {
+                        $kosong = 'Data tidak tersedia';
+                    }
+                } else {
+                    $emailPengguna = Auth::user()->email; //ambil email dari user
+                    $publishStatus = $status; // ambil nilai status true
+
+                    // jika publish dan email nya benar ambil data
+                    $data = Buku::where('status', $publishStatus)
+                        ->where('email', $emailPengguna)
+                        ->orderBy('status', 'desc')
+                        ->orderBy('judul', 'asc')
+                        ->paginate(25);
+
+                    if ($data->isEmpty()) {
+                        $kosong = 'Data tidak tersedia';
+                    }
+                }
+            }
+        }
+
+        return view('buku.buku', compact('data', 'tittle', 'header', 'kosong', 'status'));
     }
 
     /**
@@ -29,7 +124,9 @@ class BukuController extends Controller
     {
         $tittle = 'Buku';
         $header = 'Data ' . $tittle;
-        $data = Buku::where('publish', 0)->paginate(25);
+
+        $data = Buku::where('status', 3)->paginate(25);
+
         return view('buku.request', compact('data', 'tittle', 'header'));
     }
 
@@ -37,55 +134,65 @@ class BukuController extends Controller
     {
         $buku = Buku::find($id);
 
-        if (!$buku) {
+        if ($buku) {
+            $action = request('action'); // Ambil nilai dari input dengan name "action"
+
+            if ($action === 'tolak') {
+                $buku->status = 2;
+            } else {
+                $buku->status = 1; // Ubah sesuai kebutuhan jika status harus berbeda
+            }
+
+            $buku->save();
+
             return redirect()
                 ->back()
-                ->with('error', 'Buku tidak ditemukan.');
+                ->with('success', 'Buku telah diperbarui.');
         }
-
-        $buku->publish = 1;
-        $buku->save();
 
         return redirect()
             ->back()
-            ->with('success', 'Buku telah dipublish, silakan cek.');
+            ->with('error', 'Buku tidak ditemukan.');
     }
 
     public function create()
     {
         $tittle = 'Buku';
         $header = 'Tambah ' . $tittle;
+
         $kategori = Kategori::all();
+
         return view('buku.tambah-buku', compact('tittle', 'header', 'kategori'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
+
+    public function countPages()
+    {
+    }
+
     public function store(Request $request)
     {
-        // dd($request->all());
-
         $validator = Validator::make(
             $request->all(),
             [
-                'no_isb' => 'required|unique:bukus',
+                'no_isbn' => 'required|unique:bukus',
                 'judul' => 'required|',
                 'kategori_id' => 'required|',
-                'penulis' => 'required|',
+                'pengarang' => 'required|',
                 'penerbit' => 'required|',
                 'tahun_terbit' => 'required|',
                 'jumlah_halaman' => 'required|',
                 'url_pdf' => 'required|',
-                'no_isbn' => 'required|',
-                
             ],
             [
                 'no_isb.unique' => 'no isbn ' . $request->kategori . ' sudah digunakan',
                 'no_isb.required' => 'no isbn tidak boleh kosong',
-                'kategori.id.required' => 'kategori tidak boleh kosong',
+                'kategori_id.required' => 'kategori tidak boleh kosong',
                 'judul.required' => 'judul tidak boleh kosong',
-                'penulis.required' => 'penulis tidak boleh kosong',
+                'penarang.required' => 'penarang tidak boleh kosong',
                 'penerbit.required' => 'penerbit tidak boleh kosong',
                 'tahun_terbit.required' => 'tahun_terbit tidak boleh kosong',
                 'jumlah_halaman.required' => 'jumlah_halaman tidak boleh kosong',
@@ -104,6 +211,7 @@ class BukuController extends Controller
         $buku = new Buku();
         $images = []; // Mengganti $slide menjadi $images
 
+        // upload slide
         if ($request->hasFile('slide')) {
             // Memeriksa apakah ada file slide yang diunggah
             foreach ($request->file('slide') as $file) {
@@ -117,23 +225,34 @@ class BukuController extends Controller
             }
         }
 
+        // upload thumbnail
         if ($request->hasFile('thumbnail')) {
             $thumbnail_name = md5(rand(1000, 10000)) . '.' . $request->file('thumbnail')->getClientOriginalExtension();
             $request->file('thumbnail')->move('thumbnail-buku/', $thumbnail_name);
             $buku->thumbnail = $thumbnail_name;
         }
 
+        $destination = 'files';
+
+        if ($request->hasFile('upload_file')) {
+            $file = $request->file('upload_file');
+            $extension = $file->getClientOriginalExtension();
+            $file_name = $request->judul . $extension;
+
+            $file->move($destination, $file_name);
+        }
+        $upload_file = $file_name;
+
         $buku->slide = implode('|', $images); // Mengganti $image menjadi $images
         $buku->judul = $request->judul;
-        $buku->slug = '123';
+        $buku->slug = Str::slug($buku->judul);
         $buku->penulis = $request->pengarang;
         $buku->penerbit = $request->penerbit;
         $buku->tahun_terbit = $request->tahun_terbit;
         $buku->jumlah_halaman = $request->jumlah_halaman;
         $buku->kategori_id = 1;
         $buku->email = Auth::user()->email;
-        $buku->jumlah_baca = 20;
-        $buku->url_pdf = $request->url_pdf;
+        $buku->url_pdf = $upload_file;
         $buku->no_isbn = $request->no_isbn;
         $buku->save();
 
@@ -145,9 +264,14 @@ class BukuController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Buku $buku)
+    public function show($slug)
     {
-        //
+        $tittle = 'Buku';
+        $header = 'Detail ' . $tittle;
+
+        $buku = Buku::find($slug);
+
+        return view('buku.detail-buku', compact('tittle', 'header', 'buku'));
     }
 
     /**
@@ -157,9 +281,11 @@ class BukuController extends Controller
     {
         $tittle = 'Buku';
         $header = 'Edit ' . $tittle;
+
         $buku = Buku::find($id);
         $kategori = Kategori::all();
-        return view('buku.edit-buku', compact('tittle', 'header', 'kategori','buku'));
+
+        return view('buku.edit-buku', compact('tittle', 'header', 'kategori', 'buku'));
     }
 
     /**
@@ -170,7 +296,6 @@ class BukuController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                
                 'judul' => 'required|',
                 'kategori_id' => 'required|',
                 'penulis' => 'required|',
@@ -179,7 +304,6 @@ class BukuController extends Controller
                 'jumlah_halaman' => 'required|',
                 'url_pdf' => 'required|',
                 'no_isbn' => 'required|',
-                
             ],
             [
                 'no_isb.unique' => 'no isbn ' . $request->kategori . ' sudah digunakan',
@@ -204,6 +328,7 @@ class BukuController extends Controller
 
         $data = Buku::find($id);
         $data->update($request->all());
+
         return redirect()
             ->route('buku.index')
             ->with('success', 'Data Telah Berhasil Di Ubah');
@@ -212,8 +337,13 @@ class BukuController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Buku $buku)
+    public function destroy($id)
     {
-        //
+        $data = Buku::find($id);
+        $data->delete();
+
+        return redirect()
+            ->route('buku.index')
+            ->with('success', 'Data Telah Berhasil Di Hapus');
     }
 }

@@ -45,7 +45,7 @@
                                     @csrf
                                     <div class="col-12">
                                         <label for="_dm-inputAddress" class="form-label">Kategori</label>
-                                        <input id="_dm-inputAddress" name="kategori" type="text" placeholder="Masukan Kategori"  class="form-control 
+                                        <input id="_dm-inputAddress" name="kategori" type="text" placeholder="Masukan Kategori" autofocus  class="form-control 
                                         @error('kategori')
                                             is-invalid
                                         @enderror">

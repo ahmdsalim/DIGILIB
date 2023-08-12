@@ -13,10 +13,16 @@ class KategoriController extends Controller
      */
     public function index()
     {
+        $kosong = '';
         $tittle = 'Kategori';
         $header = 'Data '.$tittle;
+
         $data = Kategori::paginate(25);
-        return view('kategori.kategori',compact('data','tittle','header'));
+        if ($data->isEmpty()) {
+            $kosong = 'Data tidak tersedia';
+        }
+
+        return view('kategori.kategori',compact('data','tittle','header','kosong'));
     }
 
     /**
@@ -117,6 +123,7 @@ class KategoriController extends Controller
     {
         $data = Kategori::find($id);
         $data->delete();
+        
         return redirect()
             ->route('kategori.index')
             ->with('success', 'Data Telah Berhasil Di Hapus');
