@@ -26,10 +26,6 @@ Route::get('/buku/terbaru', function () {
     return view('bukuterbaru');
 });
 
-Route::get('buku/13/judul-buku', function () {
-    return view('detailbuku');
-})->name('detail.buku');
-
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name('home');

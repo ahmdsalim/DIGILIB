@@ -357,5 +357,6 @@ class BukuController extends Controller
 
     public function showdetail()
     {
-        return view('detailbuku');    }
+        return view('detailbuku');
+    }
 }

@@ -63,7 +63,7 @@
                         </div>
         @foreach ($buku as $data)                          
          <div class="col-sm-6 col-lg-3">
-              <a href="/buku/13/judul-buku" style="text-decoration: none;">
+              <a href="/detailbuku" style="text-decoration: none;">
                 <div class="card mb-4">
                   <img class="card-img-top" alt="Card image cap" src="assets/img/cover2.jpg">
                     <div class="card-body">
@@ -79,7 +79,7 @@
               </a>
         </div>
         @endforeach
-        <div class="col-sm-6 col-lg-3"> <a href="/buku/13/judul-buku" style="text-decoration: none;">
+        <div class="col-sm-6 col-lg-3"> <a href="/detailbuku" style="text-decoration: none;">
               <div class="card mb-4">
                 <img class="card-img-top" alt="Card image cap" src="assets/img/cover2.jpg">
                   <div class="card-body">
