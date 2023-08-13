@@ -29,6 +29,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource('sekolah', SekolahController::class);
+// Route::resource('buku', BukuController::class);
 
 Route::prefix('api')->middleware('auth')->group(function() {
 	Route::get('getSekolah', [SekolahController::class, 'getSekolah'])->name('api.getSekolah');
@@ -36,8 +37,10 @@ Route::prefix('api')->middleware('auth')->group(function() {
 	Route::get('getGuru', [GuruController::class, 'getGuru'])->name('api.getGuru');
 });
 Route::controller(BukuController::class)->group(function () {
+    // Route::resource('buku/test', BukuController::class);
+    // Route::get('/buku/test', [BukuController::class, 'test'])->name('buku.test');
     Route::get('/buku/request', [BukuController::class, 'request'])->name('buku.request');
-    Route::post('/buku/request/{id}', [BukuController::class, 'requestUpdate'])->name('buku.requestUpdate');
+    Route::put('/buku/request/{id}', [BukuController::class, 'requestUpdate'])->name('buku.requestUpdate');
     Route::resource('buku', BukuController::class);
 });
 
