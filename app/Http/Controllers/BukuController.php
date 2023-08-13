@@ -37,9 +37,8 @@ class BukuController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Buku $buku)
-    {
-        //
+    public function show(){
+        return view('detailbuku');
     }
 
     /**

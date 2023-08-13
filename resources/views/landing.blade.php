@@ -1,16 +1,20 @@
 @extends('layouts.applanding')
 
 @section('content')
-<style type="text/css">
-        .card-img-top {
-        height: 300px;
-        object-fit: cover;
-    }
-        .carousel-item {
-        width: 100%;
-        }
-</style>
-
+               <div class="content__boxed">
+                   <div class="content__wrap">
+                       <div class="row">
+                               <div class="card">
+                                   <div class="card-header d-flex align-items-center border-0">
+                                       <div class="me-auto">
+                                           <h3 class="h4 m-0"></h3>
+                                       </div>
+                                       <div class="toolbar-end">
+                                           <button type="button" class="btn btn-icon btn-sm btn-hover btn-light" aria-label="Refresh Network Chart">
+                                               <i class="demo-pli-repeat-2 fs-5"></i>
+                                           </button>
+                                       </div>
+                                   </div>
 <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -45,9 +49,8 @@
       </div>
     </div>
   </div>
-    </div>
 </div>                                
-                        </div>
+                     </div>
                     </div>
                 </div>
             </div>
@@ -58,9 +61,23 @@
                             <h1>Buku Terbaru</h1>
                             <a href="/lihatsemuabukuterbaru">Lihat Semua</a>
                         </div>
-         <div class="col-sm-6 col-lg-3">
+         <a href="/detailbuku" style="text-decoration: none;"><div class="col-sm-6 col-lg-3">
               <div class="card mb-4">
                 <img class="card-img-top" alt="Card image cap" src="assets/img/Cover.jpg">
+                  <div class="card-body">
+                    <h3 class="card-title">Proposal Penawaran</h3>
+                    <h6 class="card-text">Pengarang </h6>
+                    <h6 class="card-text">Penerbit</h6>
+                    <div class="d-flex justify-content-between">
+                    <h6 class="card-text">Rating</h6>
+                      <a href="" type="submit">+</a>
+                </div>
+                </div>
+            </div>
+        </div></a>
+         <div class="col-sm-6 col-lg-3">
+              <div class="card mb-4">
+                <img class="card-img-top" alt="Card image cap" src="assets/img/cover2.jpg">
                   <div class="card-body">
                     <h3 class="card-title">Proposal Penawaran</h3>
                     <h6 class="card-text">Pengarang </h6>
@@ -74,7 +91,7 @@
         </div>
          <div class="col-sm-6 col-lg-3">
               <div class="card mb-4">
-                <img class="card-img-top" alt="Card image cap" src="assets/img/Cover.jpg">
+                <img class="card-img-top" alt="Card image cap" src="assets/img/cover3.jpg">
                   <div class="card-body">
                     <h3 class="card-title">Proposal Penawaran</h3>
                     <h6 class="card-text">Pengarang </h6>
@@ -88,7 +105,7 @@
         </div>
          <div class="col-sm-6 col-lg-3">
               <div class="card mb-4">
-                <img class="card-img-top" alt="Card image cap" src="assets/img/Cover.jpg">
+                <img class="card-img-top" alt="Card image cap" src="assets/img/cover4.jpg">
                   <div class="card-body">
                     <h3 class="card-title">Proposal Penawaran</h3>
                     <h6 class="card-text">Pengarang </h6>
@@ -99,21 +116,7 @@
                 </div>
                 </div>
             </div>
-        </div>
-         <div class="col-sm-6 col-lg-3">
-              <div class="card mb-4">
-                <img class="card-img-top" alt="Card image cap" src="assets/img/Cover.jpg">
-                  <div class="card-body">
-                    <h3 class="card-title">Proposal Penawaran</h3>
-                    <h6 class="card-text">Pengarang </h6>
-                    <h6 class="card-text">Penerbit</h6>
-                    <div class="d-flex justify-content-between">
-                    <h6 class="card-text">Rating</h6>
-                      <a href="" type="submit">+</a>
-                </div>
-                </div>
-            </div>
-        </div>
+      </div>
         <div class="d-flex justify-content-between mb-2">
                             <h1>Buku Terpopuler</h1>
                             <a href="/">Lihat Semua</a>
@@ -174,6 +177,26 @@
                 </div>
             </div>
         </div>
-    </div>
-</div></div>
+        </div>
+     </div>
+  </div>
 @endsection
+
+@push('css')
+<style>
+        .card-img-top {
+        height: 300px;
+        object-fit: cover;
+        }
+        .carousel-item {
+        width: 100%;
+        }
+        .card {
+            transition: transform 0.2s; /* Efek transisi untuk zoom */
+        }
+
+        .card:hover {
+            transform: scale(1.05); /* Efek zoom ketika hover */
+        }
+</style>
+@endpush

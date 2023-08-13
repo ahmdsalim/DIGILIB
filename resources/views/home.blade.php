@@ -1,7 +1,7 @@
 @extends('layouts.appnifty')
 
 @section('content')
-<div class="content__boxed">
+<div class="content__boxed"> 
    <div class="content__wrap">
       <div class="row">
          <div class="col-xl-7 mb-3 mb-xl-0">

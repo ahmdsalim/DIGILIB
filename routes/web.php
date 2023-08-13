@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('landingpage');
+    return view('landing');
 });
 
 Route::get('/all/buku', function () {
@@ -32,6 +32,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::resource('sekolah', SekolahController::class);
 Route::resource('buku', BukuController::class);
+Route::get('/detailbuku', [BukuController::class, 'show']);
 Route::resource('user', UserController::class);
 
 Route::resource('users', UserController::class);
