@@ -14,6 +14,7 @@ use App\Models\Kategori;
 class Buku extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 
     public function koleksi()
     {
@@ -32,7 +33,7 @@ class Buku extends Model
 
     public function kategori()
     {
-    	return $this->hasOne(Kategori::class);
+    	return $this->belongsTo(Kategori::class);
     }
 
     public function user()

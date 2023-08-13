@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -12,8 +13,19 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data['users'] = User::paginate(25);
-        return view('owner.user.user', $data);
+    
+        if (Auth::user()->role === 'owner') {
+            $tittle = 'User';
+            $data['users'] = User::paginate(25);
+            return view('owner.user.user', $data,compact('tittle'));
+        } elseif (Auth::user()->role === 'sekolah') {
+            $tittle = 'User';
+            $header = 'Data '.$tittle;
+            return view('sekolah.user.user',compact('tittle','header'));
+        } else {
+            
+        }
+        
     }
 
     /**

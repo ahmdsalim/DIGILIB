@@ -7,8 +7,8 @@
                 <div class="mt-2 d-mn-max"></div>
                 <!-- Profile picture  -->
                 <div class="mininav-toggle text-center py-2">
-                    <img class="mainnav__avatar img-md rounded-circle border" src="{{asset('assets/img/profile-photos/1.png')}}"
-                        alt="Profile Picture">
+                    <img class="mainnav__avatar img-md rounded-circle border"
+                        src="{{ asset('assets/img/profile-photos/1.png') }}" alt="Profile Picture">
                 </div>
                 <div class="mininav-content collapse d-mn-max">
                     <div class="d-grid">
@@ -68,8 +68,9 @@
                     </li>
                     <!-- Link with submenu -->
                     @if (Auth::check() && Auth::user()->role == 'owner')
-                        <li class="nav-item has-sub">
-                            <a href="#" class="mininav-toggle nav-link collapsed"><svg
+                        <li class="nav-item has-sub ">
+                            <a href="#"
+                                class="mininav-toggle nav-link collapsed {{ str_contains(Route::current()->getName(), 'kategori') ? 'active' : '' }}"><svg
                                     xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                     viewBox="0 0 256 256" style="margin-right:4px;">
                                     <path fill="currentColor"
@@ -80,7 +81,8 @@
                             <!-- Layouts submenu list -->
                             <ul class="mininav-content nav collapse">
                                 <li class="nav-item">
-                                    <a href="layouts/minimal-navigation/index.html" class="nav-link">Kategori</a>
+                                    <a href="{{ route('kategori.index') }}"
+                                        class="nav-link {{ str_contains(Route::current()->getName(), 'kategori') ? 'active' : '' }}">Kategori</a>
                                 </li>
                             </ul>
                             <!-- END : Layouts submenu list -->
@@ -88,23 +90,53 @@
                     @endif
                     <!-- END : Link with submenu -->
                     <!-- Regular menu link -->
-                    <li class="nav-item ">
-                        <a href="{{ route('buku.index') }}"
-                            class="nav-link mininav-toggle {{ str_contains(Route::current()->getName(), 'buku') ? 'active' : '' }}"><svg
-                                fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"
-                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
-                                style="margin-right: 4px">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25">
-                                </path>
-                            </svg>
-                            <span class="nav-label mininav-content ms-1">Buku</span>
-                        </a>
-                    </li>
+                    @if (Auth::check() && Auth::user()->role == 'owner')
+                        <li class="nav-item has-sub ">
+                            <a href="#"
+                                class="mininav-toggle nav-link collapsed {{ str_contains(Route::current()->getName(), 'buku') ? 'active' : '' }}"><svg
+                                    fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="margin-right:4px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25">
+                                    </path>
+                                </svg>
+                                <span class="nav-label ms-1">Buku</span>
+                            </a>
+                            <!-- Layouts submenu list -->
+                            <ul class="mininav-content nav collapse ">
+                                <li class="nav-item active">
+                                    <a href="{{ route('buku.index') }}"
+                                        class="nav-link {{ Request::is('buku') ? 'active' : '' }}">Buku</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('buku.request') }}"
+                                        class="nav-link {{ str_contains(Route::current()->getName(), 'request') ? 'active' : '' }}">Request
+                                        Posting</a>
+                                </li>
+                            </ul>
+                            <!-- END : Layouts submenu list -->
+                        </li>
+                    @else
+                        <li class="nav-item ">
+                            <a href="{{ route('buku.index') }}"
+                                class="nav-link mininav-toggle {{ str_contains(Route::current()->getName(), 'buku') ? 'active' : '' }}"><svg
+                                    fill="none" stroke="currentColor" stroke-width="1.5" width="18"
+                                    height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                    aria-hidden="true" style="margin-right: 4px">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25">
+                                    </path>
+                                </svg>
+                                <span class="nav-label mininav-content ms-1">Buku</span>
+                            </a>
+                        </li>
+                    @endif
                     <li class="nav-item">
-                        <a href="{{ route('user.index') }}" class="nav-link mininav-toggle {{ str_contains(Route::current()->getName(), 'user') ? 'active' : '' }}"><svg fill="none" stroke="currentColor"
-                                stroke-width="1.5" width="18" height="18" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="margin-right: 4px;">
+                        <a href="{{ route('user.index') }}"
+                            class="nav-link mininav-toggle {{ str_contains(Route::current()->getName(), 'user') ? 'active' : '' }}"><svg
+                                fill="none" stroke="currentColor" stroke-width="1.5" width="18"
+                                height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                aria-hidden="true" style="margin-right: 4px;">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z">
                                 </path>

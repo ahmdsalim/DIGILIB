@@ -13,18 +13,22 @@ return new class extends Migration
     {
         Schema::create('bukus', function (Blueprint $table) {
             $table->id();
+            $table->string('thumbnail')->nullable();
+            $table->string('slide')->nullable();
             $table->string('judul');
             $table->string('slug');
             $table->string('penulis');
             $table->string('penerbit');
             $table->string('tahun_terbit');
-            $table->tinyInteger('jumlah_halaman');
+            $table->string('jumlah_halaman')->nullable();
             $table->foreignId('kategori_id')
                   ->constrained('kategoris')
                   ->onDelete('cascade');
             $table->string('email');
-            $table->integer('jumlah_baca');
+            $table->string('no_isbn');
+            $table->string('jumlah_baca')->nullable();
             $table->string('url_pdf');
+            $table->enum('status',['publish','rejected','pending',])->default('pending');
             $table->timestamps();
 
             $table->foreign('email')->references('email')->on('users')->onUpdate('cascade')->onDelete('cascade');
