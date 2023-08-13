@@ -12,7 +12,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
     
         if (Auth::user()->role === 'owner') {
@@ -44,7 +44,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('user.form-user');
+        return view('owner.user.form-user');
     }
 
     /**
@@ -61,7 +61,7 @@ class UserController extends Controller
             'active' => 'required|in:1,0'
         ]);
 
-        if ($validator->passes()) {
+        if (!$validator->fails()) {
             $data = $validator->validated();
             $new = [
                 'nama' => $data['nama'],
@@ -109,7 +109,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
         $validator = Validator::make($request->all(),[
             'nama' => 'required|string|max:128',
@@ -153,8 +153,13 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        $delete = $user->delete();
+
+        if(!$delete){
+            return to_route('users.index')->with('failed','Gagal');
+        }
+        return to_route('users.index')->with('success','Berhasil');
     }
 }

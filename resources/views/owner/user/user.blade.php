@@ -129,7 +129,7 @@
                                                         <form class="d-inline-block" action="{{route('users.destroy',$user->id)}}" method="POST">
                                                         @method('delete')
                                                         @csrf    
-                                                        <button type="button" class="btn btn-icon btn-sm btn-light" onclick="event.preventDefault();"><svg
+                                                        <button type="button" class="btn btn-icon btn-sm btn-light" onclick="confirmOnDel(this)"><svg
                                                                 fill="none" stroke="currentColor" stroke-width="1.5"
                                                                 width="18" height="18" viewBox="0 0 24 24"
                                                                 xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -162,3 +162,7 @@
         </div>
     </div>
 @endsection
+
+@push('js')
+@vite('resources/assets/js/alert.js')
+@endpush
