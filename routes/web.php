@@ -45,3 +45,15 @@ Route::resource('user', UserController::class);
 Route::resource('kategori', KategoriController::class);
 
 Route::resource('users', UserController::class);
+
+Route::prefix('sekolah')->middleware('auth')->group(function() {
+	Route::get('{sekolah}/siswa', [SiswaController::class, 'getSiswaBySekolah'])->name('owner.siswa.index');
+	Route::get('siswa/{siswa}/edit', [SiswaController::class, 'editSiswa'])->name('owner.siswa.edit');
+	Route::put('siswa/{siswa}/update', [SiswaController::class, 'updateSiswa'])->name('owner.siswa.update');
+	Route::delete('siswa/{siswa}/delete', [SiswaController::class, 'destroySiswa'])->name('owner.siswa.destroy');
+
+	Route::get('{sekolah}/guru', [GuruController::class, 'getGuruBySekolah'])->name('owner.guru.index');
+	Route::get('guru/{guru}/edit', [GuruController::class, 'editGuru'])->name('owner.guru.edit');
+	Route::put('guru/{guru}/update', [GuruController::class, 'updateGuru'])->name('owner.guru.update');
+	Route::delete('guru/{guru}/delete', [GuruController::class, 'destroyGuru'])->name('owner.guru.destroy');
+});
