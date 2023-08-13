@@ -12,6 +12,8 @@ class Sekolah extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['npsn','nama','jenjang','alamat','provinsi','kota','kecamatan','kelurahan','telepon'];
+
     public function user()
     {
     	return $this->morphOne(User::class, 'userable');

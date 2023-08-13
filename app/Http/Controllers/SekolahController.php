@@ -4,15 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Models\Sekolah;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use DB;
+use Validator;
 
 class SekolahController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('sekolah.home');
+        $query = Sekolah::query();
+        $data['search'] = $request->query('search');
+        $search = $data['search'];
+        if($request->has('search') && !empty($search)){
+            $query->where(function($query) use ($search) {
+                $query->where('nama','like',"%{$search}%")
+                      ->orWhere('npsn','like',"%{$search}%")
+                      ->orWhere('provinsi','like',"%{$search}%");
+            });
+        }
+        $data['sekolahs'] = $query->paginate(25);
+        return view('owner.sekolah.index',$data);
     }
 
     /**
@@ -20,7 +34,7 @@ class SekolahController extends Controller
      */
     public function create()
     {
-        //
+        return view('owner.sekolah.form-sekolah');
     }
 
     /**
@@ -28,7 +42,39 @@ class SekolahController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'npsn' => 'required|numeric|unique:sekolahs,npsn',
+            'nama' => 'required|max:120',
+            'jenjang' => 'required|string',
+            'alamat' => 'required|string|max:120',
+            'provinsi' => 'required',
+            'kota' => 'required',
+            'kecamatan' => 'required',
+            'kelurahan' => 'required',
+            'telepon' => 'required|numeric'
+        ]);
+
+        if(!$validator->fails()){
+            $data = $validator->validated();
+            $saved = Sekolah::create([
+                'npsn' => $data['npsn'],
+                'nama' => $data['nama'],
+                'jenjang' => $data['jenjang'],
+                'alamat' => $data['alamat'],
+                'provinsi' => $data['provinsi'],
+                'kota' => $data['kota'],
+                'kecamatan' => $data['kecamatan'],
+                'kelurahan' => $data['kelurahan'],
+                'telepon' => $data['telepon']
+            ]);
+
+            if(!$saved){
+                return to_route('sekolah.index')->with('failed','Gagal');
+            }
+            return to_route('sekolah.index')->with('success','Berhasil'); 
+        }else{
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
     }
 
     /**
@@ -36,7 +82,8 @@ class SekolahController extends Controller
      */
     public function show(Sekolah $sekolah)
     {
-        //
+        $data['sekolah'] = $sekolah;
+        return view('owner.sekolah.show-sekolah', $data);
     }
 
     /**
@@ -44,7 +91,18 @@ class SekolahController extends Controller
      */
     public function edit(Sekolah $sekolah)
     {
-        //
+        $data['sekolah'] = $sekolah;
+        $provinsi = Http::get('https://ahmdsalim.github.io/api-wilayah-indonesia/api/provinces.json');
+        $kota = Http::get("https://ahmdsalim.github.io/api-wilayah-indonesia/api/regencies/".explode('-',$sekolah->provinsi)[0].".json");
+        $kecamatan = Http::get("https://ahmdsalim.github.io/api-wilayah-indonesia/api/districts/".explode('-',$sekolah->kota)[0].".json");
+        $kelurahan = Http::get("https://ahmdsalim.github.io/api-wilayah-indonesia/api/villages/".explode('-',$sekolah->kecamatan)[0].".json");
+        
+        $data['provinsi'] = $provinsi->json();
+        $data['kota'] = $kota->json();
+        $data['kecamatan'] = $kecamatan->json();
+        $data['kelurahan'] = $kelurahan->json();
+
+        return view('owner.sekolah.form-sekolah', $data);
     }
 
     /**
@@ -52,7 +110,39 @@ class SekolahController extends Controller
      */
     public function update(Request $request, Sekolah $sekolah)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'npsn' => 'required|numeric|unique:sekolahs,npsn,'.$sekolah->id,
+            'nama' => 'required|max:120',
+            'jenjang' => 'required|string',
+            'alamat' => 'required|string|max:120',
+            'provinsi' => 'required|string',
+            'kota' => 'required|string',
+            'kecamatan' => 'required|string',
+            'kelurahan' => 'required|string',
+            'telepon' => 'required'
+        ]);
+
+        if($validator->passes()){
+            $data = $validator->validated();
+            $saved = $sekolah->update([
+                'npsn' => $data['npsn'],
+                'nama' => $data['nama'],
+                'jenjang' => $data['jenjang'],
+                'alamat' => $data['alamat'],
+                'provinsi' => $data['provinsi'],
+                'kota' => $data['kota'],
+                'kecamatan' => $data['kecamatan'],
+                'kelurahan' => $data['kelurahan'],
+                'telepon' => $data['telepon']
+            ]);
+
+            if(!$saved){
+                return to_route('sekolah.index')->with('failed','Gagal');
+            }
+            return to_route('sekolah.index')->with('success','Berhasil'); 
+        }else{
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
     }
 
     /**
@@ -60,6 +150,21 @@ class SekolahController extends Controller
      */
     public function destroy(Sekolah $sekolah)
     {
-        //
+        $deleted = $sekolah->delete();
+        if(!$deleted){
+            return redirect()->back()->with('failed','Gagal');
+        }
+        return redirect()->back()->with('success','Berhasil');
+    }
+
+    public function getSekolah()
+    {
+        $data = Sekolah::whereNotExists(function ($query) {
+            $query->selectRaw('1')
+                ->from('users')
+                ->whereRaw('users.userable_id = sekolahs.id');
+        })->get();
+
+        return response()->json($data);
     }
 }

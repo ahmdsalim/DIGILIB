@@ -11,6 +11,8 @@ class Siswa extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['nisn','nama','jk','telepon','npsn'];
+
     public function user()
     {
     	return $this->morphOne(User::class, 'userable');
