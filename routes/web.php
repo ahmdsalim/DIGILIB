@@ -19,9 +19,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('landing');
-});
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 
 Route::get('/all/buku', function () {
     return view('bukuterbaru');
@@ -32,13 +30,6 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource('sekolah', SekolahController::class);
-<<<<<<< HEAD
-Route::resource('buku', BukuController::class);
-Route::get('/detailbuku', [BukuController::class, 'show']);
-Route::resource('user', UserController::class);
-=======
-// Route::resource('buku', BukuController::class);
->>>>>>> origin/main
 
 Route::controller(BukuController::class)->group(function () {
     // Route::resource('buku/test', BukuController::class);
@@ -47,7 +38,8 @@ Route::controller(BukuController::class)->group(function () {
     Route::put('/buku/request/{id}', [BukuController::class, 'requestUpdate'])->name('buku.requestUpdate');
     Route::resource('buku', BukuController::class);
 });
-
+    
+Route::get('detailbuku', [BukuController::class, 'showdetail']);
 Route::resource('user', UserController::class);
 Route::resource('kategori', KategoriController::class);
 

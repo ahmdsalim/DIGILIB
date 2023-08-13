@@ -3,26 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Kategori;
+use App\Models\Buku;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function index(Request $req)
     {
-        $this->middleware('auth');
+    //return view('layouts.main');
+    $query = buku::query();
+    $input_kategori = $req->query('kategori');        
+    $kategori = kategori::all();
+
+    if(!is_null($input_kategori)){
+        $query->where('kategori_id',$input_kategori);
+    }
+    $buku = $query->get();
+    return view('landing',compact('buku','kategori'));
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
-    {
-        return view('home');
-    }
 }

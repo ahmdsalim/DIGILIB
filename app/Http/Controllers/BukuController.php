@@ -271,10 +271,7 @@ class BukuController extends Controller
     /**
      * Display the specified resource.
      */
-<<<<<<< HEAD
-    public function show(){
-        return view('detailbuku');
-=======
+
     public function show($slug)
     {
         $tittle = 'Buku';
@@ -283,7 +280,6 @@ class BukuController extends Controller
         $buku = Buku::find($slug);
 
         return view('buku.detail-buku', compact('tittle', 'header', 'buku'));
->>>>>>> origin/main
     }
 
     /**
@@ -358,4 +354,8 @@ class BukuController extends Controller
             ->route('buku.index')
             ->with('success', 'Data Telah Berhasil Di Hapus');
     }
+
+    public function showdetail()
+    {
+        return view('detailbuku');    }
 }

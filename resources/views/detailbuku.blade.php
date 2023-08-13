@@ -1,12 +1,4 @@
 @extends('layouts.applanding')
-<style type="text/css">
-    .more-text {
-  display: none;
-}
-.show-more .more-text {
-  display: block;
-}
-</style>
 @section('content')
 
                <div class="content__boxed">
@@ -15,17 +7,15 @@
 <div class="col-sm-6 col-xl-3">
                             <!-- User widget -->
               <div class="card mb-4">
-                <img class="card-img-top" alt="Card image cap" src="assets/img/Cover.jpg">
+                <img class="card-img-top" alt="Card image cap" src="assets/img/cover2.jpg">
                      </div>
                 </div>
 <div class="col-sm-18 col-xl-9">
               <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-2">
-                    <h6 class="card-text">Pengarang </h6>
-                    <button type="button" class="btn btn-info btn-sm">
-                        Baca
-                    </button>                                  
+                    <h6 class="card-text">Pengarang : Akmal</h6>
+                    <a href="assets/img/Contoh.pdf" class="btn btn-info btn-sm">Baca</a>
                 </div>
                     <div class="d-flex justify-content-between mb-1">
                     <h3 class="card-title">Proposal Penawaran</h3>
@@ -62,7 +52,7 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>Fulan</td>
+                                                <td>Akmal</td>
                                                 <td>19xx</td>
                                                 <td></td>
                                             </tr>
@@ -76,7 +66,7 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>Fulan</td>
+                                                <td>ULBI</td>
                                                 <td>100</td>
                                                 <td></td>
                                             </tr>
@@ -91,7 +81,7 @@
                                         <tbody>
                                             <tr>
                                                 <td>xxx-xx-xx-x</td>
-                                                <td>4,5</td>
+                                                <td></td>
                                                 <td></td>
                                             </tr>
                                         </tbody>
@@ -117,3 +107,18 @@
         </div>
     </div>
 @endsection
+
+@push('css')
+<style type="text/css">
+        .card-img-top {
+        height: 500px;
+        object-fit: cover;
+        }
+    .more-text {
+  display: none;
+}
+.show-more .more-text {
+  display: block;
+}
+</style>
+@endpush
