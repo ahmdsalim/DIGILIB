@@ -59,26 +59,27 @@
                     <div class="row">
                         <div class="d-flex justify-content-between mb-2">
                             <h1>Buku Terbaru</h1>
-                            <a href="/lihatsemuabukuterbaru">Lihat Semua</a>
+                            <a href="/buku/terbaru">Lihat Semua</a>
                         </div>
         @foreach ($buku as $data)                          
          <div class="col-sm-6 col-lg-3">
-              <a href="detailbuku" style="text-decoration: none;"><div class="card mb-4">
-                <img class="card-img-top" alt="Card image cap" src="assets/img/cover2.jpg">
-                  <div class="card-body">
-                    <h3 class="card-title">{{$data->judul}}</h3>
-                    <h6 class="card-text">Pengarang : {{$data->penulis}}</h6>
-                    <h6 class="card-text">Penerbit : {{$data->penerbit}}</h6>
-                    <div class="d-flex justify-content-between">
-                    <h6 class="card-text">Rating</h6>
-                      <a href="" type="submit">+</a>
+              <a href="/buku/13/judul-buku" style="text-decoration: none;">
+                <div class="card mb-4">
+                  <img class="card-img-top" alt="Card image cap" src="assets/img/cover2.jpg">
+                    <div class="card-body">
+                      <h3 class="card-title">{{$data->judul}}</h3>
+                      <h6 class="card-text">Pengarang : {{$data->penulis}}</h6>
+                      <h6 class="card-text">Penerbit : {{$data->penerbit}}</h6>
+                      <div class="d-flex justify-content-between">
+                        <h6 class="card-text">Rating</h6>
+                        <a href="" type="submit">+</a>
+                      </div>
+                    </div>
                 </div>
-                </div>
-            </div>
-          </a>
+              </a>
         </div>
         @endforeach
-        <div class="col-sm-6 col-lg-3"> <a>
+        <div class="col-sm-6 col-lg-3"> <a href="/buku/13/judul-buku" style="text-decoration: none;">
               <div class="card mb-4">
                 <img class="card-img-top" alt="Card image cap" src="assets/img/cover2.jpg">
                   <div class="card-body">

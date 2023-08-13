@@ -22,13 +22,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 
-Route::get('/all/buku', function () {
+Route::get('/buku/terbaru', function () {
     return view('bukuterbaru');
 });
 
+Route::get('buku/13/judul-buku', function () {
+    return view('detailbuku');
+})->name('detail.buku');
+
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
 
 Route::resource('sekolah', SekolahController::class);
 

@@ -22,4 +22,9 @@ class HomeController extends Controller
     return view('landing',compact('buku','kategori'));
     }
 
+    public function home()
+    {
+        return view('home');
+    }
+
 }

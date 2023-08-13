@@ -7,7 +7,7 @@
 <div class="col-sm-6 col-xl-3">
                             <!-- User widget -->
               <div class="card mb-4">
-                <img class="card-img-top" alt="Card image cap" src="assets/img/cover2.jpg">
+                <img class="card-img-top" alt="Card image cap" src="{{asset('assets/img/cover2.jpg')}}">
                      </div>
                 </div>
 <div class="col-sm-18 col-xl-9">
