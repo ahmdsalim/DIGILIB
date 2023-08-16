@@ -7,12 +7,14 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title') - DIGILIB</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     @vite(['resources/assets/css/bootstrap.min.75a07e3a3100a6fed983b15ad1b297c127a8c2335854b0efc3363731475cbed6.css','resources/assets/css/nifty.min.4d1ebee0c2ac4ed3c2df72b5178fb60181cfff43375388fee0f4af67ecf44050.css'])
+
+    @stack('css')
     <!-- Scripts -->
     @vite('resources/js/app.js')
 </head>
@@ -21,7 +23,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    DIGILIB
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -37,15 +39,15 @@
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
                         @guest
-                            @if (Route::has('login'))
+                            @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Masuk') }}</a>
                                 </li>
                             @endif
 
-                            @if (Route::has('register'))
+                            @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Daftar') }}</a>
                                 </li>
                             @endif
                         @else
@@ -80,5 +82,7 @@
             @yield('content')
         </main>
     </div>
+
+    @stack('js')
 </body>
 </html>

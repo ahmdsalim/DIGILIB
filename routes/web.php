@@ -6,6 +6,7 @@ use App\Http\Controllers\SekolahController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GuruController;
+use App\Jobs\SendEmailJob;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -28,7 +29,23 @@ Route::get('/buku/terbaru', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
+Route::middleware('guest')->group(function() {
+	Route::get('register/sekolah', [App\Http\Controllers\Auth\RegisterController::class, 'showFormSekolah'])->name('register.sekolah');
+	Route::get('register/siswa', [App\Http\Controllers\Auth\RegisterController::class, 'showFormSiswa'])->name('register.siswa');
+	Route::get('register/guru', [App\Http\Controllers\Auth\RegisterController::class, 'showFormGuru'])->name('register.guru');
+	Route::post('register/sekolah/store', [App\Http\Controllers\Auth\RegisterController::class, 'registerSekolah'])->name('register.sekolah.store');
+	Route::post('register/siswa/store', [App\Http\Controllers\Auth\RegisterController::class, 'registerSiswa'])->name('register.siswa.store');
+	Route::post('register/guru/store', [App\Http\Controllers\Auth\RegisterController::class, 'registerGuru'])->name('register.guru.store');
+	Route::get('register/success', [App\Http\Controllers\Auth\RegisterController::class, 'registerSuccess'])->name('register.success');
+	Route::get('register/verify/resend', [App\Http\Controllers\Auth\RegisterController::class, 'showResend'])->name('register.show.resend');
+	Route::post('register/verify/resend', [App\Http\Controllers\Auth\RegisterController::class, 'resendEmail'])->name('register.verify.resend');
+	Route::get('reset-email', [App\Http\Controllers\Auth\RegisterController::class, 'showResetEmail'])->name('reset.email.show');
+	Route::post('reset-email', [App\Http\Controllers\Auth\RegisterController::class, 'resetEmail'])->name('reset.email.post');
+	Route::get('users/account/aktivasi', [UserController::class, 'aktivasi'])->name('users.aktivasi');
+});
+
+Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
+Route::get('/dashboard-sekolah', [App\Http\Controllers\HomeController::class, 'homesekolah'])->name('home.sekolah');
 
 Route::resource('sekolah', SekolahController::class);
 
