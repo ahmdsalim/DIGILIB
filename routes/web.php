@@ -42,14 +42,14 @@ Route::middleware('guest')->group(function() {
 	Route::get('reset-email', [App\Http\Controllers\Auth\RegisterController::class, 'showResetEmail'])->name('reset.email.show');
 	Route::post('reset-email', [App\Http\Controllers\Auth\RegisterController::class, 'resetEmail'])->name('reset.email.post');
 	Route::get('users/account/aktivasi', [UserController::class, 'aktivasi'])->name('users.aktivasi');
-});
+});	
 
 Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
 Route::get('/dashboard-sekolah', [App\Http\Controllers\HomeController::class, 'homesekolah'])->name('home.sekolah');
 
 Route::resource('sekolah', SekolahController::class);
 
-Route::prefix('api')->middleware('auth')->group(function() {
+Route::prefix('api')->group(function() {
 	Route::get('getSekolah', [SekolahController::class, 'getSekolah'])->name('api.getSekolah');
 	Route::get('getSiswa', [SiswaController::class, 'getSiswa'])->name('api.getSiswa');
 	Route::get('getGuru', [GuruController::class, 'getGuru'])->name('api.getGuru');
@@ -67,6 +67,9 @@ Route::resource('user', UserController::class);
 Route::resource('kategori', KategoriController::class);
 
 Route::resource('users', UserController::class);
+Route::get('/profile', [UserController::class, 'showProfile'])->name('users.profile');
+Route::get('/change-password', [UserController::class, 'showChangePassword'])->name('users.changepassword.show');
+Route::post('/change-password', [UserController::class, 'changePassword'])->name('users.changepassword.store');
 
 Route::prefix('sekolah')->middleware('auth')->group(function() {
 	Route::get('{sekolah}/siswa', [SiswaController::class, 'getSiswaBySekolah'])->name('owner.siswa.index');

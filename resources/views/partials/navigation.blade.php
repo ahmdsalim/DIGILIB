@@ -169,7 +169,7 @@
                           </a>
                        </li>
                        <li class="nav-item">
-                          <a href="#" class="nav-link mininav-toggle" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="demo-pli-unlock fs-5 me-2"></i>
+                          <a href="javascript:void(0);" class="nav-link mininav-toggle" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="demo-pli-unlock fs-5 me-2"></i>
                           <span class="nav-label mininav-content ms-1">Logout</span>
                           </a>
                           <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

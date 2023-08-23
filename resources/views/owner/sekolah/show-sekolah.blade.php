@@ -47,7 +47,7 @@
                             <div class="d-flex w-100 justify-content-between">
                                <h5 class="mb-1">Alamat</h5>
                             </div>
-                            <p class="mb-1">{{$sekolah->alamat}}, {{explode('-',$sekolah->kelurahan)[1]}}, {{explode('-',$sekolah->kecamatan)[1]}}, {{explode('-',$sekolah->kota)[1]}}, {{explode('-',$sekolah->provinsi)[1]}}</p>
+                            <p class="mb-1">{{$sekolah->alamat}}, Kel. {{explode('-',$sekolah->kelurahan)[1]}}, Kec. {{explode('-',$sekolah->kecamatan)[1]}}, {{explode('-',$sekolah->kota)[1]}}, {{explode('-',$sekolah->provinsi)[1]}}</p>
                          </a>
 
                          @if(isset($sekolah->user))
