@@ -1,28 +1,11 @@
 @extends('layouts.applanding')
 
 @section('content')
-<div class="content__boxed">
-                <div class="content__wrap">
-                    <div class="row">
-                            <div class="card">
-                                <div class="card-header d-flex align-items-center border-0">
-                                    <div class="me-auto">
-                                        <h3 class="h4 m-0"></h3>
-                                    </div>
-                                    <div class="toolbar-end">
-                                        <button type="button" class="btn btn-icon btn-sm btn-hover btn-light" aria-label="Refresh Network Chart">
-                                            <i class="demo-pli-repeat-2 fs-5"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="content__boxed">
                 <div class="content__wrap">
                     <div class="row">
-                        <div class="d-flex mb-2">
+                        <div class="d-flex mb-2">                      
+                          <br>
                             <h1>Buku Terbaru</h1>
                         </div>
          <div class="col-sm-6 col-lg-3">

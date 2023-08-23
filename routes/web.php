@@ -6,6 +6,7 @@ use App\Http\Controllers\SekolahController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GuruController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
+Route::get('/search', [BukuController::class, 'search'])->name('book.search');
 
 Route::get('/buku/terbaru', function () {
     return view('bukuterbaru');
@@ -45,7 +47,7 @@ Route::controller(BukuController::class)->group(function () {
     Route::resource('buku', BukuController::class);
 });
     
-Route::get('detailbuku', [BukuController::class, 'showdetail']);
+Route::get('detailbuku/{id}/{slug}', [BukuController::class, 'showdetail']);
 Route::resource('user', UserController::class);
 Route::resource('kategori', KategoriController::class);
 

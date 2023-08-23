@@ -355,8 +355,21 @@ class BukuController extends Controller
             ->with('success', 'Data Telah Berhasil Di Hapus');
     }
 
-    public function showdetail()
+    public function showdetail($id)
     {
-        return view('detailbuku');
+        $data = Buku::find($id);
+        return view('detailbuku', ['buku' => $data]);
     }
-}
+
+    public function search(Request $request)
+    {
+    $keyword = $request->input('keyword');
+    $results = Buku::where('judul', 'like', "%$keyword%")
+                   ->orWhere('no_isbn', 'like', "%$keyword%")
+                   ->orWhere('penulis', 'like', "%$keyword%")
+                   ->orWhere('penerbit', 'like', "%$keyword%")
+                    ->orderBy('judul', 'asc')
+                    ->paginate(25);
+
+    return view('booksearch',compact('results','keyword'));
+    }}

@@ -7,18 +7,18 @@
 <div class="col-sm-6 col-xl-3">
                             <!-- User widget -->
               <div class="card mb-4">
-                <img class="card-img-top" alt="Card image cap" src="{{asset('assets/img/cover2.jpg')}}">
+                <img class="card-img-top" alt="Card image cap" src="{{asset('img/thumbnail-buku/'.$buku->thumbnail)}}">
                      </div>
                 </div>
 <div class="col-sm-18 col-xl-9">
               <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-2">
-                    <h6 class="card-text">Pengarang : Akmal</h6>
-                    <a href="assets/img/Contoh.pdf" class="btn btn-info btn-sm">Baca</a>
+                    <h6 class="card-text">Pengarang : {{$buku->penulis}}</h6>
+                    <a href="{{asset('files/'.$buku->url_pdf)}}" class="btn btn-info btn-sm">Baca</a>
                 </div>
                     <div class="d-flex justify-content-between mb-1">
-                    <h3 class="card-title">Proposal Penawaran</h3>
+                    <h3 class="card-title">{{$buku->judul}}</h3>
                     <button type="button" class="btn btn-info btn-sm">
                         <i class="demo-psi-heart-2 fs-5 me-2"></i> Wishlist
                     </button>                                  
@@ -52,8 +52,8 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>Akmal</td>
-                                                <td>19xx</td>
+                                                <td>{{$buku->penulis}}</td>
+                                                <td>{{$buku->tahun_terbit}}</td>
                                                 <td></td>
                                             </tr>
                                         </tbody>
@@ -66,8 +66,8 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>ULBI</td>
-                                                <td>100</td>
+                                                <td>{{$buku->penerbit}}</td>
+                                                <td>{{$buku->jumlah_halaman}}</td>
                                                 <td></td>
                                             </tr>
                                         </tbody>
@@ -80,7 +80,7 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>xxx-xx-xx-x</td>
+                                                <td>{{$buku->no_isbn}}</td>
                                                 <td></td>
                                                 <td></td>
                                             </tr>
@@ -94,7 +94,7 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>Buku Jurnal</td>
+                                                <td>{{$buku->kategori->kategori}}</td>
                                                 <td></td>
                                                 <td></td>
                                             </tr>

@@ -13,7 +13,7 @@
       </div>
       <!-- End - Brand -->
       <div class="header__content">
-         <!-- Content Header - Left Side: -->
+         <!-- Content Header - Left Side: --> 
          <div class="header__content-start">
             <!-- Navigation Toggler -->
          
@@ -22,10 +22,9 @@
                <label for="header-search-input" class="header__btn d-md-none btn btn-icon rounded-pill shadow-none border-0 btn-sm" type="button">
                <i class="demo-psi-magnifi-glass"></i>
                </label>
-               <br>
                <!-- Searchbox input -->
-               <form class="searchbox searchbox--auto-expand searchbox--hide-btn input-group">
-                  <input id="header-search-input" class="searchbox__input form-control bg-transparent" type="search" placeholder="Type for search . . ." aria-label="Search">
+               <form action="{{ route('book.search') }}" method="GET" class="searchbox searchbox--auto-expand searchbox--hide-btn input-group">
+                  <input id="header-search-input" class="searchbox__input form-control bg-transparent" name="keyword" type="search" placeholder="Cari ..." aria-label="Search">
                   <div class="searchbox__backdrop">
                      <button class="searchbox__btn header__btn btn btn-icon rounded shadow-none border-0 btn-sm" type="button" id="button-addon2">
                      <i class="demo-pli-magnifi-glass"></i>
@@ -53,7 +52,7 @@
                                         <img class="img-sm rounded-circle" src="../assets/img/profile-photos/1.png" alt="Profile Picture" loading="lazy">
                                     </div>
                                     <div class="flex-grow-1 ms-3">
-                                        <h5 class="mb-0">Aaron Chavez</h5>
+                                        <h5 class="mb-0">}</h5>
                                         <span class="text-muted fst-italic"><a href="https://themeon.net/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bfdedecdd0d1e0dcd7dec9dac5ffdac7ded2cfd3da91dcd0d2">[email&nbsp;protected]</a></span>
                                     </div>
                                 </div>
@@ -61,18 +60,10 @@
                                 <div class="row">
                                         <div class="list-group list-group-borderless h-100 py-3">
                                             <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                                <span><i class="demo-pli-mail fs-5 me-2"></i> Messages</span>
-                                                <span class="badge bg-danger rounded-pill">14</span>
+                                                <span><i class="demo-pli-mail fs-5 me-2"></i>Koleksi</span>
                                             </a>
                                             <a href="#" class="list-group-item list-group-item-action">
-                                                <i class="demo-pli-male fs-5 me-2"></i> Profile
-                                            </a>
-                                            <a href="#" class="list-group-item list-group-item-action">
-                                                <i class="demo-pli-gear fs-5 me-2"></i> Settings
-                                            </a>
-
-                                            <a href="#" class="list-group-item list-group-item-action mt-auto">
-                                                <i class="demo-pli-computer-secure fs-5 me-2"></i> Lock screen
+                                                <i class="demo-pli-male fs-5 me-2"></i>Terakhir Dibaca
                                             </a>
                                             <a href="#" class="list-group-item list-group-item-action">
                                                 <i class="demo-pli-unlock fs-5 me-2"></i> Logout
