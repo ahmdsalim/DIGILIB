@@ -108,7 +108,7 @@
                                                 <td>@if($siswa->jk == 'L') Laki-laki @else Perempuan @endif</td>
                                                 <td>{{$siswa->telepon}}</td>
                                                 <td class="fs-5">
-                                                    <div class="badge {{isset($siswa->user) && $siswa->user->active ? 'bg-success' : 'bg-danger'}}">{{isset($siswa->user) && $siswa->user->active ? 'Member ('.$siswa->user->email.')' : 'Non-member'}}</div>
+                                                    <div class="badge {{isset($siswa->user) && $siswa->user->active ? 'bg-success' : 'bg-danger'}}">{{isset($siswa->user) && $siswa->user->active ? 'User ('.$siswa->user->email.')' : 'Non-user'}}</div>
                                                 </td>
                                                 <td>
                                                     <div class="text-nowrap text-center">
