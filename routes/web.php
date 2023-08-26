@@ -6,7 +6,6 @@ use App\Http\Controllers\SekolahController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GuruController;
-use App\Jobs\SendEmailJob;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -63,7 +62,6 @@ Route::controller(BukuController::class)->group(function () {
 });
     
 Route::get('detailbuku', [BukuController::class, 'showdetail']);
-Route::resource('user', UserController::class);
 Route::resource('kategori', KategoriController::class);
 
 Route::resource('users', UserController::class);
@@ -81,4 +79,9 @@ Route::prefix('sekolah')->middleware('auth')->group(function() {
 	Route::get('guru/{guru}/edit', [GuruController::class, 'editGuru'])->name('owner.guru.edit');
 	Route::put('guru/{guru}/update', [GuruController::class, 'updateGuru'])->name('owner.guru.update');
 	Route::delete('guru/{guru}/delete', [GuruController::class, 'destroyGuru'])->name('owner.guru.destroy');
+});
+
+Route::name('sekolah.')->group(function() {
+	Route::resource('siswa', SiswaController::class);
+	Route::resource('guru', GuruController::class);
 });

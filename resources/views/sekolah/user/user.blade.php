@@ -2,14 +2,14 @@
 @section('breadcrumb')
     <ol class="breadcrumb mb-0">
         <li class="breadcrumb-item"><a href="{{ route('sekolah.index') }}">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('user.index') }}">User</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('users.index') }}">User</a></li>
     </ol>
 @endsection
 
 @section('pagetitle')
     <h1 class="page-title mb-0 mt-2">{{ $tittle }}</h1>
     {{-- <p class="lead">
-        A widget is an element of a graphical user interface that displays information or provides a specific way for a user
+        A widget is an element of a graphical users interface that displays information or provides a specific way for a users
         to interact.
     </p> --}}
 @endsection
@@ -25,7 +25,7 @@
                             <div class="row">
                                 <!-- Left toolbar -->
                                 <div class="col-md-6 d-flex gap-1 align-items-center mb-3">
-                                    <a href="{{ route('user.create') }}"
+                                    <a href="{{ route('users.create') }}"
                                         class="btn btn-primary hstack gap-2 align-self-center">
                                         <i class="demo-psi-add fs-5"></i>
                                         <span class="vr"></span>
