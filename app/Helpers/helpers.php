@@ -27,3 +27,11 @@ if (!function_exists('getmodelclass')) {
 	    };
 	}
 }
+
+if (!function_exists('isAuth')) {
+	function isAuth()
+	{
+		$user = Auth::user();
+		return isset($user) && in_array($user->role, ['siswa','guru']);
+	}
+}

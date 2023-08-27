@@ -16,7 +16,6 @@
          <!-- Content Header - Left Side: --> 
          <div class="header__content-start">
             <!-- Navigation Toggler -->
-         
             <div class="header-searchbox">
                <!-- Searchbox toggler for small devices -->
                <label for="header-search-input" class="header__btn d-md-none btn btn-icon rounded-pill shadow-none border-0 btn-sm" type="button">
@@ -36,52 +35,52 @@
          <!-- End - Content Header - Left Side -->
          <!-- Content Header - Right Side: -->
          <div class="header__content-end">
-                  <div class="dropdown">
-
-                            <!-- Toggler -->
-                            <button class="header__btn btn btn-icon btn-sm" type="button" data-bs-toggle="dropdown" aria-label="User dropdown" aria-expanded="false">
-                                <i class="demo-psi-male"></i>
-                            </button>
-
-                            <!-- User dropdown menu -->
-                            <div class="dropdown-menu dropdown-menu-end w-md-200px" style="">
-
-                                <!-- User dropdown header -->
-                                <div class="d-flex align-items-center border-bottom px-3 py-2">
-                                    <div class="flex-shrink-0">
-                                        <img class="img-sm rounded-circle" src="../assets/img/profile-photos/1.png" alt="Profile Picture" loading="lazy">
-                                    </div>
-                                    <div class="flex-grow-1 ms-3">
-                                        <h5 class="mb-0">}</h5>
-                                        <span class="text-muted fst-italic"><a href="https://themeon.net/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bfdedecdd0d1e0dcd7dec9dac5ffdac7ded2cfd3da91dcd0d2">[email&nbsp;protected]</a></span>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                        <div class="list-group list-group-borderless h-100 py-3">
-                                            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                                <span><i class="demo-pli-mail fs-5 me-2"></i>Koleksi</span>
-                                            </a>
-                                            <a href="#" class="list-group-item list-group-item-action">
-                                                <i class="demo-pli-male fs-5 me-2"></i>Terakhir Dibaca
-                                            </a>
-                                            <a href="#" class="list-group-item list-group-item-action">
-                                                <i class="demo-pli-unlock fs-5 me-2"></i> Logout
-                                            </a>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-
-                        <a href="login" target="_blank">            
-             <div class="brand-title">Login</div> 
-            </a>             
-            <!-- Brand title -->
+            @if(isAuth())
+            <div class="dropdown">
+               <!-- Toggler -->
+               <button class="header__btn btn btn-icon btn-sm" type="button" data-bs-toggle="dropdown" aria-label="User dropdown" aria-expanded="false">
+               <i class="demo-psi-male"></i>
+               </button>
+               <!-- User dropdown menu -->
+               <div class="dropdown-menu dropdown-menu-end w-md-200px" style="">
+                  <!-- User dropdown header -->
+                  <div class="d-flex align-items-center border-bottom px-3 py-2">
+                     <div class="flex-shrink-0">
+                        <img class="img-sm rounded-circle" src="../assets/img/profile-photos/1.png" alt="Profile Picture" loading="lazy">
+                     </div>
+                     <div class="flex-grow-1 ms-3">
+                        @if(isAuth())
+                        <h5 class="mb-0">{{Auth::user()->nama}}</h5>
+                        <span class="text-muted">{{ucfirst(Auth::user()->role)}}</span>
+                        @endif
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="list-group list-group-borderless h-100 py-3">
+                        <<a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span><i class="demo-pli-mail fs-5 me-2"></i>Koleksi</span>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <i class="demo-pli-male fs-5 me-2"></i>Terakhir Dibaca
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class="demo-pli-unlock fs-5 me-2"></i> Logout
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                           @csrf
+                        </form>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            @else
+            <a href="login">
+              <div class="brand-title">Login</div>
+            </a>
+            @endif             
          </div>
+         <!-- Brand title -->
       </div>
-</div>
+   </div>
+   </div>
 </header>

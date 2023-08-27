@@ -11,6 +11,8 @@ class Guru extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['nip','nama','jk','telepon','npsn'];
+
     public function user()
     {
     	return $this->morphOne(User::class, 'userable');

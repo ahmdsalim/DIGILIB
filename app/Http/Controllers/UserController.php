@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\TokenAktivasi;
 use Validator;
 use Illuminate\Support\Facades\Auth;
 
@@ -37,6 +38,37 @@ class UserController extends Controller
             
         }
         
+    }
+
+    public function showProfile()
+    {
+        return view('profile.admin.index');
+    }
+
+    public function showChangePassword()
+    {
+        return view('profile.admin.change-password');
+    }
+
+    public function changePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'password' => 'required',
+            'new_password' => 'required|confirmed|min:8|different:password'
+        ]);
+
+        if(!$validator->fails()){
+            $user = Auth::user();
+            if(\Hash::check($request->password, $user->password)){
+                $user->fill([
+                    'password' => $request->new_password
+                ])->save();
+
+                return to_route('home')->with('success', 'Berhasil mengubah password');
+            }
+            $validator->getMessageBag()->add('password', 'Password does not match');
+        }
+        return redirect()->back()->withErrors($validator);
     }
 
     /**
@@ -161,5 +193,24 @@ class UserController extends Controller
             return to_route('users.index')->with('failed','Gagal');
         }
         return to_route('users.index')->with('success','Berhasil');
+    }
+
+    public function aktivasi(Request $request)
+    {
+        $token = $request->query('token');
+
+        if(isset($token)){
+            $aktivasi = TokenAktivasi::where('token', $token)->first();
+
+            if($aktivasi){
+                $user = User::where('email', $aktivasi->email)->update(['active' => 1]);
+                if($user) {
+                    $aktivasi->delete();
+                    return view('auth.aktivasi')->with(['alert_class' => 'alert-success', 'message' => 'Akun Anda telah berhasil diaktivasi. Silahkan melakukan login kedalam Akun Anda.']);
+                }
+            }
+        }
+
+        return view('auth.aktivasi')->with(['alert_class' => 'alert-danger', 'message' => 'Token tidak dikenali. Pastikan melakukan aktivasi melalui pesan email yang telah diberikan.']);
     }
 }

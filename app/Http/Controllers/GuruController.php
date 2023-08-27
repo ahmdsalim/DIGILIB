@@ -66,11 +66,7 @@ class GuruController extends Controller
 
     public function getGuru()
     {
-        $data = Guru::whereNotExists(function($query) {
-            $query->select(1)
-                ->from('users')
-                ->whereRaw('users.userable_id = gurus.id');
-        });
+        $data = Guru::doesntHave('user')->get();
 
         return response()->json($data);
     }
