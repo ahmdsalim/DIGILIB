@@ -15,16 +15,28 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-2">
                     <h6 class="card-text">Pengarang : {{$buku->penulis}}</h6>
+                    @if(isAuth())
                     <a href="{{asset('files/'.$buku->url_pdf)}}" class="btn btn-info btn-sm">Baca</a>
+                    @else
+                    <a href="login" class="btn btn-info btn-sm">Baca</a>
+                    @endif
                 </div>
                     <div class="d-flex justify-content-between mb-1">
                     <h3 class="card-title">{{$buku->judul}}</h3>
-                    <button type="button" class="btn btn-info btn-sm">
-                        <i class="demo-psi-heart-2 fs-5 me-2"></i> Wishlist
-                    </button>                                  
+                    @if(isAuth())
+                    <a href="createkoleksi/{{$buku->id}}" type="submit" class="btn btn-info btn-sm">
+                        <i class="demo-psi-heart-2 fs-5 me-2"></i> Wishlist </a>
+                    @else
+                    <form action="{{ route('createkoleksi', $buku->id) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="like-button @if($buku->isLikedBy(Auth::user())) liked @endif">
+                            Like
+                        </button>
+                    </form>
+                    @endif
                 </div>
                     <div>
-                    <h6 class="card-text" style="text-align: right;">Sudah Dibaca<br>...</h6>
+                    <h6 class="card-text" style="text-align: right;">Sudah Dibaca<br>{{$buku->jumlah_baca}}</h6>
                 </div>
                 </div>
                 <div class="card-footer" style="border-top: 1px solid grey">
@@ -120,5 +132,14 @@
 .show-more .more-text {
   display: block;
 }
-</style>
+.like-button {
+    background-color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.like-button.liked {
+    background-color: blue; /* Ganti dengan warna yang Anda inginkan */
+    color: white;
+}</style>
 @endpush

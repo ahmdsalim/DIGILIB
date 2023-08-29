@@ -1,13 +1,7 @@
 @extends('layouts.applanding')
 
 @section('content')
-               <div class="content__boxed">
-                   <div class="content__wrap">
-                       <div class="row">
-                               <div class="card-carousel">
-                                       <div class="me-auto">
-                                           <h3 class="h4 m-0"></h3>
-                                       </div>
+<div class="content__boxed">
 <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -16,7 +10,7 @@
   </div>
   <div class="carousel-inner">
     <div class="carousel-item active" data-bs-interval="10000">
-        <div class="card-body py-0" style="height: 250px; max-height: 275px">
+        <div class="card-body py-0" style="height: 350px;">
       <img src="assets/img/Cover.jpg" class="d-block w-100" alt="...">
       <div class="carousel-caption d-none d-md-block">
         <h5>First slide label</h5>
@@ -25,7 +19,7 @@
     </div>
     </div>
     <div class="carousel-item" data-bs-interval="2000">
-      <div class="card-body py-0" style="height: 250px; max-height: 275px">
+      <div class="card-body py-0" style="height: 350px;">
       <img src="..." class="d-block w-100" alt="...">
       <div class="carousel-caption d-none d-md-block">
         <h5>Second slide label</h5>
@@ -34,18 +28,16 @@
     </div>
       </div>
     <div class="carousel-item">
-      <div class="card-body py-0" style="height: 250px; max-height: 275px">
+      <div class="card-body py-0" style="height: 350px;">
       <img src="..." class="d-block w-100" alt="...">
       <div class="carousel-caption d-none d-md-block">
         <h5>Third slide label</h5>
         <p>Some representative placeholder content for the third slide.</p>
       </div>
-    </div>
-  </div>
-</div>                                
                      </div>
                     </div>
                 </div>
+
             </div>
             <div class="content__boxed">
                 <div class="content__wrap">
@@ -161,6 +153,145 @@
                 </div>
             </div>
         </div>
+        <div class="container">
+        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="row">
+                    <!-- Card 1 -->
+         <div class="col-6 col-sm-6 col-md-4 col-lg-2">
+              <div class="card mb-2">
+                <img class="card-img-top" alt="Card image cap" src="assets/img/Cover.jpg">
+                  <div class="card-body">
+                    <h5 class="card-title">Proposal Penawaran</h5>
+                    <h6 class="text-secondary">Pengarang </h6>
+                    <h6 class="text-secondary">Penerbit</h6>
+                    <div class="d-flex justify-content-between">
+                    <h6 class="text-secondary">Rating</h6>
+                      <a href="" type="submit">+</a>
+                </div>
+                </div>
+            </div>
+        </div>
+         <div class="col-6 col-sm-6 col-md-4 col-lg-2">
+              <div class="card mb-2">
+                <img class="card-img-top" alt="Card image cap" src="assets/img/Cover.jpg">
+                  <div class="card-body">
+                    <h5 class="card-title">Proposal Penawaran</h5>
+                    <h6 class="text-secondary">Pengarang </h6>
+                    <h6 class="text-secondary">Penerbit</h6>
+                    <div class="d-flex justify-content-between">
+                    <h6 class="text-secondary">Rating</h6>
+                      <a href="" type="submit">+</a>
+                </div>
+                </div>
+            </div>
+        </div>
+         <div class="col-6 col-sm-6 col-md-4 col-lg-2">
+              <div class="card mb-2">
+                <img class="card-img-top" alt="Card image cap" src="assets/img/Cover.jpg">
+                  <div class="card-body">
+                    <h5 class="card-title">Proposal Penawaran</h5>
+                    <h6 class="text-secondary">Pengarang </h6>
+                    <h6 class="text-secondary">Penerbit</h6>
+                    <div class="d-flex justify-content-between">
+                    <h6 class="text-secondary">Rating</h6>
+                      <a href="" type="submit">+</a>
+                </div>
+                </div>
+            </div>
+        </div>
+         <div class="col-6 col-sm-6 col-md-4 col-lg-2">
+              <div class="card mb-2">
+                <img class="card-img-top" alt="Card image cap" src="assets/img/Cover.jpg">
+                  <div class="card-body">
+                    <h5 class="card-title">Proposal Penawaran</h5>
+                    <h6 class="text-secondary">Pengarang </h6>
+                    <h6 class="text-secondary">Penerbit</h6>
+                    <div class="d-flex justify-content-between">
+                    <h6 class="text-secondary">Rating</h6>
+                      <a href="" type="submit">+</a>
+                </div>
+                </div>
+            </div>
+        </div>
+         <div class="col-6 col-sm-6 col-md-4 col-lg-2">
+              <div class="card mb-2">
+                <img class="card-img-top" alt="Card image cap" src="assets/img/Cover.jpg">
+                  <div class="card-body">
+                    <h5 class="card-title">Proposal Penawaran</h5>
+                    <h6 class="text-secondary">Pengarang </h6>
+                    <h6 class="text-secondary">Penerbit</h6>
+                    <div class="d-flex justify-content-between">
+                    <h6 class="text-secondary">Rating</h6>
+                      <a href="" type="submit">+</a>
+                </div>
+                </div>
+            </div>
+        </div>
+         <div class="col-6 col-sm-6 col-md-4 col-lg-2">
+              <div class="card mb-2">
+                <img class="card-img-top" alt="Card image cap" src="assets/img/Cover.jpg">
+                  <div class="card-body">
+                    <h5 class="card-title">Proposal Penawaran</h5>
+                    <h6 class="text-secondary">Pengarang </h6>
+                    <h6 class="text-secondary">Penerbit</h6>
+                    <div class="d-flex justify-content-between">
+                    <h6 class="text-secondary">Rating</h6>
+                      <a href="" type="submit">+</a>
+                </div>
+                </div>
+            </div>
+        </div>
+                </div>
+            </div>
+
+            <!-- Repeat the structure for the other slides -->
+            <!-- Slide 2 -->
+            <div class="carousel-item">
+                <div class="row">
+                    <!-- Card 4 -->
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- Card content here -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 5 -->
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- Card content here -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 6 -->
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- Card content here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Left and right controls -->
+        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+    </div>
+</div>
+
         </div>
      </div>
   </div>
@@ -186,11 +317,12 @@
             font-weight: bold;
         }
         .carousel {
-          flex: 1; /* Memberikan rasio fleksibilitas yang sama pada setiap kartu */
-          min-width: 100px; /* Set ukuran minimum untuk setiap kartu */
-          background-color: #f0f0f0;
+          flex: 1;
+        }
+        .container {
           padding: 10px;
-          margin: 10px;
-          border-radius: 10px;        }
+          border-block: 10px;
+          border-color: white;
+        }
 </style>
 @endpush

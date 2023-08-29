@@ -12,9 +12,19 @@ class SiswaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = Siswa::query()->where('npsn',auth()->user()->userable->npsn);
+        $data['search'] = $request->query('search');
+        $search = $data['search'];
+        if($request->has('search') && !empty($search)){
+            $query->where(function($query) use ($search) {
+                $query->where('nama','like',"%{$search}%")
+                      ->orWhere('nisn','like',"%{$search}%");
+            });
+        }
+        $data['siswas'] = $query->paginate(50);
+        return view('sekolah.siswa.index',$data);
     }
 
     /**
@@ -22,7 +32,7 @@ class SiswaController extends Controller
      */
     public function create()
     {
-        //
+        return view('sekolah.siswa.form-siswa');
     }
 
     /**
@@ -30,13 +40,39 @@ class SiswaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'nisn' => 'required|numeric|unique:siswas,nisn',
+            'nama' => 'required|max:120',
+            'jk' => 'required|string|in:L,P',
+            'telepon' => 'required|regex:/^08/'
+        ],
+        [
+            'telepon.regex' => 'The :attribute must start with "08".'
+        ]);
+
+        if(!$validator->fails()){
+            $data = $validator->validated();
+            $saved = Siswa::create([
+                'nisn' => $data['nisn'],
+                'nama' => $data['nama'],
+                'jk' => $data['jk'],
+                'telepon' => $data['telepon'],
+                'npsn' => auth()->user()->userable->npsn
+            ]);
+
+            if(!$saved){
+                return to_route('sekolah.siswa.index')->with('failed','Gagal');
+            }
+            return to_route('sekolah.siswa.index')->with('success','Berhasil'); 
+        }else{
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Siswa $siswa)
+    public function show($nisn)
     {
         //
     }
@@ -44,25 +80,56 @@ class SiswaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Siswa $siswa)
+    public function edit($nisn)
     {
-        //
+        $data['siswa'] = Siswa::where('nisn',$nisn)->first() ?? abort(404);
+        return view('sekolah.siswa.form-siswa',$data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Siswa $siswa)
+    public function update(Request $request, $nisn)
     {
-        //
+        $siswa = Siswa::where('nisn',$nisn)->first() ?? abort(404);
+        $validator = Validator::make($request->all(), [
+            'nisn' => 'required|numeric|unique:siswas,nisn,'.$siswa->id,
+            'nama' => 'required|max:120',
+            'jk' => 'required|string|in:L,P',
+            'telepon' => 'required|regex:/^08/'
+        ],
+        [
+            'telepon.regex' => 'The :attribute must start with "08".'
+        ]);
+
+        if(!$validator->fails()){
+            $data = $validator->validated();
+            $saved = $siswa->update([
+                'nisn' => $data['nisn'],
+                'nama' => $data['nama'],
+                'jk' => $data['jk'],
+                'telepon' => $data['telepon']
+            ]);
+
+            if(!$saved){
+                return to_route('sekolah.siswa.index')->with('failed','Gagal');
+            }
+            return to_route('sekolah.siswa.index')->with('success','Berhasil'); 
+        }else{
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Siswa $siswa)
+    public function destroy($nisn)
     {
-        //
+        $siswa = Siswa::where('nisn',$nisn)->delete() ?? abort(404);
+        if($siswa){
+            return redirect()->back()->with('success','Berhasil');
+        }
+        return redirect()->back()->with('failed','Gagal');
     }
 
     public function getSiswa()

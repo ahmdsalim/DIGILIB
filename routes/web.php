@@ -7,6 +7,8 @@ use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\KoleksiController;
+use App\Http\Controllers\LikeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -21,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->name('landing');
 Route::get('/search', [BukuController::class, 'search'])->name('book.search');
 
 Route::get('/buku/terbaru', function () {
@@ -49,7 +51,7 @@ Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'home'])->
 Route::get('/dashboard-sekolah', [App\Http\Controllers\HomeController::class, 'homesekolah'])->name('home.sekolah');
 
 Route::resource('sekolah', SekolahController::class);
-
+ 
 Route::prefix('api')->group(function() {
 	Route::get('getSekolah', [SekolahController::class, 'getSekolah'])->name('api.getSekolah');
 	Route::get('getSiswa', [SiswaController::class, 'getSiswa'])->name('api.getSiswa');
@@ -64,13 +66,16 @@ Route::controller(BukuController::class)->group(function () {
 });
     
 Route::get('detailbuku/{id}/{slug}', [BukuController::class, 'showdetail']);
-Route::resource('user', UserController::class);
 Route::resource('kategori', KategoriController::class);
 
 Route::resource('users', UserController::class);
 Route::get('/profile', [UserController::class, 'showProfile'])->name('users.profile');
+Route::get('/profilepembaca', [UserController::class, 'showProfilePembaca'])->name('pembaca.profile');
 Route::get('/change-password', [UserController::class, 'showChangePassword'])->name('users.changepassword.show');
 Route::post('/change-password', [UserController::class, 'changePassword'])->name('users.changepassword.store');
+Route::get('/change-passwordpembaca', [UserController::class, 'showChangePasswordPembaca'])->name('pembaca.changepassword.show');
+Route::post('/change-passwordpembaca', [UserController::class, 'changePasswordPembaca'])->name('pembaca.changepassword.store');
+
 
 Route::prefix('sekolah')->middleware('auth')->group(function() {
 	Route::get('{sekolah}/siswa', [SiswaController::class, 'getSiswaBySekolah'])->name('owner.siswa.index');
@@ -83,3 +88,14 @@ Route::prefix('sekolah')->middleware('auth')->group(function() {
 	Route::put('guru/{guru}/update', [GuruController::class, 'updateGuru'])->name('owner.guru.update');
 	Route::delete('guru/{guru}/delete', [GuruController::class, 'destroyGuru'])->name('owner.guru.destroy');
 });
+
+Route::name('sekolah.')->group(function() {
+	Route::resource('siswa', SiswaController::class);
+	Route::resource('guru', GuruController::class);
+});
+
+Route::get('/koleksi', [KoleksiController::class, 'index']);
+Route::get('/createkoleksi/{id}', [KoleksiController::class, 'create']);
+
+Route::post('/like/{id}', [LikeController::class, 'index'])->name('like');
+Route::post('/Buku/{buku}/toggle-like', [KoleksiController::class, 'create'])->name('createkoleksi');

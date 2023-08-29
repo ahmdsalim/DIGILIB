@@ -21,4 +21,8 @@ class Koleksi extends Model
     	return $this->belongsTo(User::class,'email','email');
     }
 
+    public function isLikedBy(User $user)
+    {
+        return $this->likes->contains('user_id', $user->id);
+    }
 }

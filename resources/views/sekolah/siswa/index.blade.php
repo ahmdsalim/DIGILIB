@@ -2,15 +2,14 @@
 @section('breadcrumb')
     <ol class="breadcrumb mb-0">
         <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('sekolah.index') }}">Sekolah</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Siswa</li>
+        <li class="breadcrumb-item active" aria-current="page">Data Siswa</li>
     </ol>
 @endsection
 
 @section('pagetitle')
     <h1 class="page-title mb-0 mt-2">Siswa</h1>
     <p class="lead">
-        {{$sekolah->nama}}
+        Manajemen Siswa
     </p>
 @endsection
 
@@ -25,6 +24,12 @@
                             <div class="row">
                                 <!-- Left toolbar -->
                                 <div class="col-md-6 d-flex gap-1 align-items-center mb-3">
+                                    <a href="{{ route('sekolah.siswa.create') }}"
+                                        class="btn btn-primary hstack gap-2 align-self-center">
+                                        <i class="demo-psi-add fs-5"></i>
+                                        <span class="vr"></span>
+                                        Tambah Data
+                                    </a>
                                     <button class="btn btn-icon btn-outline-light">
                                         <i class="demo-pli-printer fs-5"></i>
                                     </button>
@@ -107,12 +112,12 @@
                                                 <td>{{$siswa->nisn}}</td>
                                                 <td>@if($siswa->jk == 'L') Laki-laki @else Perempuan @endif</td>
                                                 <td>{{$siswa->telepon}}</td>
-                                                <td class="fs-5">
+                                                <td>
                                                     <div class="badge {{isset($siswa->user) && $siswa->user->active ? 'bg-success' : 'bg-danger'}}">{{isset($siswa->user) && $siswa->user->active ? 'User ('.$siswa->user->email.')' : 'Non-user'}}</div>
                                                 </td>
                                                 <td>
                                                     <div class="text-nowrap text-center">
-                                                        <a href="{{route('owner.siswa.edit',$siswa->id)}}" class="btn btn-icon btn-sm btn-light"><svg
+                                                        <a href="{{route('sekolah.siswa.edit',$siswa->nisn)}}" class="btn btn-icon btn-sm btn-light"><svg
                                                                 fill="none" stroke="currentColor" stroke-width="1.5"
                                                                 width="18" height="18" viewBox="0 0 24 24"
                                                                 xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -120,7 +125,7 @@
                                                                     d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10">
                                                                 </path>
                                                             </svg></a>
-                                                        <form class="d-inline-block" action="{{route('owner.siswa.destroy',$siswa->id)}}" method="POST">
+                                                        <form class="d-inline-block" action="{{route('sekolah.siswa.destroy',$siswa->nisn)}}" method="POST">
                                                         @method('delete')
                                                         @csrf    
                                                         <button type="button" class="btn btn-icon btn-sm btn-light" onclick="confirmOnDel(this)"><svg

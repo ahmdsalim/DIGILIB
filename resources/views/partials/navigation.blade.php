@@ -7,7 +7,7 @@
                     <div class="mt-2 d-mn-max"></div>
                     <!-- Profile picture  -->
                     <div class="mininav-toggle text-center py-2">
-                       <img class="mainnav__avatar img-md rounded-circle border" src="{{asset('assets/img/profile-photos/1.png')}}"
+                       <img class="mainnav__avatar img-md rounded-circle border" src="{{asset('assets/img/profile-photos/'.$img_name.'.png')}}"
                           alt="Profile Picture">
                     </div>
                     <div class="mininav-content collapse d-mn-max">
@@ -155,6 +155,36 @@
                                    d="M112 240v128l144 80l144-80V240m80 128V192M256 320v128" />
                              </svg>
                              <span class="nav-label mininav-content ms-1">Sekolah</span>
+                          </a>
+                       </li>
+                       @endif
+                       @if (Auth::check() && Auth::user()->role == 'sekolah')
+                       <li class="nav-item">
+                          <a href="{{ route('sekolah.siswa.index') }}" class="nav-link mininav-toggle {{ str_contains(Route::current()->getName(), 'sekolah.siswa') ? 'active' : '' }}">
+                             <svg xmlns="http://www.w3.org/2000/svg"
+                                width="18" height="18" viewBox="0 0 512 512" style="margin-right: 4px;">
+                                <path fill="none" stroke="currentColor" stroke-linecap="round"
+                                   stroke-linejoin="round" stroke-width="32"
+                                   d="M32 192L256 64l224 128l-224 128L32 192z" />
+                                <path fill="none" stroke="currentColor" stroke-linecap="round"
+                                   stroke-linejoin="round" stroke-width="32"
+                                   d="M112 240v128l144 80l144-80V240m80 128V192M256 320v128" />
+                             </svg>
+                             <span class="nav-label mininav-content ms-1">Siswa</span>
+                          </a>
+                       </li>
+                       <li class="nav-item">
+                          <a href="{{ route('sekolah.guru.index') }}" class="nav-link mininav-toggle {{ str_contains(Route::current()->getName(), 'sekolah.guru') ? 'active' : '' }}">
+                             <svg xmlns="http://www.w3.org/2000/svg"
+                                width="18" height="18" viewBox="0 0 512 512" style="margin-right: 4px;">
+                                <path fill="none" stroke="currentColor" stroke-linecap="round"
+                                   stroke-linejoin="round" stroke-width="32"
+                                   d="M32 192L256 64l224 128l-224 128L32 192z" />
+                                <path fill="none" stroke="currentColor" stroke-linecap="round"
+                                   stroke-linejoin="round" stroke-width="32"
+                                   d="M112 240v128l144 80l144-80V240m80 128V192M256 320v128" />
+                             </svg>
+                             <span class="nav-label mininav-content ms-1">Guru</span>
                           </a>
                        </li>
                        @endif

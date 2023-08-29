@@ -5,15 +5,26 @@ namespace App\Http\Controllers;
 use App\Models\Guru;
 use App\Models\Sekolah;
 use Illuminate\Http\Request;
+use Validator;
 
 class GuruController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = Guru::query()->where('npsn',auth()->user()->userable->npsn);
+        $data['search'] = $request->query('search');
+        $search = $data['search'];
+        if($request->has('search') && !empty($search)){
+            $query->where(function($query) use ($search) {
+                $query->where('nama','like',"%{$search}%")
+                      ->orWhere('nip','like',"%{$search}%");
+            });
+        }
+        $data['gurus'] = $query->paginate(50);
+        return view('sekolah.guru.index',$data);
     }
 
     /**
@@ -21,7 +32,7 @@ class GuruController extends Controller
      */
     public function create()
     {
-        //
+        return view('sekolah.guru.form-guru');
     }
 
     /**
@@ -29,7 +40,33 @@ class GuruController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'nip' => 'required|numeric|unique:gurus,nip',
+            'nama' => 'required|max:120',
+            'jk' => 'required|string|in:L,P',
+            'telepon' => 'required|regex:/^08/'
+        ],
+        [
+            'telepon.regex' => 'The :attribute must start with "08".'
+        ]);
+
+        if(!$validator->fails()){
+            $data = $validator->validated();
+            $saved = Guru::create([
+                'nip' => $data['nip'],
+                'nama' => $data['nama'],
+                'jk' => $data['jk'],
+                'telepon' => $data['telepon'],
+                'npsn' => auth()->user()->userable->npsn
+            ]);
+
+            if(!$saved){
+                return to_route('sekolah.guru.index')->with('failed','Gagal');
+            }
+            return to_route('sekolah.guru.index')->with('success','Berhasil'); 
+        }else{
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
     }
 
     /**
@@ -43,25 +80,56 @@ class GuruController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Guru $guru)
+    public function edit($nip)
     {
-        //
+        $data['guru'] = Guru::where('nip',$nip)->first() ?? abort(404);
+        return view('sekolah.guru.form-guru',$data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Guru $guru)
+    public function update(Request $request, $nip)
     {
-        //
+        $guru = Guru::where('nip',$nip)->first() ?? abort(404);
+        $validator = Validator::make($request->all(), [
+            'nip' => 'required|numeric|unique:gurus,nip,'.$guru->id,
+            'nama' => 'required|max:120',
+            'jk' => 'required|string|in:L,P',
+            'telepon' => 'required|regex:/^08/'
+        ],
+        [
+            'telepon.regex' => 'The :attribute must start with "08".'
+        ]);
+
+        if(!$validator->fails()){
+            $data = $validator->validated();
+            $saved = $guru->update([
+                'nip' => $data['nip'],
+                'nama' => $data['nama'],
+                'jk' => $data['jk'],
+                'telepon' => $data['telepon']
+            ]);
+
+            if(!$saved){
+                return to_route('sekolah.guru.index')->with('failed','Gagal');
+            }
+            return to_route('sekolah.guru.index')->with('success','Berhasil'); 
+        }else{
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Guru $guru)
+    public function destroy($nip)
     {
-        //
+        $guru = Guru::where('nip',$nip)->delete() ?? abort(404);
+        if($guru){
+            return redirect()->back()->with('success','Berhasil');
+        }
+        return redirect()->back()->with('failed','Gagal');
     }
 
     public function getGuru()

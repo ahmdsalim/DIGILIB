@@ -85,7 +85,12 @@
             <!-- END - FOOTER -->
 
         </section>
-
+        @php
+            $img_name = auth()->user()->userable->jk == 'L' ? '1' : '6';
+            if(auth()->user()->role == 'sekolah'){
+                $img_name = '1';
+            }
+        @endphp
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <!-- END - CONTENTS -->
 
@@ -122,7 +127,16 @@
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            @if(session('success'))
+                showSuccessToast("{{session('success')}}","{{asset('assets/img/icon/success.svg')}}")
+            @endif
+            @if(session('failed'))
+                showErrorToast("{{session('failed')}}","{{asset('assets/img/icon/danger.svg')}}")
+            @endif
+        })
+    </script>
     @stack('js')
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 

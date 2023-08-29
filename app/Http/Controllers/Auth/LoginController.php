@@ -55,6 +55,13 @@ class LoginController extends Controller
         }
     }
 
+    protected function credentials(Request $request)
+    {
+        $creds = $request->only($this->username(), 'password');
+        $creds['active'] = 1;
+        return $creds;
+    }
+
     protected function loggedOut(Request $request)
     {
         return to_route('login');
