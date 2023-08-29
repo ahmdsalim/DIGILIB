@@ -361,4 +361,16 @@ class BukuController extends Controller
         $data['buku'] = Buku::where([['id',$id],['slug',$slug]])->first() ?? abort(404);
         return view('detailbuku', $data);
     }
-}
+
+    public function search(Request $request)
+    {
+    $keyword = $request->input('keyword');
+    $results = Buku::where('judul', 'like', "%$keyword%")
+                   ->orWhere('no_isbn', 'like', "%$keyword%")
+                   ->orWhere('penulis', 'like', "%$keyword%")
+                   ->orWhere('penerbit', 'like', "%$keyword%")
+                    ->orderBy('judul', 'asc')
+                    ->paginate(25);
+
+    return view('booksearch',compact('results','keyword'));
+    }}

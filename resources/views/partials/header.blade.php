@@ -137,7 +137,7 @@
                   </div>
                   <div class="row">
                      <div class="col-md-12">
-                        <!-- User menu link -->
+                        <!-- User menu link --> 
                         <div class="list-group list-group-borderless h-100 py-3">
                            <a href="{{route('users.profile')}}" class="list-group-item list-group-item-action">
                            <i class="demo-pli-male fs-5 me-2"></i> Profile
