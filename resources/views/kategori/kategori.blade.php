@@ -169,7 +169,7 @@
                 var kategori = $(this).attr('data-name');
 
                 Swal.fire({
-                    title: 'Apakah Anda Yakin??',
+                    title: 'Apakah Anda Yakin?',
                     text: "Kamu akan menghapus data " + kategori + "",
                     icon: 'warning',
                     showCancelButton: true,
@@ -186,21 +186,13 @@
                                 "_token": "{{ csrf_token() }}"
                             },
                             success: function(response) {
+                                window.location.href = '/kategori/';
                                 Swal.fire(
                                     'Deleted!',
                                     'Data ' + kategori + ' Telah Dihapus',
                                     'success'
                                 );
                                 // Redirect ke halaman yang sesuai
-                                window.location.href = '/kategori';
-                            },
-                            error: function(xhr) {
-                                console.log(xhr);
-                                Swal.fire(
-                                    'Error!',
-                                    'Terjadi kesalahan saat menghapus data.',
-                                    'error'
-                                );
                             }
                         });
                     }

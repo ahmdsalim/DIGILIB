@@ -86,7 +86,7 @@
 
         </section>
         @php
-            $img_name = auth()->user()->userable->jk == 'L' ? '1' : '6';
+                $img_name = '1';
             if(auth()->user()->role == 'sekolah'){
                 $img_name = '1';
             }

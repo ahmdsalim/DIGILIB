@@ -153,7 +153,7 @@
                                         </div>
                                         <div class="col-12">
                                             <label for="_dm-inputAddress" class="form-label">No ISBN</label>
-                                            <input id="_dm-inputAddress" name="no_isbn" placeholder="Masukan no isbn"
+                                            <input id="_dm-inputAddress" name="no_isbn" disabled placeholder="Masukan no isbn"
                                                 onkeydown="preventNegativeInput(event)" value="{{ $buku->no_isbn }}"
                                                 class="form-control 
                                             @error('no_isbn')
@@ -183,8 +183,7 @@
                                         </div>
                                         <div class="col-12">
                                             <label for="_dm-inputAddress" class="form-label">URL PDF</label>
-                                            <input id="_dm-inputAddress" name="url_pdf" placeholder="Masukan url pdf"
-                                                value="{{ $buku->url_pdf }}"
+                                            <input id="_dm-inputAddress" type="file" name="url_pdf" value="{{ $buku->url_pdf }}" placeholder="Masukan url pdf"  accept="application/pdf"
                                                 class="form-control 
                                         @error('url_pdf')
                                             is-invalid

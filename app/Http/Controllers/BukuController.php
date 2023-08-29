@@ -24,91 +24,53 @@ class BukuController extends Controller
 
         if (Auth::user()->role === 'owner') {
             //jika masuk sebagai owner
-            $status = $request->input('status'); // Get the filter parameter
-
             if ($request->has('search')) {
-                if ($status === null || $status === 'publish' || $status === 'rejected' || $status === 'pending') {
-                    $data = Buku::where('judul', 'LIKE', '%' . $request->search . '%')
-                        ->orWhere('no_isbn', 'LIKE', '%' . $request->search . '%')
-                        ->orWhere('penulis', 'LIKE', '%' . $request->search . '%')
-                        ->orWhere('penerbit', 'LIKE', '%' . $request->search . '%')
-                        ->orderBy('status', 'desc')
-                        ->orderBy('judul', 'asc')
-                        ->paginate(25);
+                $data = Buku::where('judul', 'LIKE', '%' . $request->search . '%')
+                    ->orWhere('no_isbn', 'LIKE', '%' . $request->search . '%')
+                    ->orWhere('penulis', 'LIKE', '%' . $request->search . '%')
+                    ->orWhere('penerbit', 'LIKE', '%' . $request->search . '%')
+                    ->orderBy('status', 'desc')
+                    ->orderBy('judul', 'asc')
+                    ->paginate(25);
 
-                    if ($data->isEmpty()) {
-                        $kosong = 'Data tidak tersedia';
-                    }
+                if ($data->isEmpty()) {
+                    $kosong = 'Data tidak tersedia';
                 }
             } else {
-                $status = $request->input('status'); // Get the filter parameter
+                $data = Buku::where('status', '<>', 'rejected') // Tidak mengambil data dengan status 'pending'
+                    ->orderBy('status', 'desc')
+                    ->orderBy('judul', 'asc') // Mengurutkan berdasarkan judul buku secara ascending
+                    ->paginate(25);
 
-                if ($status === null || $status === 'Semua') {
-                    $data = Buku::orderBy('status', 'desc')
-                        ->orderBy('judul', 'asc') // Mengurutkan berdasarkan judul buku secara ascending
-                        ->paginate(25);
-                    if ($data->isEmpty()) {
-                        $kosong = 'Data tidak tersedia';
-                    }
-                } else {
-                    $publishStatus = $status; //ambil nilai publish true
-                    //persyaratan publish nya benar
-                    $data = Buku::where('status', $publishStatus)
-                        ->orderBy('status', 'desc')
-                        ->orderBy('judul', 'asc') // Mengurutkan berdasarkan judul buku secara ascending
-                        ->paginate(25);
-                    if ($data->isEmpty()) {
-                        $kosong = 'Data tidak tersedia';
-                    }
+                if ($data->isEmpty()) {
+                    $kosong = 'Data tidak tersedia';
                 }
             }
         } else {
             //jika masuk sebagai sekolah
-            $status = $request->input('status'); // Get the filter parameter
 
             if ($request->has('search')) {
-                if ($status === null || $status === 'publish' || $status === 'rejected' || $status === 'pending') {
-                    $data = Buku::where('judul', 'LIKE', '%' . $request->search . '%')
-                        ->orWhere('no_isbn', 'LIKE', '%' . $request->search . '%')
-                        ->orWhere('penulis', 'LIKE', '%' . $request->search . '%')
-                        ->orWhere('penerbit', 'LIKE', '%' . $request->search . '%')
-                        ->orderBy('publish', 'desc')
-                        ->orderBy('judul', 'asc')
-                        ->paginate(25);
+                $data = Buku::where('judul', 'LIKE', '%' . $request->search . '%')
+                    ->orWhere('no_isbn', 'LIKE', '%' . $request->search . '%')
+                    ->orWhere('penulis', 'LIKE', '%' . $request->search . '%')
+                    ->orWhere('penerbit', 'LIKE', '%' . $request->search . '%')
+                    ->orderBy('publish', 'desc')
+                    ->orderBy('judul', 'asc')
+                    ->paginate(25);
 
-                    if ($data->isEmpty()) {
-                        $kosong = 'Data tidak tersedia';
-                    }
+                if ($data->isEmpty()) {
+                    $kosong = 'Data tidak tersedia';
                 }
             } else {
-                $status = $request->input('status'); // Get the filter parameter
+                $emailPengguna = Auth::user()->email; //ambil email dari user
 
-                if ($status === null || $status === 'Semua') {
-                    $emailPengguna = Auth::user()->email; //ambil email dari user
+                $data = Buku::Where('email', $emailPengguna)
+                    ->orderBy('status', 'asc')
+                    ->orderBy('judul', 'asc')
+                    ->paginate(25);
 
-                    //persyaratan berdasarakan email
-                    $data = Buku::where('email', $emailPengguna)
-                        ->orderBy('status', 'desc')
-                        ->orderBy('judul', 'asc')
-                        ->paginate(25);
-
-                    if ($data->isEmpty()) {
-                        $kosong = 'Data tidak tersedia';
-                    }
-                } else {
-                    $emailPengguna = Auth::user()->email; //ambil email dari user
-                    $publishStatus = $status; // ambil nilai status true
-
-                    // jika publish dan email nya benar ambil data
-                    $data = Buku::where('status', $publishStatus)
-                        ->where('email', $emailPengguna)
-                        ->orderBy('status', 'desc')
-                        ->orderBy('judul', 'asc')
-                        ->paginate(25);
-
-                    if ($data->isEmpty()) {
-                        $kosong = 'Data tidak tersedia';
-                    }
+                if ($data->isEmpty()) {
+                    $kosong = 'Data tidak tersedia';
                 }
             }
         }
@@ -152,6 +114,28 @@ class BukuController extends Controller
             return redirect()
                 ->back()
                 ->with('success', 'Buku telah diperbarui.');
+        }
+
+        return redirect()
+            ->back()
+            ->with('error', 'Buku tidak ditemukan.');
+    }
+
+    public function resend ($id){
+        $buku = Buku::find($id);
+
+        if ($buku) {
+            $action = request('action'); // Ambil nilai dari input dengan name "action"
+
+            if ($action === 'resend') {
+                $buku->status = 'pending';
+            } 
+
+            $buku->save();
+
+            return redirect()
+                ->back()
+                ->with('success', 'Buku telah Di Ajukan Ulang.');
         }
 
         return redirect()

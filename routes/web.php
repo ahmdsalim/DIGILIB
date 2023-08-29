@@ -54,10 +54,10 @@ Route::prefix('api')->group(function() {
 	Route::get('getGuru', [GuruController::class, 'getGuru'])->name('api.getGuru');
 });
 Route::controller(BukuController::class)->group(function () {
-    // Route::resource('buku/test', BukuController::class);
-    // Route::get('/buku/test', [BukuController::class, 'test'])->name('buku.test');
+
     Route::get('/buku/request', [BukuController::class, 'request'])->name('buku.request');
     Route::put('/buku/request/{id}', [BukuController::class, 'requestUpdate'])->name('buku.requestUpdate');
+    Route::put('/buku/resend/{slug}', [BukuController::class, 'resend'])->name('buku.resend');
     Route::resource('buku', BukuController::class);
 });
     
