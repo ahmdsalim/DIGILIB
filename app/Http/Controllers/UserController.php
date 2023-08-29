@@ -44,13 +44,45 @@ class UserController extends Controller
     {
         return view('profile.admin.index');
     }
+    
+    public function showProfilePembaca()
+    {
+        return view('profile.user.index');
+    }
+    
 
     public function showChangePassword()
     {
         return view('profile.admin.change-password');
     }
 
+    public function showChangePasswordPembaca()
+    {
+        return view('profile.user.change-password');
+    }
+
     public function changePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'password' => 'required',
+            'new_password' => 'required|confirmed|min:8|different:password'
+        ]);
+
+        if(!$validator->fails()){
+            $user = Auth::user();
+            if(\Hash::check($request->password, $user->password)){
+                $user->fill([
+                    'password' => $request->new_password
+                ])->save();
+
+                return to_route('home')->with('success', 'Berhasil mengubah password');
+            }
+            $validator->getMessageBag()->add('password', 'Password does not match');
+        }
+        return redirect()->back()->withErrors($validator);
+    }
+
+    public function changePasswordPembaca(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'password' => 'required',

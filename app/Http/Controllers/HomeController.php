@@ -10,7 +10,6 @@ class HomeController extends Controller
 {
     public function index(Request $req)
     {
-    //return view('layouts.main');
     $query = buku::query();
     $input_kategori = $req->query('kategori');        
     $kategori = kategori::all();
@@ -18,6 +17,7 @@ class HomeController extends Controller
     if(!is_null($input_kategori)){
         $query->where('kategori_id',$input_kategori);
     }
+
     $buku = $query->get();
     return view('landing',compact('buku','kategori'));
     }

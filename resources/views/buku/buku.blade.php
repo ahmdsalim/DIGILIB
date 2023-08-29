@@ -80,7 +80,7 @@
                                                 </button>
                                             </div>
                                         </form>
-                                    </div>
+                                    </div> 
                                 </div>
                                 <!-- END : Right Toolbar -->
 

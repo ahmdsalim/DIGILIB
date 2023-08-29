@@ -8,7 +8,7 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
     <meta name="description" content="Nifty is a responsive admin dashboard template based on Bootstrap 5 framework. There are a lot of useful components.">
-    <title>@yield('title') | DIGILIB</title>
+    <title>@yield('title')DIGILIB</title>
 
     <!-- STYLESHEETS -->
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--- -->
@@ -85,12 +85,6 @@
             <!-- END - FOOTER -->
 
         </section>
-        @php
-                $img_name = '1';
-            if(auth()->user()->role == 'sekolah'){
-                $img_name = '1';
-            }
-        @endphp
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <!-- END - CONTENTS -->
 

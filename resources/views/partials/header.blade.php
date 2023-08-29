@@ -128,7 +128,7 @@
                   <!-- User dropdown header -->
                   <div class="d-flex align-items-center border-bottom px-3 py-2">
                      <div class="flex-shrink-0">
-                        <img class="img-sm rounded-circle" src="{{asset('assets/img/profile-photos/'.$img_name.'.png')}}" alt="Profile Picture" loading="lazy">
+                        <img class="img-sm rounded-circle" src="{{asset('assets/img/profile-photos/1.png')}}" alt="Profile Picture" loading="lazy">
                      </div>
                      <div class="flex-grow-1 ms-3">
                         <h5 class="mb-0">{{Auth::user()->nama}}</h5>
@@ -137,7 +137,7 @@
                   </div>
                   <div class="row">
                      <div class="col-md-12">
-                        <!-- User menu link -->
+                        <!-- User menu link --> 
                         <div class="list-group list-group-borderless h-100 py-3">
                            <a href="{{route('users.profile')}}" class="list-group-item list-group-item-action">
                            <i class="demo-pli-male fs-5 me-2"></i> Profile
