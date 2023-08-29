@@ -63,9 +63,9 @@
                         </div>
         @foreach ($buku as $data)                          
          <div class="col-sm-6 col-lg-3">
-              <a href="/detailbuku" style="text-decoration: none;">
+              <a href="{{route('buku.detailbuku',['id'=>$data->id, 'slug'=>$data->slug])}}" style="text-decoration: none;">
                 <div class="card mb-4">
-                  <img class="card-img-top" alt="Card image cap" src="assets/img/cover2.jpg">
+                  <img class="card-img-top" alt="Card image cap" src="{{asset('img/thumbnail-buku/'.$data->thumbnail)}}">
                     <div class="card-body">
                       <h3 class="card-title">{{$data->judul}}</h3>
                       <h6 class="card-text">Pengarang : {{$data->penulis}}</h6>

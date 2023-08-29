@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\GuruController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BacaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,10 +49,11 @@ Route::get('/dashboard-sekolah', [App\Http\Controllers\HomeController::class, 'h
 
 Route::resource('sekolah', SekolahController::class);
 
-Route::prefix('api')->group(function() {
+Route::prefix('api')->middleware('auth')->group(function() {
 	Route::get('getSekolah', [SekolahController::class, 'getSekolah'])->name('api.getSekolah');
 	Route::get('getSiswa', [SiswaController::class, 'getSiswa'])->name('api.getSiswa');
 	Route::get('getGuru', [GuruController::class, 'getGuru'])->name('api.getGuru');
+	Route::post('read/save',[BacaController::class,'save'])->name('api.read.save');
 });
 Route::controller(BukuController::class)->group(function () {
     // Route::resource('buku/test', BukuController::class);
@@ -61,7 +63,7 @@ Route::controller(BukuController::class)->group(function () {
     Route::resource('buku', BukuController::class);
 });
     
-Route::get('detailbuku', [BukuController::class, 'showdetail']);
+Route::get('detailbuku/{id}/{slug}', [BukuController::class, 'showdetail'])->name('buku.detailbuku');
 Route::resource('kategori', KategoriController::class);
 
 Route::resource('users', UserController::class);
@@ -85,3 +87,5 @@ Route::name('sekolah.')->group(function() {
 	Route::resource('siswa', SiswaController::class);
 	Route::resource('guru', GuruController::class);
 });
+
+Route::get('baca/{id}/{slug}', [BacaController::class, 'read'])->name('read');

@@ -85,12 +85,6 @@
             <!-- END - FOOTER -->
 
         </section>
-        @php
-            $img_name = auth()->user()->userable->jk == 'L' ? '1' : '6';
-            if(auth()->user()->role == 'sekolah'){
-                $img_name = '1';
-            }
-        @endphp
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <!-- END - CONTENTS -->
 

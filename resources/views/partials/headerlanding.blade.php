@@ -47,7 +47,7 @@
                   <!-- User dropdown header -->
                   <div class="d-flex align-items-center border-bottom px-3 py-2">
                      <div class="flex-shrink-0">
-                        <img class="img-sm rounded-circle" src="../assets/img/profile-photos/1.png" alt="Profile Picture" loading="lazy">
+                        <img class="img-sm rounded-circle" src="{{asset('assets/img/profile-photos/1.png')}}" alt="Profile Picture" loading="lazy">
                      </div>
                      <div class="flex-grow-1 ms-3">
                         @if(isAuth())

@@ -7,7 +7,7 @@
                     <div class="mt-2 d-mn-max"></div>
                     <!-- Profile picture  -->
                     <div class="mininav-toggle text-center py-2">
-                       <img class="mainnav__avatar img-md rounded-circle border" src="{{asset('assets/img/profile-photos/'.$img_name.'.png')}}"
+                       <img class="mainnav__avatar img-md rounded-circle border" src="{{asset('assets/img/profile-photos/1.png')}}"
                           alt="Profile Picture">
                     </div>
                     <div class="mininav-content collapse d-mn-max">

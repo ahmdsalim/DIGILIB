@@ -242,8 +242,9 @@ class BukuController extends Controller
             $file = $request->file('url_pdf');
             $extension = $file->getClientOriginalExtension();
 
-            $slug = Buku::all()->first()->slug; // Mengambil slug dari data pertama
-            $file_name = $slug . '.' . $extension;
+            // $slug = Buku::all()->first()->slug; // Mengambil slug dari data pertama
+            $slug = Str::slug($request->judul);
+            $file_name = $slug . '-' . time() . '.' . $extension;
 
             $file->move($destination, $file_name);
         }
@@ -355,8 +356,9 @@ class BukuController extends Controller
             ->with('success', 'Data Telah Berhasil Di Hapus');
     }
 
-    public function showdetail()
+    public function showdetail($id, $slug)
     {
-        return view('detailbuku');
+        $data['buku'] = Buku::where([['id',$id],['slug',$slug]])->first() ?? abort(404);
+        return view('detailbuku', $data);
     }
 }

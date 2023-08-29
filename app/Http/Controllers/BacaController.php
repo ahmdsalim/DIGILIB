@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Baca;
 use Illuminate\Http\Request;
+use App\Models\Buku;
+use Auth;
 
 class BacaController extends Controller
 {
@@ -26,40 +28,44 @@ class BacaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function save(Request $request)
     {
-        //
+        $user = auth()->user();
+        $buku_id = \Crypt::decryptString($request->buku_id);
+        $buku = Buku::findOrFail($buku_id);
+
+        $baca = Baca::updateOrCreate(
+            [
+                'sesi' => $request->sesi
+            ],
+            [
+                'email' => $user->email,
+                'buku_id' => $buku_id,
+                'progress' => $request->progress
+            ]
+        );
+
+        if($baca){
+            return response()->json(['message' => 'Successfully saved'], 200);
+        }
+        return response()->json(['message' => 'Server Error'], 500);
+
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Baca $baca)
+    public function read($id, $slug)
     {
-        //
+        $user = auth()->user();
+        $data['buku'] = Buku::where([['id',$id],['slug',$slug]])->first() ?? abort(404);
+        $data['buku']->update(['jumlah_baca' => $data['buku']->jumlah_baca+1]);
+        $data['sesi'] = \Str::random(16);
+        $data['latestPage'] = 1;
+        $data['newReader'] = true;
+        $baca = Baca::where('email',$user->email)->where('buku_id',$id)->orderBy('started_at','desc')->first();
+        if($baca) {
+            $data['latestPage'] = $baca->progress;
+            $data['newReader'] = false;
+        }
+        return view('read', $data);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Baca $baca)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Baca $baca)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Baca $baca)
-    {
-        //
-    }
 }

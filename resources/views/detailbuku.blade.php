@@ -7,7 +7,7 @@
 <div class="col-sm-6 col-xl-3">
                             <!-- User widget -->
               <div class="card mb-4">
-                <img class="card-img-top" alt="Card image cap" src="{{asset('assets/img/cover2.jpg')}}">
+                <img class="card-img-top" alt="Card image cap" src="{{asset('img/thumbnail-buku/'.$buku->thumbnail)}}">
                      </div>
                 </div>
 <div class="col-sm-18 col-xl-9">
@@ -15,10 +15,10 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-2">
                     <h6 class="card-text">Pengarang : Akmal</h6>
-                    <a href="assets/img/Contoh.pdf" class="btn btn-info btn-sm">Baca</a>
+                    <a href="{{route('read',['id'=>$buku->id, 'slug'=>$buku->slug])}}" class="btn btn-info btn-sm">Mulai Membaca</a>
                 </div>
                     <div class="d-flex justify-content-between mb-1">
-                    <h3 class="card-title">Proposal Penawaran</h3>
+                    <h3 class="card-title">{{$buku->judul}}</h3>
                     <button type="button" class="btn btn-info btn-sm">
                         <i class="demo-psi-heart-2 fs-5 me-2"></i> Wishlist
                     </button>                                  
