@@ -77,52 +77,60 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($data as $index => $buku)
-                                                <tr class="align-middle">
-                                                    <th scope="row">{{ $index + $data->firstItem() }}</th>
-                                                    <td>
-                                                        <img src="{{ asset('thumbnail-buku/' . $buku->thumbnail) }}"
-                                                            alt="" style="width: 50px;">
-                                                    </td>
-                                                    <td>{{ $buku->judul }}</td>
-                                                    <td>{{ $buku->kategori->kategori }}</td>
-                                                    <td>{{ $buku->penulis }}</td>
-                                                    <td>{{ $buku->penerbit }}</td>
-                                                    <td>{{ $buku->no_isbn }}</td>
-                                                    <td class="fs-5">
-                                                        @if ($buku->publish == 1)
-                                                            <div class="badge d-block bg-success">Publish</div>
-                                                        @else
-                                                            <div class="badge d-block bg-secondary">Pending</div>
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        <div class="d-flex gap-2 justify-content-center">
-                                                            <form action="{{ route('buku.requestUpdate', $buku->id) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                @method('PUT') {{-- Tambahkan ini untuk menggunakan method PUT --}}
-                                                                <input type="hidden" name="action" value="terima">
-                                                                {{-- Nilai "terima" untuk tombol Terima --}}
-                                                                    <button type="submit"
-                                                                        class="btn btn-sm btn-primary">Terima</button>
-                                                            </form>
-                                                            <form action="{{ route('buku.requestUpdate', $buku->id) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                @method('PUT') {{-- Tambahkan ini untuk menggunakan method PUT --}}
-                                                                <input type="hidden" name="action" value="tolak">
-                                                                {{-- Nilai "tolak" untuk tombol Tolak --}}
-                                                                    <button type="submit"
-                                                                        class="btn btn-sm btn-danger">Tolak</button>
-                                                            </form>
+                                            @if ($data->isEmpty())
+                                                <tr>
+                                                    <td colspan="9">
+                                                        <div class="col-sm-12 col-md-12 text-center">
+                                                            {{ $kosong }}
                                                         </div>
-
                                                     </td>
                                                 </tr>
-                                            @endforeach
+                                            @else
+                                                @foreach ($data as $index => $buku)
+                                                    <tr class="align-middle">
+                                                        <th scope="row">{{ $index + $data->firstItem() }}</th>
+                                                        <td>
+                                                            <img src="{{ asset('thumbnail-buku/' . $buku->thumbnail) }}"
+                                                                alt="" style="width: 50px;">
+                                                        </td>
+                                                        <td>{{ $buku->judul }}</td>
+                                                        <td>{{ $buku->kategori->kategori }}</td>
+                                                        <td>{{ $buku->penulis }}</td>
+                                                        <td>{{ $buku->penerbit }}</td>
+                                                        <td>{{ $buku->no_isbn }}</td>
+                                                        <td class="fs-5">
+                                                            @if ($buku->publish == 1)
+                                                                <div class="badge d-block bg-success">Publish</div>
+                                                            @else
+                                                                <div class="badge d-block bg-secondary">Pending</div>
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex gap-2 justify-content-center">
+                                                                <form action="{{ route('buku.requestUpdate', $buku->id) }}"
+                                                                    method="POST">
+                                                                    @csrf
+                                                                    @method('PUT') {{-- Tambahkan ini untuk menggunakan method PUT --}}
+                                                                    <input type="hidden" name="action" value="terima">
+                                                                    {{-- Nilai "terima" untuk tombol Terima --}}
+                                                                    <button type="submit"
+                                                                        class="btn btn-sm btn-primary">Terima</button>
+                                                                </form>
+                                                                <form action="{{ route('buku.requestUpdate', $buku->id) }}"
+                                                                    method="POST">
+                                                                    @csrf
+                                                                    @method('PUT') {{-- Tambahkan ini untuk menggunakan method PUT --}}
+                                                                    <input type="hidden" name="action" value="tolak">
+                                                                    {{-- Nilai "tolak" untuk tombol Tolak --}}
+                                                                    <button type="submit"
+                                                                        class="btn btn-sm btn-danger">Tolak</button>
+                                                                </form>
+                                                            </div>
 
-
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            @endif
                                         </tbody>
                                     </table>
                                 </div>

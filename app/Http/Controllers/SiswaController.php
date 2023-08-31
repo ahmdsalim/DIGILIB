@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Siswa;
 use App\Models\Sekolah;
 use Illuminate\Http\Request;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 
 class SiswaController extends Controller
 {
