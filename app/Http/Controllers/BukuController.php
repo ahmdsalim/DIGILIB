@@ -92,8 +92,11 @@ class BukuController extends Controller
         $header = 'Data ' . $tittle;
 
         $data = Buku::where('status', 3)->paginate(25);
+        if ($data->isEmpty()) {
+            $kosong = 'Data tidak tersedia';
+        }
 
-        return view('buku.request', compact('data', 'tittle', 'header'));
+        return view('buku.request', compact('data', 'tittle', 'header','kosong'));
     }
 
     public function requestUpdate($id)
@@ -121,7 +124,8 @@ class BukuController extends Controller
             ->with('error', 'Buku tidak ditemukan.');
     }
 
-    public function resend ($id){
+    public function resend($id)
+    {
         $buku = Buku::find($id);
 
         if ($buku) {
@@ -129,7 +133,7 @@ class BukuController extends Controller
 
             if ($action === 'resend') {
                 $buku->status = 'pending';
-            } 
+            }
 
             $buku->save();
 
@@ -245,7 +249,11 @@ class BukuController extends Controller
         $buku->kategori_id = 1;
         $buku->email = Auth::user()->email;
         $buku->url_pdf = $upload_file;
+        $buku->deskripsi = $request->deskripsi;
         $buku->no_isbn = $request->no_isbn;
+        if (Auth::user()->role === 'owner') {
+            $buku->status = 'publish';
+        }
         $buku->save();
 
         return redirect()
@@ -262,9 +270,11 @@ class BukuController extends Controller
         $tittle = 'Buku';
         $header = 'Detail ' . $tittle;
 
-        $buku = Buku::find($slug);
+        $buku = Buku::where('slug', $slug)->first();
 
-        return view('buku.detail-buku', compact('tittle', 'header', 'buku'));
+        $desk_awal = substr($buku->deskripsi, 0, 250);
+        $deskripsi = $buku->deskripsi;
+        return view('buku.detail-buku', compact('tittle', 'header', 'buku','desk_awal','deskripsi'));
     }
 
     /**
@@ -342,19 +352,20 @@ class BukuController extends Controller
 
     public function showdetail($id, $slug)
     {
-        $data['buku'] = Buku::where([['id',$id],['slug',$slug]])->first() ?? abort(404);
+        $data['buku'] = Buku::where([['id', $id], ['slug', $slug]])->first() ?? abort(404);
         return view('detailbuku', $data);
     }
 
     public function search(Request $request)
     {
-    $keyword = $request->input('keyword');
-    $results = Buku::where('judul', 'like', "%$keyword%")
-                   ->orWhere('no_isbn', 'like', "%$keyword%")
-                   ->orWhere('penulis', 'like', "%$keyword%")
-                   ->orWhere('penerbit', 'like', "%$keyword%")
-                    ->orderBy('judul', 'asc')
-                    ->paginate(25);
+        $keyword = $request->input('keyword');
+        $results = Buku::where('judul', 'like', "%$keyword%")
+            ->orWhere('no_isbn', 'like', "%$keyword%")
+            ->orWhere('penulis', 'like', "%$keyword%")
+            ->orWhere('penerbit', 'like', "%$keyword%")
+            ->orderBy('judul', 'asc')
+            ->paginate(25);
 
-    return view('booksearch',compact('results','keyword'));
-    }}
+        return view('booksearch', compact('results', 'keyword'));
+    }
+}

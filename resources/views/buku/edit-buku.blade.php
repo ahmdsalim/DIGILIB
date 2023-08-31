@@ -44,14 +44,15 @@
                                     enctype="multipart/form-data">
                                     @csrf
                                     @method('put')
-                                    <div class="col-12">
+                                    <div class="col-12 mt-2">
                                         <div class="form-group">
                                             <div class="col-lg-12">
                                                 <div class="p-2 m-2 ">
                                                     <div class="text-center">
                                                         <img id="thumbnail-preview"
-                                                            src="{{ asset('thumbnail-buku/' . $buku->thumbnail) }}"
-                                                            style="width:100px" class="rounded rounded-circle"
+                                                            src="{{ asset('img/thumbnail-buku/' . $buku->thumbnail) }}"
+                                                            style="width:100px; height:120px;"
+                                                            class="rounded object-fit-cover"
                                                             alt="placeholder">
                                                     </div>
                                                 </div>
@@ -59,9 +60,12 @@
                                             <label>Thumbnail</label>
                                             <input type="file" name="thumbnail" class="form-control" accept="image/*"
                                                 onchange="updatePreview(this, 'thumbnail-preview')">
+                                            <small class="form-text text-muted">
+                                                Ukuran thumbnail harus 3x4
+                                            </small>
                                         </div>
                                     </div>
-                                    <div class="col-12">
+                                    <div class="col-12 mt-2">
                                         <div class="form-group">
                                             <div class="col-lg-12">
                                                 <div class="p-2 m-2">
@@ -76,7 +80,7 @@
                                         </div>
                                     </div>
                                     
-                                    <div class="col-12">
+                                    <div class="col-12 mt-2">
                                         <label class="M">Kategori</label>
                                         <select
                                             class="form-control select2 
@@ -95,7 +99,7 @@
                                             </div>
                                         @enderror
                                     </div>
-                                    <div class="col-12">
+                                    <div class="col-12 mt-2">
                                         <label for="_dm-inputAddress" class="form-label">Judul Buku</label>
                                         <input id="_dm-inputAddress" name="judul" placeholder="Masukan Judul"
                                             value="{{ $buku->judul }}"
@@ -109,7 +113,7 @@
                                             </div>
                                         @enderror
                                     </div>
-                                    <div class="col-12">
+                                    <div class="col-12 mt-2">
                                         <label for="_dm-inputAddress" class="form-label">Pengarang</label>
                                         <input id="_dm-inputAddress" name="penulis" placeholder="Masukan pengarang"
                                             value="{{ $buku->penulis }}"
@@ -122,7 +126,7 @@
                                                 {{ $message }}
                                             </div>
                                         @enderror
-                                        <div class="col-12">
+                                        <div class="col-12 mt-2">
                                             <label for="_dm-inputAddress" class="form-label">Penerbit</label>
                                             <input id="_dm-inputAddress" name="penerbit" placeholder="Masukan penerbit"
                                                 value="{{ $buku->penerbit }}"
@@ -136,7 +140,7 @@
                                                 </div>
                                             @enderror
                                         </div>
-                                        <div class="col-12">
+                                        <div class="col-12 mt-2">
                                             <label for="_dm-inputAddress" class="form-label">Tahun Terbit</label>
                                             <input id="_dm-inputAddress" name="tahun_terbit"
                                                 placeholder="Masukan tahun_terbit" onkeydown="preventNegativeInput(event)"
@@ -151,7 +155,7 @@
                                                 </div>
                                             @enderror
                                         </div>
-                                        <div class="col-12">
+                                        <div class="col-12 mt-2">
                                             <label for="_dm-inputAddress" class="form-label">No ISBN</label>
                                             <input id="_dm-inputAddress" name="no_isbn" disabled placeholder="Masukan no isbn"
                                                 onkeydown="preventNegativeInput(event)" value="{{ $buku->no_isbn }}"
@@ -165,7 +169,7 @@
                                                 </div>
                                             @enderror
                                         </div>
-                                        <div class="col-12">
+                                        <div class="col-12 mt-2">
                                             <label for="_dm-inputAddress" class="form-label">Jumlah Halaman</label>
                                             <input id="_dm-inputAddress" name="jumlah_halaman"
                                                 placeholder="Masukan jumlah halaman"
@@ -181,7 +185,7 @@
                                                 </div>
                                             @enderror
                                         </div>
-                                        <div class="col-12">
+                                        <div class="col-12 mt-2">
                                             <label for="_dm-inputAddress" class="form-label">URL PDF</label>
                                             <input id="_dm-inputAddress" type="file" name="url_pdf" value="{{ $buku->url_pdf }}" placeholder="Masukan url pdf"  accept="application/pdf"
                                                 class="form-control 
@@ -193,6 +197,11 @@
                                                     {{ $message }}
                                                 </div>
                                             @enderror
+                                        </div>
+                                        <div class="col-12 mt-2 mt-2">
+                                            <label for="_dm-inputAddress" class=" ">Deskripsi</label>
+                                            <textarea name="deskripsi" id="_dm-inputAddress" cols="5" rows="5"
+                                                class="form-control">{{ $buku->deskripsi }}</textarea>
                                         </div>
 
                                         <div class="row mt-3 ">

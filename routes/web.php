@@ -61,7 +61,7 @@ Route::prefix('api')->middleware('auth')->group(function() {
 });
 Route::controller(BukuController::class)->group(function () {
 
-    Route::get('/buku/request', [BukuController::class, 'request'])->name('buku.request');
+    Route::get('/request-publish', [BukuController::class, 'request'])->name('buku.request');
     Route::put('/buku/request/{id}', [BukuController::class, 'requestUpdate'])->name('buku.requestUpdate');
     Route::put('/buku/resend/{slug}', [BukuController::class, 'resend'])->name('buku.resend');
     Route::resource('buku', BukuController::class);

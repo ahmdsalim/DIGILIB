@@ -43,23 +43,26 @@
                                 <form action="{{ route('buku.store') }}" method="post" class="needs-validation" novalidate
                                     enctype="multipart/form-data">
                                     @csrf
-                                    <div class="col-12">
+                                    <div class="col-12 mt-2">
                                         <div class="form-group">
                                             <div class="col-lg-12">
                                                 <div class="p-2 m-2 ">
                                                     <div class="text-center">
                                                         <img id="thumbnail-preview" src="https://via.placeholder.com/400"
-                                                            style="width:100px" class="rounded rounded-circle"
-                                                            alt="placeholder">
+                                                            style="width:100px; height:120px;"
+                                                            class="rounded object-fit-cover" alt="placeholder">
                                                     </div>
                                                 </div>
                                             </div>
                                             <label>Thumbnail</label>
                                             <input type="file" name="thumbnail" class="form-control" accept="image/*"
                                                 onchange="updatePreview(this, 'thumbnail-preview')">
+                                            <small class="form-text text-muted">
+                                                Ukuran thumbhnail harus 3x4
+                                            </small>
                                         </div>
                                     </div>
-                                    <div class="col-12">
+                                    <div class="col-12 mt-2">
                                         <div class="form-group">
                                             <div class="col-lg-12">
                                                 <div class="p-2 m-2">
@@ -74,7 +77,7 @@
                                                 onchange="updateMultiPreview('slide-input', 'slide-preview-container')">
                                         </div>
                                     </div>
-                                    <div class="col-12">
+                                    <div class="col-12 mt-2">
                                         <label class="M">Kategori</label>
                                         <select
                                             class="form-control select2 
@@ -93,8 +96,8 @@
                                             </div>
                                         @enderror
                                     </div>
-                                    <div class="col-12">
-                                        <label for="_dm-inputAddress" class="form-label">Judul Buku</label>
+                                    <div class="col-12 mt-2 ">
+                                        <label for="_dm-inputAddress" class=" ">Judul Buku</label>
                                         <input id="_dm-inputAddress" name="judul" placeholder="Masukan Judul"
                                             value="{{ old('judul') }}"
                                             class="form-control 
@@ -107,8 +110,8 @@
                                             </div>
                                         @enderror
                                     </div>
-                                    <div class="col-12">
-                                        <label for="_dm-inputAddress" class="form-label">Pengarang</label>
+                                    <div class="col-12 mt-2">
+                                        <label for="_dm-inputAddress" class=" ">Pengarang</label>
                                         <input id="_dm-inputAddress" name="pengarang" placeholder="Masukan pengarang"
                                             value="{{ old('pengarang') }}"
                                             class="form-control 
@@ -120,88 +123,94 @@
                                                 {{ $message }}
                                             </div>
                                         @enderror
-                                        <div class="col-12">
-                                            <label for="_dm-inputAddress" class="form-label">Penerbit</label>
-                                            <input id="_dm-inputAddress" name="penerbit" placeholder="Masukan penerbit"
-                                                value="{{ old('penerbit') }}"
-                                                class="form-control 
+                                    </div>
+                                    <div class="col-12 mt-2">
+                                        <label for="_dm-inputAddress" class=" ">Penerbit</label>
+                                        <input id="_dm-inputAddress" name="penerbit" placeholder="Masukan penerbit"
+                                            value="{{ old('penerbit') }}"
+                                            class="form-control 
                                         @error('penerbit')
                                             is-invalid
                                         @enderror">
-                                            @error('penerbit')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
-                                        </div>
-                                        <div class="col-12">
-                                            <label for="_dm-inputAddress" class="form-label">Tahun Terbit</label>
-                                            <input id="_dm-inputAddress" name="tahun_terbit"
-                                                placeholder="Masukan tahun_terbit" onkeydown="preventNegativeInput(event)"
-                                                value="{{ old('tahun_terbit') }}"
-                                                class="form-control 
+                                        @error('penerbit')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-12 mt-2">
+                                        <label for="_dm-inputAddress" class=" ">Tahun Terbit</label>
+                                        <input id="_dm-inputAddress" name="tahun_terbit" placeholder="Masukan tahun terbit"
+                                            onkeydown="preventNegativeInput(event)" value="{{ old('tahun_terbit') }}"
+                                            class="form-control 
                                             @error('tahun_terbit')
                                                 is-invalid
                                             @enderror">
-                                            @error('tahun_terbit')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
-                                        </div>
-                                        <div class="col-12">
-                                            <label for="_dm-inputAddress" class="form-label">No ISBN</label>
-                                            <input id="_dm-inputAddress" name="no_isbn" placeholder="Masukan no isbn"
-                                                onkeydown="preventNegativeInput(event)" value="{{ old('no_isbn') }}"
-                                                class="form-control 
+                                        @error('tahun_terbit')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-12 mt-2">
+                                        <label for="_dm-inputAddress" class=" ">No ISBN</label>
+                                        <input id="_dm-inputAddress" name="no_isbn" placeholder="Masukan no isbn"
+                                            onkeydown="preventNegativeInput(event)" value="{{ old('no_isbn') }}"
+                                            class="form-control 
                                             @error('no_isbn')
                                                 is-invalid
                                             @enderror">
-                                            @error('no_isbn')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
-                                        </div>
-                                        <div class="col-12">
-                                            <label for="_dm-inputAddress" class="form-label">Jumlah Halaman</label>
-                                            <input id="_dm-inputAddress" name="jumlah_halaman"
-                                                placeholder="Masukan jumlah halaman"
-                                                onkeydown="preventNegativeInput(event)"
-                                                value="{{ old('jumlah_halaman') }}"
-                                                class="form-control 
+                                        @error('no_isbn')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-12 mt-2">
+                                        <label for="_dm-inputAddress" class=" ">Jumlah Halaman</label>
+                                        <input id="_dm-inputAddress" name="jumlah_halaman"
+                                            placeholder="Masukan jumlah halaman" onkeydown="preventNegativeInput(event)"
+                                            value="{{ old('jumlah_halaman') }}"
+                                            class="form-control 
                                             @error('jumlah_halaman')
                                                 is-invalid
                                             @enderror">
-                                            @error('jumlah_halaman')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
-                                        </div>
-                                        <div class="col-12">
-                                            <label for="_dm-inputAddress" class="form-label">URL PDF</label>
-                                            <input id="_dm-inputAddress" type="file" name="url_pdf" placeholder="Masukan url pdf"  accept="application/pdf"
-                                                value="{{ old('url_pdf') }}"
-                                                class="form-control 
+                                        @error('jumlah_halaman')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-12 mt-2">
+                                        <label for="_dm-inputAddress" class=" ">URL PDF</label>
+                                        <input id="_dm-inputAddress" type="file" name="url_pdf"
+                                            placeholder="Masukan url pdf" accept="application/pdf"
+                                            value="{{ old('url_pdf') }}"
+                                            class="form-control 
                                         @error('url_pdf')
                                             is-invalid
                                         @enderror">
-                                            @error('url_pdf')
-                                                <div class="invalid-feedback">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
-                                        </div>
-                                        
-                                        <div class="row mt-3 ">
-                                            <div class="col-md-6 col-sm-12 mb-2 d-grid ">
-                                                <a href="{{ route('buku.index') }}" class="btn btn-primary">Batal</a>
+                                        @error('url_pdf')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
                                             </div>
-                                            <div class="col-md-6 col-sm-12 mb-2 d-grid">
-                                                <button type="submit" class="btn btn-primary">Tambah</button>
-                                            </div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-12 mt-2">
+                                        <label for="_dm-inputAddress" class=" ">Deskripsi</label>
+                                        <textarea name="deskripsi" id="_dm-inputAddress" cols="5" rows="3"
+                                            class="form-control 
+                                        "></textarea>
+                                    </div>
+
+                                    <div class="row mt-3 ">
+                                        <div class="col-md-6 col-sm-12 mb-2 d-grid ">
+                                            <a href="{{ route('buku.index') }}" class="btn btn-primary">Batal</a>
                                         </div>
+                                        <div class="col-md-6 col-sm-12 mb-2 d-grid">
+                                            <button type="submit" class="btn btn-primary">Tambah</button>
+                                        </div>
+                                    </div>
                                 </form>
                                 <!-- END : Block styled form -->
 
@@ -273,8 +282,8 @@
     </script>
     <script>
         /*
-                                                    We want to preview images, so we need to register the Image Preview plugin
-                                                    */
+                                                            We want to preview images, so we need to register the Image Preview plugin
+                                                            */
         FilePond.registerPlugin(
 
             // encodes the file as base64 data

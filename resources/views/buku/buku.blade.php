@@ -80,7 +80,7 @@
                                                 </button>
                                             </div>
                                         </form>
-                                    </div> 
+                                    </div>
                                 </div>
                                 <!-- END : Right Toolbar -->
 
@@ -117,8 +117,12 @@
                                                     <tr class="align-middle">
                                                         <th scope="row">{{ $index + $data->firstItem() }}</th>
                                                         <td>
-                                                            <img src="{{ asset('img/thumbnail-buku/' . $buku->thumbnail) }}"
-                                                                alt="" style="width: 50px;">
+                                                            @if ($buku->thumbnail)
+                                                                <img src="{{ asset('img/thumbnail-buku/' . $buku->thumbnail) }}"
+                                                                    alt="" style="width: 50px;">
+                                                            @else
+                                                                <img src="" alt="Foto Default">
+                                                            @endif
                                                         </td>
                                                         <td>{{ $buku->judul }}</td>
                                                         <td>{{ $buku->kategori->kategori }}</td>
@@ -183,7 +187,7 @@
                                                                     </form>
                                                                 @endif
 
-                                                                <button href="{{ route('buku.show', $buku->slug) }}"
+                                                                <a href="{{ route('buku.show', $buku->slug) }}"
                                                                     class="btn btn-icon btn-sm btn-light"><svg
                                                                         fill="none" stroke="currentColor"
                                                                         stroke-width="1.5" width="18" height="18"
@@ -196,7 +200,7 @@
                                                                         </path>
                                                                     </svg>
 
-                                                                </button>
+                                                                </a>
                                                             </div>
                                                         </td>
                                                     </tr>
