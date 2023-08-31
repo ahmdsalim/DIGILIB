@@ -21,7 +21,7 @@
                     <h3 class="card-title">{{$buku->judul}}</h3>
                     @if(isAuth())
                     <a href="createkoleksi/{{$buku->id}}" type="submit" class="btn btn-info btn-sm">
-                        <i class="demo-psi-heart-2 fs-5 me-2"></i> Wishlist </a>
+                        <i class="demo-psi-heart-2 fs-5 me-2"></i>Koleksi</a>
                     @else
                     <form action="{{ route('createkoleksi', $buku->id) }}" method="POST">
                         @csrf

@@ -38,7 +38,7 @@
                                                     <div class="col-3 col-md-2">
                                                         <figure class="m-0">
                                                             <a href="" title="" rel="bookmark">
-                                                                <img src="https://tv2.lk21official.pro/wp-content/uploads/2015/12/film-frank-2014.jpg" alt="" class="img-thumbnail">
+                                                                <img src="{{asset('img/thumbnail-buku/'.$data->thumbnail)}}" alt="" class="img-thumbnail">
                                                             </a>
                                                         </figure>
                                                     </div>
