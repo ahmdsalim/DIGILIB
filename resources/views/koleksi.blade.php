@@ -3,7 +3,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb mb-0">
         <li class="breadcrumb-item"><a href="{{ route('landing') }}">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Koleksi</li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">Koleksi</a></li>
     </ol>
 @endsection
 

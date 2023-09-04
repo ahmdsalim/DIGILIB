@@ -1,154 +1,188 @@
 @extends('layouts.applanding')
+@section('breadcrumb')
+    <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a href="{{ route('landing') }}">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Detail Buku</a></li>
+    </ol>
+@endsection
+
+@section('pagetitle')
+    <p class="lead">
+
+    </p>
+@endsection
 @section('content')
     <div class="content__boxed">
         <div class="content__wrap">
             <div class="row">
-                <div class="col-sm-6 col-xl-3">
-                    <!-- User widget -->
-                    <div class="card mb-4">
-                        <img class="card-img-top" alt="Card image cap"
-                            src="{{ asset('img/thumbnail-buku/' . $buku->thumbnail) }}">
-                    </div>
-                </div>
-                <div class="col-sm-18 col-xl-9">
+                <div class="col-md-3 col-sm-12 mb-2">
                     <div class="card">
                         <div class="card-body">
-                            <div class="d-flex justify-content-between mb-2">
-                                <h6 class="card-text">Pengarang : Akmal</h6>
-                                <a href="{{ route('read', ['id' => $buku->id, 'slug' => $buku->slug]) }}"
-                                    class="btn btn-info btn-sm">Mulai Membaca</a>
-                            </div>
-                            <div class="d-flex justify-content-between mb-1">
-                                <h3 class="card-title">{{ $buku->judul }}</h3>
-                                @if (isAuth())
-                                    <a href="createkoleksi/{{ $buku->id }}" type="submit" class="btn btn-info btn-sm">
-                                        <i class="demo-psi-heart-2 fs-5 me-2"></i> Wishlist </a>
-                                @else
-                                    <form action="{{ route('createkoleksi', $buku->id) }}" method="POST">
-                                        @csrf
-                                        <button type="submit"
-                                            class="">
-                                            Like
-                                        </button>
-                                    </form>
-                                @endif
-                            </div>
-                            <div>
-                                <h6 class="card-text" style="text-align: right;">Sudah Dibaca<br>{{ $buku->jumlah_baca }}
-                                </h6>
+                            <div class="d-flex flex-column">
+                                <div class="d-flex justify-content-center">
+                                    @if ($buku->thumbnail)
+                                        <img src="{{ asset('img/thumbnail-buku/' . $buku->thumbnail) }}"
+                                            class="thumbnail" style="width: 230px; height:300px;">
+                                    @else
+                                        <img src="{{ asset('img/default-pict.png') }}" class="thumbnail"
+                                            style="width: 230px; height:300px;">
+                                    @endif
+
+                                </div>
                             </div>
                         </div>
-                        <div class="card-footer" style="border-top: 1px solid grey">
-                            <div class="mb-4">
-                                <h4 class="card-title">Deskripsi Buku</h4>
-                                <h6 class="card-text">Lorem Ipsum is simply dummy text of the printing and typesetting
-                                    industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                                    when an unknown printer took a galley of type and scrambled...... </h6>
-                                <h6 class="more-text">
-                                    Ini adalah teks tambahan yang akan disembunyikan.
-                                </h6>
-                                <h6 style="text-align: right;"><a href="#" class="read-more-link">Baca
-                                        Selengkapnya</a></h6>
+                    </div>
+                </div>
+
+
+                <div class="col-md-9 col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 mb-3" style="border-bottom: 1px solid grey">
+                                    <address class="mb-4">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <h6 class="card-text">Pengarang : {{$buku->penulis}}</h6>
+                                            @if (isAuth())
+                                            <a href="{{ route('read', ['id' => $buku->id, 'slug' => $buku->slug]) }}"
+                                                class="btn btn-info btn-sm">Mulai Membaca</a>
+                                            @else
+                                            <a href="/login"
+                                                class="btn btn-info btn-sm">Mulai Membaca</a>
+                                            @endif
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <h3 class="card-title">Judul : {{ $buku->judul }}</h3>
+                                            @if (isAuth())
+                                                <a href="" type="submit" class="btn btn-info btn-sm">
+                                                    <i class="demo-psi-heart-2 fs-5 me-2"></i> Koleksi</a>
+                                            @else
+                                                <a href="/login" class="btn btn-info btn-sm">
+                                                    <i class="demo-psi-heart-2 fs-5 me-2"></i> Koleksi</a>
+                                            @endif
+                                        </div>
+                                    </address>
+                                </div>
+                                <div class="col-md-12">
+                                    <address class="mb-4 mb-md-0">
+                                        <h4 class="mb-1">Deskripsi</h4>
+                                        <div class="description">
+                                            <p>
+                                                @if (strlen($buku->deskripsi) > 100)
+                                                    <span id="shortDescription">{{ $desk_awal }}...</span>
+                                                    <span id="fullDescription"
+                                                        style="display: none;">{{ $deskripsi }}</span>
+                                                    <a href="#" id="readMoreBtn">Baca Selengkapnya</a>
+                                                @else
+                                                    {{ $buku->deskripsi }}
+                                                @endif
+
+                                                @if (strlen($buku->deskripsi) > 100)
+                                                    <a href="#" id="readLessBtn" style="display: none;">Read Less</a>
+                                                @endif
+                                            </p>
+                                        </div>
+                                    </address>
+                                </div>
                             </div>
-                            <div>
-                                <h6>
-                                    <table class="table table-borderless">
-                                        <thead>
-                                            <tr>
-                                                <th>Detail</th>
-                                            </tr>
-                                        </thead>
-                                        <thead>
-                                            <tr>
-                                                <th>Pengarang</th>
-                                                <th>Tahun Terbit</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>{{ $buku->penulis }}</td>
-                                                <td>{{ $buku->tahun_terbit }}</td>
-                                                <td></td>
-                                            </tr>
-                                        </tbody>
-                                        <thead>
-                                            <tr>
-                                                <th>Penerbit</th>
-                                                <th>Jumlah Halaman</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>{{ $buku->penerbit }}</td>
-                                                <td>{{ $buku->jumlah_halaman }}</td>
-                                                <td></td>
-                                            </tr>
-                                        </tbody>
-                                        <thead>
-                                            <tr>
-                                                <th>No.ISBN</th>
-                                                <th>Rating</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>{{ $buku->no_isbn }}</td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                        </tbody>
-                                        <thead>
-                                            <tr>
-                                                <th>Kategori</th>
-                                                <th></th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>{{ $buku->kategori->kategori }}</td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </h6>
+                            <div class="contaier">
+                                <h4>Detail</h4>
+                                <div class="d-flex flex-column gap-3">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <address class="mb-4 mb-md-0">
+                                                <h5 class="mb-1">Kategori</h5>
+                                                {{ $buku->kategori->kategori }}<br>
+                                            </address>
+                                        </div>
+                                        <div class="col-md-6 right">
+                                            <address class="mb-4 mb-md-0">
+                                                <h5 class="mb-1">Penerbit</h5>
+                                                {{ $buku->penerbit }}<br>
+                                            </address>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <address class="mb-4 mb-md-0">
+                                                <h5 class="mb-1">Jumlah Halaman</h5>
+                                                {{ $buku->jumlah_halaman }}<br>
+                                            </address>
+                                        </div>
+                                        <div class="col-md-6 right">
+                                            <address class="mb-4 mb-md-0">
+                                                <h5 class="mb-1">Rating</h5>
+                                                {{ $buku->rating->score ?? 'Belum ada rating' }} <br>
+                                            </address>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <address class="mb-4 mb-md-0">
+                                                <h5 class="mb-1">Tahun terbit</h5>
+                                                {{ $buku->tahun_terbit }}<br>
+                                            </address>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <address class="mb-4 mb-md-0">
+                                                <h5 class="mb-1">Jumlah Dibaca</h5>
+                                                {{ $buku->jumlah_baca ?? 'Belum ada pembaca' }}<br>
+                                            </address>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <address class="mb-4 mb-md-0">
+                                                <h5 class="mb-1">No ISBN</h5>
+                                                {{ $buku->no_isbn }}<br>
+                                            </address>
+                                        </div>
+                                        <div class="col-md-6 right">
+                                            <address class="mb-4 mb-md-0">
+                                                <h5 class="mb-1"></h5>
+                                                <div class="col-md-4">
+
+                                                </div>
+                                            </address>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- END : Basic card -->
         </div>
-    @endsection
+    </div>
+@endsection
+@push('js')
+    <script>
+        document.getElementById("readMoreBtn").addEventListener("click", function(event) {
+            event.preventDefault();
+            document.getElementById("shortDescription").style.display = "none";
+            document.getElementById("fullDescription").style.display = "inline";
+            document.getElementById("readMoreBtn").style.display = "none";
+            document.getElementById("readLessBtn").style.display = "inline";
+        });
 
-    @push('css')
-        <style type="text/css">
-            .card-img-top {
-                height: 500px;
-                object-fit: cover;
-            }
+        document.getElementById("readLessBtn").addEventListener("click", function(event) {
+            event.preventDefault();
+            document.getElementById("shortDescription").style.display = "inline";
+            document.getElementById("fullDescription").style.display = "none";
+            document.getElementById("readMoreBtn").style.display = "inline";
+            document.getElementById("readLessBtn").style.display = "none";
+        });
+    </script>
+@endpush
 
-            .more-text {
-                display: none;
-            }
-
-            .show-more .more-text {
-                display: block;
-            }
-
-            .like-button {
-                background-color: white;
-                border: none;
-                cursor: pointer;
-            }
-
-            .like-button.liked {
-                background-color: blue;
-                /* Ganti dengan warna yang Anda inginkan */
-                color: white;
-            }
-        </style>
-    @endpush
+@push('css')
+<style type="text/css">
+    .thumbnail {
+    border-radius: 0.4375rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(55,60,67,.075);
+    max-width: 100%;
+    }
+</style>
+@endpush

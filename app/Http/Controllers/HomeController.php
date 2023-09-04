@@ -17,9 +17,9 @@ class HomeController extends Controller
     if(!is_null($input_kategori)){
         $query->where('kategori_id',$input_kategori);
     }
-
-    $buku = $query->get();
-    return view('landing',compact('buku','kategori'));
+    $bukuterbaru = $query->orderBy('created_at', 'desc')->take(6)->get();
+    $bukuterpopuler = $query->orderBy('jumlah_baca', 'desc')->take(6)->get();
+    return view('landing',compact('bukuterbaru','kategori','bukuterpopuler'));
     }
 
     public function home()

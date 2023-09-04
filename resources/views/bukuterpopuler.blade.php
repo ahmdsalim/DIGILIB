@@ -1,19 +1,19 @@
 @extends('layouts.applanding')
 
-@section('content') 
+@section('content')
 <div class="content__header content__boxed rounded-0">
   <div class="content__wrap">
         <ol class="breadcrumb mb-0">
         <li class="breadcrumb-item"><a href="{{ route('landing') }}">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page"><a href="#">Buku Terbaru</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">Buku Terpopuler</a></li>
     </ol>
   </div>
                 <div class="content__wrap d-md-flex align-items-start">
                         <div class="d-inline-flex align-items-center position-relative pt-xl-5">
                             <div class="flex-grow-1 ">
-                              <h1 class="mb-3">Buku Terbaru</h1>
+                              <h1 class="mb-3">Buku Terpopuler</h1>
     <p class="lead">
-      Berikut adalah tampilan list buku yang diurutkan berdasarkan tanggal terbaru
+      Berikut adalah tampilan list buku yang diurutkan berdasarkan banyaknya jumlah baca
     </p>
 </div>
 </div>

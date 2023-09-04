@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers; 
 
 use App\Models\Buku;
 use App\Models\Kategori;
@@ -352,20 +352,43 @@ class BukuController extends Controller
 
     public function showdetail($id, $slug)
     {
-        $data['buku'] = Buku::where([['id', $id], ['slug', $slug]])->first() ?? abort(404);
-        return view('detailbuku', $data);
+    $buku = Buku::where([['id', $id], ['slug', $slug]])->first() ?? abort(404);
+    
+    // Ubah cara Anda mengakses deskripsi dari model Buku
+    $desk_awal = substr($buku->deskripsi, 0, 250);
+    $deskripsi = $buku->deskripsi;
+
+    // Kemudian, simpan model Buku dalam array data
+    $data['buku'] = $buku;
+
+    return view('detailbuku', compact('buku','desk_awal','deskripsi'));    
     }
 
     public function search(Request $request)
     {
-        $keyword = $request->input('keyword');
-        $results = Buku::where('judul', 'like', "%$keyword%")
-            ->orWhere('no_isbn', 'like', "%$keyword%")
-            ->orWhere('penulis', 'like', "%$keyword%")
-            ->orWhere('penerbit', 'like', "%$keyword%")
-            ->orderBy('judul', 'asc')
-            ->paginate(25);
+    $keyword = $request->input('keyword');
+    $results = Buku::where(function ($query) use ($keyword) {
+        $query->where('judul', 'like', "%$keyword%")
+              ->orWhere('no_isbn', 'like', "%$keyword%")
+              ->orWhere('penulis', 'like', "%$keyword%")
+              ->orWhere('penerbit', 'like', "%$keyword%");
+    })
+    ->where('status', 'publish')
+    ->orderBy('judul', 'asc')
+    ->paginate(25);
 
-        return view('booksearch', compact('results', 'keyword'));
+    return view('booksearch', compact('results', 'keyword'));
+    }
+
+    public function bukuterbaru(Request $request)
+    {
+        $buku = Buku::orderBy('created_at', 'desc')->get();
+        return view('bukuterbaru', compact('buku'));
+    }
+
+    public function bukuterpopuler(Request $request)
+    {
+        $buku = Buku::orderBy('jumlah_baca', 'desc')->get();
+        return view('bukuterpopuler', compact('buku'));
     }
 }
