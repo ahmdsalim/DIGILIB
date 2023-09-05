@@ -7,6 +7,7 @@ use App\Models\Kategori;
 use Spatie\PdfToImage\Pdf;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Smalot\PdfParser\Parser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -90,6 +91,7 @@ class BukuController extends Controller
     {
         $tittle = 'Buku';
         $header = 'Data ' . $tittle;
+        $kosong = '';
 
         $data = Buku::where('status', 3)->paginate(25);
         if ($data->isEmpty()) {
@@ -176,18 +178,15 @@ class BukuController extends Controller
                 'pengarang' => 'required|',
                 'penerbit' => 'required|',
                 'tahun_terbit' => 'required|',
-                'jumlah_halaman' => 'required|',
                 'url_pdf' => 'required|',
             ],
             [
-                'no_isb.unique' => 'no isbn ' . $request->kategori . ' sudah digunakan',
-                'no_isb.required' => 'no isbn tidak boleh kosong',
+                'no_isbn.unique' => 'no isbn ' . $request->no_isbn . ' sudah digunakan',
                 'kategori_id.required' => 'kategori tidak boleh kosong',
                 'judul.required' => 'judul tidak boleh kosong',
-                'penarang.required' => 'penarang tidak boleh kosong',
+                'pengarang.required' => 'penarang tidak boleh kosong',
                 'penerbit.required' => 'penerbit tidak boleh kosong',
                 'tahun_terbit.required' => 'tahun_terbit tidak boleh kosong',
-                'jumlah_halaman.required' => 'jumlah_halaman tidak boleh kosong',
                 'no_isbn.required' => 'no_isbn tidak boleh kosong',
                 'url_pdf.required' => 'url_pdf tidak boleh kosong',
             ],
@@ -224,19 +223,25 @@ class BukuController extends Controller
             $buku->thumbnail = $thumbnail_name;
         }
 
-        $destination = 'files';
+        $destination = 'public/files';
 
-        if ($request->hasFile('url_pdf')) {
-            $file = $request->file('url_pdf');
-            $extension = $file->getClientOriginalExtension();
+        $file = $request->file('url_pdf');
+        $extension = $file->getClientOriginalExtension();
+        $slug = Str::slug($request->judul);
+        $file_name = $slug . '-' . time() . '.' . $extension;
+        $file->storeAs($destination, $file_name);
 
-            // $slug = Buku::all()->first()->slug; // Mengambil slug dari data pertama
-            $slug = Str::slug($request->judul);
-            $file_name = $slug . '-' . time() . '.' . $extension;
+        // Path lengkap ke file PDF yang diunggah
+        $pdfPath = storage_path('app/' . $destination . '/' . $file_name);
 
-            $file->move($destination, $file_name);
-        }
+        // Menggunakan pdfparser untuk menghitung jumlah halaman
+        $parser = new Parser();
+        $pdf = $parser->parseFile($pdfPath);
+        $pages = $pdf->getPages();
 
+        // Hitung jumlah halaman
+        $pageCount = count($pages);
+        
         $upload_file = $file_name;
 
         $buku->slide = implode('|', $images); // Mengganti $image menjadi $images
@@ -245,7 +250,7 @@ class BukuController extends Controller
         $buku->penulis = $request->pengarang;
         $buku->penerbit = $request->penerbit;
         $buku->tahun_terbit = $request->tahun_terbit;
-        $buku->jumlah_halaman = $request->jumlah_halaman;
+        $buku->jumlah_halaman = $pageCount;
         $buku->kategori_id = 1;
         $buku->email = Auth::user()->email;
         $buku->url_pdf = $upload_file;

@@ -42,35 +42,18 @@
                                     </div>
                                     <div id="carouselExample" class="carousel slide">
                                         <div class="carousel-inner">
-                                            <div class="carousel-item active">
-                                                <div class="row">
-                                                    <div class="col-md-3">
-                                                        <img src="{{ asset('img/slide/' . $buku->slide) }}"
-                                                            class="img-thumbnail" class="d-block w-100" alt="...">
+                                            @foreach ($buku as $key => $image_url)
+                                                <div class="carousel-item {{ $key === 0 ? 'active' : '' }}">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <img src="{{ asset('img/slide/', $image_url) }}"
+                                                                class="img-thumbnail d-block w-100"
+                                                                alt="Slide ">
+                                                        </div>
                                                     </div>
+                                                </div>
+                                            @endforeach
 
-                                                </div>
-                                            </div>
-                                            <div class="carousel-item">
-                                                <div class="row">
-                                                    <div class="col-md-3">
-                                                        <img src="{{ asset('img/slide/05a5cf06982ba7892ed2a6d38fe832d6.png') }}"
-                                                            class="d-block w-100" alt="...">
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <img src="{{ asset('img/slide/05a5cf06982ba7892ed2a6d38fe832d6.png') }}"
-                                                            class="d-block w-100" alt="...">
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <img src="{{ asset('img/slide/05a5cf06982ba7892ed2a6d38fe832d6.png') }}"
-                                                            class="d-block w-100" alt="...">
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <img src="{{ asset('img/slide/05a5cf06982ba7892ed2a6d38fe832d6.png') }}"
-                                                            class="d-block w-100" alt="...">
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                     <div>
@@ -82,6 +65,7 @@
                                         </button>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
