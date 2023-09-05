@@ -3,12 +3,8 @@
       <!-- Brand -->
       <div class="header__brand">
          <div class="brand-wrap">
-            <!-- Brand logo -->
-            <a href="/" class="brand-img stretched-link">
-            </a>
-            <!-- Brand title -->
-            <div class="brand-title">DIGILIB</div>
-            <!-- You can also use IMG or SVG instead of a text element. -->
+<h2><a href="/" style="text-decoration: none; color: white; font-family: Ubuntu,sans-serif;
+">DIGILIB</a></h2>            <!-- You can also use IMG or SVG instead of a text element. -->
          </div>
       </div>
       <!-- End - Brand -->
@@ -21,8 +17,9 @@
                <label for="header-search-input" class="header__btn d-md-none btn btn-icon rounded-pill shadow-none border-0 btn-sm" type="button">
                <i class="demo-psi-magnifi-glass"></i>
                </label>
-               <!-- Searchbox input -->
-               <form action="{{ route('book.search') }}" method="GET" class="searchbox searchbox--auto-expand searchbox--hide-btn input-group">
+
+                  @if(request()->route()->getName() != 'book.search' && request()->route()->getName() != 'pembaca.profile' && request()->route()->getName() != 'pembaca.changepassword.show' && request()->route()->getName() != 'koleksi')                  
+                  <form action="{{ route('book.search') }}" method="GET" class="searchbox searchbox--auto-expand searchbox--hide-btn input-group">
                   <input id="header-search-input" class="searchbox__input form-control bg-transparent" name="keyword" type="search" placeholder="Cari ..." aria-label="Search">
                   <div class="searchbox__backdrop">
                      <button class="searchbox__btn header__btn btn btn-icon rounded shadow-none border-0 btn-sm" type="button" id="button-addon2">
@@ -30,6 +27,7 @@
                      </button>
                   </div>
                </form>
+               @endif
             </div>
          </div>
          <!-- End - Content Header - Left Side -->
@@ -86,9 +84,9 @@
                </div>
             </div>
             @else
-            <a href="login">
-              <div class="brand-title">Login</div>
-            </a>
+            <div class="brand-wrap">
+<h5><a href="/login" style="text-decoration: none; color: white; font-family: Ubuntu,sans-serif;
+">Login</a></h5></div>
             @endif             
          </div>
          <!-- Brand title -->
@@ -96,3 +94,8 @@
    </div>
    </div>
 </header>
+@push('css')
+<style type="text/css">
+
+</style>
+@endpush

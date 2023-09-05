@@ -12,7 +12,7 @@
         max-width: 100%;
         height: auto;
     }
-    .desc {
+    .desc { 
         text-overflow: ellipsis;
         overflow: hidden;
     }
@@ -38,7 +38,7 @@
                                                     <div class="col-3 col-md-2">
                                                         <figure class="m-0">
                                                             <a href="" title="" rel="bookmark">
-                                                                <img src="https://tv2.lk21official.pro/wp-content/uploads/2015/12/film-frank-2014.jpg" alt="" class="img-thumbnail">
+                                                                <img src="{{asset('img/thumbnail-buku/'.$data->thumbnail)}}" alt="" class="img-thumbnail">
                                                             </a>
                                                         </figure>
                                                     </div>
@@ -53,13 +53,16 @@
                                                             <path style="fill:#ED8A19;" d="M26.285,2.486l5.407,10.956c0.376,0.762,1.103,1.29,1.944,1.412l12.091,1.757  c2.118,0.308,2.963,2.91,1.431,4.403l-8.749,8.528c-0.608,0.593-0.886,1.448-0.742,2.285l2.065,12.042  c0.362,2.109-1.852,3.717-3.746,2.722l-10.814-5.685c-0.752-0.395-1.651-0.395-2.403,0l-10.814,5.685  c-1.894,0.996-4.108-0.613-3.746-2.722l2.065-12.042c0.144-0.837-0.134-1.692-0.742-2.285l-8.749-8.528  c-1.532-1.494-0.687-4.096,1.431-4.403l12.091-1.757c0.841-0.122,1.568-0.65,1.944-1.412l5.407-10.956  C22.602,0.567,25.338,0.567,26.285,2.486z"/>
                                                             </svg>
                                                         </div>
-                                                        <p class="desc">{{Str::limit("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                                        tempor.", 250, "...")}}</p>
+                                                        <p class="desc">{{$data->deskripsi}}</p>
+                                                            <div class="d-flex">
+                                                                @if (isAuth())
+                                                                <a href="{{route('buku.detailbuku',['id'=>$data->id, 'slug'=>$data->slug])}}"
+                                                                    class="btn btn-success btn-sm">Detail</a>
+                                                                @else
+                                                                <a href="/login"
+                                                                    class="btn btn-success btn-sm">Detail</a>
+                                                                @endif
+                                                            </div>
                                                     </div>
                                                 </div>
                                                 @endforeach

@@ -1,9 +1,9 @@
 @extends('layouts.applanding')
-@section('breadcrumb')
+@section('breadcrumb') 
     <ol class="breadcrumb mb-0">
         <li class="breadcrumb-item"><a href="{{ route('landing') }}">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Ubah Password</li>
-    </ol>
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">Ubah Password</a></li>
+    </ol> 
 @endsection
 
 @section('pagetitle')
