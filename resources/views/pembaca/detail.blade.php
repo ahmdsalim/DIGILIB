@@ -77,7 +77,7 @@
                                                 <td>{{$read->buku->penulis}} ({{$read->buku->tahun_terbit}})</td>
                                                 <td>
                                                     <div class="progress" style="border-radius: 0;">
-                                                        <div class="progress-bar bg-success" role="progressbar" style="width: {{round(($read->progress/$read->buku->jumlah_halaman)*100)}}%; border-radius: 0;" aria-label="Progress Membaca" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        <div class="progress-bar bg-success" role="progressbar" style="width: {{round(($read->progress/$read->buku->jumlah_halaman)*100)}}%; border-radius: 0;" aria-label="Progress Membaca" aria-valuenow="{{round(($read->progress/$read->buku->jumlah_halaman)*100)}}" aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                     <div class="mt-1 d-flex justify-content-between">
                                                         <span class="text-muted" style="font-size: .65rem;">{{$read->progress.'/'.$read->buku->jumlah_halaman}} Halaman</span>
