@@ -8,7 +8,6 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KoleksiController;
-use App\Http\Controllers\LikeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BacaController;
@@ -23,13 +22,13 @@ use App\Http\Controllers\BacaController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('landing');
 Route::get('/search', [BukuController::class, 'search'])->name('book.search');
 
-Route::get('/buku/terbaru', function () {
-    return view('bukuterbaru');
-});
+Route::get('/buku/terbaru', [BukuController::class, 'bukuterbaru'])->name('bukuterbaru');
+Route::get('/buku/terpopuler', [BukuController::class, 'bukuterpopuler'])->name('bukuterpopuler');
 
 Auth::routes();
 
@@ -62,10 +61,10 @@ Route::prefix('api')->middleware('auth')->group(function() {
 	Route::post('collection/uncollect', [KoleksiController::class, 'uncollect'])->name('api.collection.uncollect');
 });
 Route::controller(BukuController::class)->group(function () {
-    // Route::resource('buku/test', BukuController::class);
-    // Route::get('/buku/test', [BukuController::class, 'test'])->name('buku.test');
-    Route::get('/buku/request', [BukuController::class, 'request'])->name('buku.request');
+
+    Route::get('/request-publish', [BukuController::class, 'request'])->name('buku.request');
     Route::put('/buku/request/{id}', [BukuController::class, 'requestUpdate'])->name('buku.requestUpdate');
+    Route::put('/buku/resend/{slug}', [BukuController::class, 'resend'])->name('buku.resend');
     Route::resource('buku', BukuController::class);
 });
     
@@ -100,11 +99,8 @@ Route::name('sekolah.')->group(function() {
 
 Route::get('baca/{id}/{slug}', [BacaController::class, 'read'])->name('read');
 
-Route::get('/koleksi', [KoleksiController::class, 'index']);
+Route::get('/koleksi', [KoleksiController::class, 'index'])->name('koleksi');
 Route::get('/createkoleksi/{id}', [KoleksiController::class, 'create']);
-
-Route::post('/like/{id}', [LikeController::class, 'index'])->name('like');
-Route::post('/Buku/{buku}/toggle-like', [KoleksiController::class, 'create'])->name('createkoleksi');
 
 Route::get('list-pembaca', [BacaController::class, 'index'])->name('reader.index');
 Route::get('list-pembaca/{id}/detail', [BacaController::class, 'detail'])->name('reader.detail');
