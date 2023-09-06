@@ -77,6 +77,26 @@
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                            @csrf
                         </form>
+                        <div class="list-group-item list-group-item-action border-end-0 py-0">
+                            <hr class="mb-0 mt-1">
+                        </div>
+                        @php
+                           $lastread = auth()->user()->baca()->orderBy('end_at','desc')->first();
+                        @endphp 
+                        <div href="#" class="list-group-item list-group-item-action border-end-0 mt-0">
+                           <span class="text-muted small">Terakhir Dibaca:</span>
+                           <div class="d-flex align-items-center position-relative mt-2">
+                              <div class="flex-shrink-0">
+                                 <img src="{{asset('img/thumbnail-buku/'.$lastread->buku->thumbnail)}}" width="15" height="auto">
+                              </div>
+                              <div class="flex-grow-1 ms-2">
+                                 <a href="{{ route('read', ['id' => $lastread->buku->id, 'slug' => $lastread->buku->slug]) }}" class="stretched-link text-reset text-decoration-none mb-1">{{$lastread->buku->judul}}</a>
+                                 <div class="progress progress-md">
+                                    <div class="progress-bar" role="progressbar" style="width: {{round(($lastread->progress/$lastread->buku->jumlah_halaman)*100)}}%; border-radius: 0;" aria-label="Progress Membaca" aria-valuenow="{{round(($lastread->progress/$lastread->buku->jumlah_halaman)*100)}}" aria-valuemin="0" aria-valuemax="100"></div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
                         </div>
                      </div>
                   </div>
@@ -84,8 +104,11 @@
             </div>
             @else
             <div class="brand-wrap">
-<h5><a href="/login" style="text-decoration: none; color: white; font-family: Ubuntu,sans-serif;
-">Login</a></h5></div>
+               <h5 class="my-auto">
+                  <a href="/login" style="text-decoration: none; color: white; font-family: Ubuntu,sans-serif;">
+                  Masuk</a>
+               </h5>
+            </div>
             @endif             
          </div>
          <!-- Brand title -->

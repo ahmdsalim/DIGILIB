@@ -11,6 +11,13 @@
 
     </p>
 @endsection
+
+@php
+    header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
+    header("Pragma: no-cache"); // HTTP 1.0.
+    header("Expires: 0 "); // Proxies.
+@endphp
+
 @section('content')
     <div class="content__boxed">
         <div class="content__wrap">
@@ -39,8 +46,8 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-12 mb-3" style="border-bottom: 1px solid grey">
-                                    <address class="mb-4">
+                                <div class="col-md-12 mb-3 border-bottom">
+                                    <!-- <address class="mb-4">
                                         <div class="d-flex justify-content-between mb-2">
                                             <h6 class="card-text">Pengarang : {{$buku->penulis}}</h6>
                                             @if (isAuth())
@@ -53,15 +60,24 @@
                                         </div>
                                         <div class="d-flex justify-content-between mb-1">
                                             <h3 class="card-title">Judul : {{ $buku->judul }}</h3>
-                                            @if (isAuth())
-                                                <a href="" type="submit" class="btn btn-info btn-sm">
-                                                    <i class="demo-psi-heart-2 fs-5 me-2"></i> Koleksi</a>
-                                            @else
-                                                <a href="/login" class="btn btn-info btn-sm">
-                                                    <i class="demo-psi-heart-2 fs-5 me-2"></i> Koleksi</a>
+                                            @if(isAuth())
+                                            <button id="btnCollection" type="button" class="btn btn-info btn-sm" data-id="{{ Crypt::encryptString($buku->id) }}" data-collected="{{ $buku->collectedBy(auth()->user()) ? 'true' : 'false' }}" data-baseurl="{{url('')}}">
+                                                {{ $buku->collectedBy(auth()->user()) ? 'Hapus Koleksi' : 'Tambah Ke Koleksi' }}
+                                            </button>
                                             @endif
                                         </div>
-                                    </address>
+                                    </address> -->
+                                    <div class="pb-1 d-flex align-items-center">
+                                        <small class="">11 days ago</small>
+                                        <div class="d-flex g-2 ms-auto">
+                                            <a href="#" class="btn btn-icon btn-sm btn-link text-head px-2 py-0">
+                                                <i class="demo-pli-heart-2 fs-5 me-2"></i>427
+                                            </a>
+                                            <a href="#" class="btn btn-icon btn-sm btn-link text-head px-2 py-0">
+                                                <i class="demo-pli-speech-bubble-5 fs-5 me-2"></i>84
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-md-12">
                                     <address class="mb-4 mb-md-0">
@@ -186,3 +202,38 @@
     }
 </style>
 @endpush
+
+@if(isAuth())
+@push('js')
+<script type="text/javascript">
+    const btnCollection = document.getElementById('btnCollection')
+
+    btnCollection.addEventListener('click',async () => {
+        const bookId = btnCollection.getAttribute('data-id')
+        const collected = btnCollection.getAttribute('data-collected') === 'true';
+        const baseUrl = btnCollection.getAttribute('data-baseurl')
+        const url = collected ? `${baseUrl}/api/collection/uncollect` : `${baseUrl}/api/collection/collect`
+        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+
+        try {
+            const response = await axios.post(url, {
+                id: bookId
+            }, {
+                headers: {
+                    'X-CSRF-TOKEN': token
+                }
+            })
+
+            const data = response.data
+
+            if(data.message === 'collected' || data.message === 'uncollected'){
+                btnCollection.textContent = collected ? 'Tambah Ke Koleksi' : 'Hapus Koleksi'
+                btnCollection.setAttribute('data-collected', collected ? 'false' : 'true')
+            }
+        }catch(error){
+            console.error('Error:', error)
+        }
+    })
+</script>
+@endpush
+@endif

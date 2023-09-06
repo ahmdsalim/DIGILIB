@@ -10,7 +10,7 @@
         </h3>
     </div>
   </div>
-</div>
+</div> 
 
 <div class="content__boxed">
   <div class="row justify-content-center">
@@ -22,7 +22,7 @@
         <div class="row">
 
           <div class="d-flex justify-content-between mb-4">
-            <h1 class="text-body">Buku Terbaru</h1>
+            <h1 class="text-dark">Buku Terbaru</h1>
               <a href="{{route('bukuterbaru')}}">Lihat Semua</a>
           </div>
           
@@ -41,7 +41,7 @@
           <div class="mb-3"></div>
 
           <div class="d-flex justify-content-between mb-4">
-                              <h1 class="text-body">Buku Terpopuler</h1>
+                              <h1 class="text-dark">Buku Terpopuler</h1>
                               <a href="{{route('bukuterpopuler')}}">Lihat Semua</a>
                           </div>
           @foreach ($bukuterpopuler as $data)                          
@@ -114,8 +114,8 @@
         @media only screen and (min-width: 768px) {
           /* For desktop: */
           .card-img-top {
-            height: 210px;
-            width: 140px;
+            height: 200px;
+            width: 133px;
             box-shadow: 0 1rem 1rem -0.75rem rgba(105,96,215,.175);
           }
           .card-title {

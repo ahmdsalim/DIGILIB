@@ -199,7 +199,7 @@
                                 </li>
                             @endif
                             <li class="nav-item">
-                                <a href="#" class="nav-link mininav-toggle">
+                                <a href="{{route('reader.index')}}" class="nav-link mininav-toggle">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                         viewBox="0 0 256 256" style="margin-right: 4px;">
                                         <path fill="currentColor"

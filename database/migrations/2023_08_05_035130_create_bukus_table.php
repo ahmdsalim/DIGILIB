@@ -26,7 +26,7 @@ return new class extends Migration
                   ->onDelete('cascade');
             $table->string('email');
             $table->string('no_isbn');
-            $table->string('jumlah_baca')->nullable();
+            $table->string('jumlah_baca')->nullable(); 
             $table->string('url_pdf');
             $table->string('deskripsi')->nullable();
             $table->enum('status',['publish','rejected','pending',])->default('pending');
