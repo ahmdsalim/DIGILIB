@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers; 
+namespace App\Http\Controllers;
 
 use App\Models\Buku;
 use App\Models\Kategori;
@@ -38,7 +38,7 @@ class BukuController extends Controller
                     $kosong = 'Data tidak tersedia';
                 }
             } else {
-                $data = Buku::where('status', '<>', 'rejected') // Tidak mengambil data dengan status 'pending'
+                $data = Buku::where('status','publish') // Tidak mengambil data dengan status 'pending'
                     ->orderBy('status', 'desc')
                     ->orderBy('judul', 'asc') // Mengurutkan berdasarkan judul buku secara ascending
                     ->paginate(25);
@@ -98,7 +98,7 @@ class BukuController extends Controller
             $kosong = 'Data tidak tersedia';
         }
 
-        return view('buku.request', compact('data', 'tittle', 'header','kosong'));
+        return view('buku.request', compact('data', 'tittle', 'header', 'kosong'));
     }
 
     public function requestUpdate($id)
@@ -241,7 +241,7 @@ class BukuController extends Controller
 
         // Hitung jumlah halaman
         $pageCount = count($pages);
-        
+
         $upload_file = $file_name;
 
         $buku->slide = implode('|', $images); // Mengganti $image menjadi $images
@@ -279,7 +279,7 @@ class BukuController extends Controller
 
         $desk_awal = substr($buku->deskripsi, 0, 250);
         $deskripsi = $buku->deskripsi;
-        return view('buku.detail-buku', compact('tittle', 'header', 'buku','desk_awal','deskripsi'));
+        return view('buku.detail-buku', compact('tittle', 'header', 'buku', 'desk_awal', 'deskripsi'));
     }
 
     /**
@@ -303,16 +303,7 @@ class BukuController extends Controller
     {
         $validator = Validator::make(
             $request->all(),
-            [
-                'judul' => 'required|',
-                'kategori_id' => 'required|',
-                'penulis' => 'required|',
-                'penerbit' => 'required|',
-                'tahun_terbit' => 'required|',
-                'jumlah_halaman' => 'required|',
-                'url_pdf' => 'required|',
-                'no_isbn' => 'required|',
-            ],
+            [],
             [
                 'no_isb.unique' => 'no isbn ' . $request->kategori . ' sudah digunakan',
                 'no_isb.required' => 'no isbn tidak boleh kosong',
@@ -334,8 +325,73 @@ class BukuController extends Controller
                 ->withInput();
         }
 
-        $data = Buku::find($id);
-        $data->update($request->all());
+        $data = Buku::findorfail($id);
+
+        $images = []; // Mengganti $slide menjadi $images
+
+        // upload slide
+        if ($request->hasFile('slide')) {
+            // Memeriksa apakah ada file slide yang diunggah
+            foreach ($request->file('slide') as $file) {
+                $image_name = md5(rand(1000, 10000));
+                $ext = strtolower($file->getClientOriginalExtension()); // Menggunakan getgetClientOriginalExtension() untuk mendapatkan ekstensi file
+                $image_full_name = $image_name . '.' . $ext;
+                $upload_path = 'img/slide/';
+                $image_url = $upload_path . $image_full_name;
+                $file->move($upload_path, $image_full_name);
+                $images[] = $image_url;
+            }
+        }
+
+        if ($request->hasFile('thumbnail')) {
+            $thumbnail_name = md5(rand(1000, 10000)) . '.' . $request->file('thumbnail')->getClientOriginalExtension();
+            $request->file('thumbnail')->move('img/thumbnail-buku/', $thumbnail_name);
+            $data->thumbnail = $thumbnail_name;
+        }
+
+        $destination = 'public/files';
+
+        if ($request->hasFile('url_pdf')) {
+            $file = $request->file('url_pdf');
+            $extension = $file->getClientOriginalExtension();
+            $slug = Str::slug($request->judul);
+            $file_name = $slug . '-' . time() . '.' . $extension;
+            $file->storeAs($destination, $file_name);
+            
+            $pdfPath = storage_path('app/' . $destination . '/' . $file_name);
+            // Path lengkap ke file PDF yang diunggah
+            
+            // Menggunakan pdfparser untuk menghitung jumlah halaman
+            $parser = new Parser();
+            $pdf = $parser->parseFile($pdfPath);
+            $pages = $pdf->getPages();
+            
+            // Hitung jumlah halaman
+            $pageCount = count($pages);
+            
+            $upload_file = $file_name;
+            
+            $data->jumlah_halaman = $pageCount;
+            $data->url_pdf = $upload_file;
+        }
+
+        $data->slide = implode('|', $images); // Mengganti $image menjadi $images
+        $data->judul = $request->judul;
+        $data->slug = Str::slug($data->judul);
+        $data->penulis = $request->penulis;
+        $data->penerbit = $request->penerbit;
+        $data->tahun_terbit = $request->tahun_terbit;
+        $data->kategori_id = 1;
+        $data->email = Auth::user()->email;
+        $data->deskripsi = $request->deskripsi;
+        $data->no_isbn = $request->no_isbn;
+        if (Auth::user()->role === 'owner') {
+            $data->status = 'publish';
+        }else {
+            $data->status = 'pending';
+        }
+
+        $data->update();
 
         return redirect()
             ->route('buku.index')
@@ -357,32 +413,33 @@ class BukuController extends Controller
 
     public function showdetail($id, $slug)
     {
-    $buku = Buku::where([['id', $id], ['slug', $slug]])->first() ?? abort(404);
-    
-    // Ubah cara Anda mengakses deskripsi dari model Buku
-    $desk_awal = substr($buku->deskripsi, 0, 250);
-    $deskripsi = $buku->deskripsi;
+        $buku = Buku::where([['id', $id], ['slug', $slug]])->first() ?? abort(404);
 
-    // Kemudian, simpan model Buku dalam array data
-    $data['buku'] = $buku;
+        // Ubah cara Anda mengakses deskripsi dari model Buku
+        $desk_awal = substr($buku->deskripsi, 0, 250);
+        $deskripsi = $buku->deskripsi;
 
-    return view('detailbuku', compact('buku','desk_awal','deskripsi'));    
+        // Kemudian, simpan model Buku dalam array data
+        $data['buku'] = $buku;
+
+        return view('detailbuku', compact('buku', 'desk_awal', 'deskripsi'));
     }
 
     public function search(Request $request)
     {
-    $keyword = $request->input('keyword');
-    $results = Buku::where(function ($query) use ($keyword) {
-        $query->where('judul', 'like', "%$keyword%")
-              ->orWhere('no_isbn', 'like', "%$keyword%")
-              ->orWhere('penulis', 'like', "%$keyword%")
-              ->orWhere('penerbit', 'like', "%$keyword%");
-    })
-    ->where('status', 'publish')
-    ->orderBy('judul', 'asc')
-    ->paginate(25);
+        $keyword = $request->input('keyword');
+        $results = Buku::where(function ($query) use ($keyword) {
+            $query
+                ->where('judul', 'like', "%$keyword%")
+                ->orWhere('no_isbn', 'like', "%$keyword%")
+                ->orWhere('penulis', 'like', "%$keyword%")
+                ->orWhere('penerbit', 'like', "%$keyword%");
+        })
+            ->where('status', 'publish')
+            ->orderBy('judul', 'asc')
+            ->paginate(25);
 
-    return view('booksearch', compact('results', 'keyword'));
+        return view('booksearch', compact('results', 'keyword'));
     }
 
     public function bukuterbaru(Request $request)

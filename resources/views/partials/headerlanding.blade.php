@@ -77,12 +77,13 @@
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                            @csrf
                         </form>
+                        @php
+                           $lastread = auth()->user()->baca()->orderBy('end_at','desc')->first() ?? null;
+                        @endphp 
+                        @if($lastread !== null)
                         <div class="list-group-item list-group-item-action border-end-0 py-0">
                             <hr class="mb-0 mt-1">
                         </div>
-                        @php
-                           $lastread = auth()->user()->baca()->orderBy('end_at','desc')->first();
-                        @endphp 
                         <div href="#" class="list-group-item list-group-item-action border-end-0 mt-0">
                            <span class="text-muted small">Terakhir Dibaca:</span>
                            <div class="d-flex align-items-center position-relative mt-2">
@@ -97,6 +98,7 @@
                               </div>
                            </div>
                         </div>
+                        @endif
                         </div>
                      </div>
                   </div>

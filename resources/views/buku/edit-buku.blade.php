@@ -31,11 +31,11 @@
 </style>
 
 @section('content')
-
     <div class="content__boxed">
         <div class="content__wrap">
             <form action="{{ route('buku.update', $buku->id) }}" method="post" class="needs-validation" novalidate
                 enctype="multipart/form-data">
+                @method('PUT')
                 @csrf
                 <div class="row">
                     <div class="col-md-4 col-sm-12 ">
@@ -127,13 +127,13 @@
                                                 <address class="mb-4 mb-md-0">
                                                     <h5 class="mb-1">Pengarang</h5>
                                                     <div class="col-12 mt-2">
-                                                        <input id="_dm-inputAddress" name="pengarang"
-                                                            placeholder="Masukan pengarang" value="{{ $buku->penulis }}"
+                                                        <input id="_dm-inputAddress" name="penulis"
+                                                            placeholder="Masukan penulis" value="{{ $buku->penulis }}"
                                                             class="form-control 
-                                                        @error('pengarang')
+                                                        @error('penulis')
                                                             is-invalid
                                                         @enderror">
-                                                        @error('pengarang')
+                                                        @error('penulis')
                                                             <div class="invalid-feedback">
                                                                 {{ $message }}
                                                             </div>
@@ -153,9 +153,11 @@
                                                                         is-invalid
                                                                     @enderror"
                                                             name="kategori_id" id="category">
-                                                            <option value="">{{ $buku->kategori->kategori }}</option>
+                                                            <option value="{{ $buku->kategori->id }}">{{ $buku->kategori->kategori }}
+                                                            </option>
                                                             @foreach ($kategori as $index => $kat)
-                                                                <option value="{{ $kat->id }}">{{ $kat->kategori }}
+                                                                <option value="{{ $kat->id }}">
+                                                                    {{ $kat->kategori }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
@@ -192,7 +194,8 @@
                                                     <h5 class="mb-1">No ISBN</h5>
                                                     <div class="col-12 mt-2">
                                                         <input id="_dm-inputAddress" name="no_isbn"
-                                                            placeholder="Masukan no isbn" disabled
+                                                            placeholder="Masukan no isbn"
+                                                            @if ($buku->status != 'rejected') @readonly(true) @endif
                                                             onkeydown="preventNegativeInput(event)"
                                                             value="{{ $buku->no_isbn }}"
                                                             class="form-control 
@@ -262,7 +265,7 @@
                                         <a href="{{ route('buku.index') }}" class="btn btn-primary">Batal</a>
                                     </div>
                                     <div class="col-md-6 col-sm-12 mb-2 d-grid">
-                                        <button type="submit" class="btn btn-primary">Tambah</button>
+                                        <button type="submit" class="btn btn-primary">Update</button>
                                     </div>
                                 </div>
 
@@ -276,7 +279,6 @@
     </div>
 
     @push('js')
-
         <script>
             function updatePreview(input, target) {
                 let file = input.files[0];
@@ -337,8 +339,8 @@
         </script>
         <script>
             /*
-                                                                        We want to preview images, so we need to register the Image Preview plugin
-                                                                        */
+                                                                                                        We want to preview images, so we need to register the Image Preview plugin
+                                                                                                        */
             FilePond.registerPlugin(
 
                 // encodes the file as base64 data
