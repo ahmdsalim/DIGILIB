@@ -17,8 +17,7 @@
                <label for="header-search-input" class="header__btn d-md-none btn btn-icon rounded-pill shadow-none border-0 btn-sm" type="button">
                <i class="demo-psi-magnifi-glass"></i>
                </label>
-
-                  @if(request()->route()->getName() != 'book.search' && request()->route()->getName() != 'pembaca.profile' && request()->route()->getName() != 'pembaca.changepassword.show' && request()->route()->getName() != 'koleksi')                  
+                  @if(request()->route()->getName() != 'book.search' && request()->route()->getName() != 'pembaca.profile' && request()->route()->getName() != 'pembaca.changepassword.show' && request()->route()->getName() != 'koleksi' && request()->route()->getName() != 'buku.detailbuku')                  
                   <form action="{{ route('book.search') }}" method="GET" class="searchbox searchbox--auto-expand searchbox--hide-btn input-group">
                   <input id="header-search-input" class="searchbox__input form-control bg-transparent" name="keyword" type="search" placeholder="Cari ..." aria-label="Search">
                   <div class="searchbox__backdrop">
@@ -69,7 +68,7 @@
                         <a href="/koleksi" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                             <span><i class="demo-pli-mail fs-5 me-2"></i>Koleksi</span>
                         </a>
-                        <a href="#" class="list-group-item list-group-item-action">
+                        <a href="/terakhirdibaca" class="list-group-item list-group-item-action">
                             <i class="demo-pli-male fs-5 me-2"></i>Terakhir Dibaca
                         </a>                           
                         <a href="javascript:void(0);" class="list-group-item list-group-item-action" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

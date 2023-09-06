@@ -28,7 +28,7 @@ class Buku extends Model
 
     public function baca()
     {
-    	return $this->belongsTo(Baca::class);
+    	return $this->hasMany(Baca::class, 'buku_id');
     }
 
     public function kategori()

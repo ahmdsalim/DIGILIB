@@ -29,7 +29,7 @@ public function create(Koleksi $buku){
     return back();    
     }
 
-public function store (Request $request)
+public function store(Request $request)
 {
 $koleksi = koleksi::create($request->all());
 return redirect('/koleksi');

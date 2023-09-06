@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Baca;
 use Illuminate\Http\Request;
 use App\Models\Buku;
+use App\Models\User;
 use Auth;
 
 class BacaController extends Controller
@@ -12,10 +13,22 @@ class BacaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //
-    }
+public function index(Request $request)
+{
+    $user = auth()->user();
+    $selesaibaca = Baca::where('email', $user->email)
+                 ->orderBy('bacas.started_at', 'desc')
+                 ->take(12)
+                 ->get();    
+    $lanjutbaca = Baca::join('bukus', 'bacas.buku_id', '=', 'bukus.id')
+                 ->where('bacas.email', $user->email)
+                 ->where('bacas.progress', '<', 'buku.jumlah_halaman')
+                 ->orderBy('bacas.started_at', 'desc')
+                 ->take(12)
+                 ->get();    
+    return view('terakhirdibaca', compact('selesaibaca','lanjutbaca'));
+}
+
 
     /**
      * Show the form for creating a new resource.

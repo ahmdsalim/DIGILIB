@@ -98,3 +98,5 @@ Route::name('sekolah.')->group(function() {
 Route::get('baca/{id}/{slug}', [BacaController::class, 'read'])->name('read');
 Route::get('/koleksi', [KoleksiController::class, 'index'])->name('koleksi');
 Route::get('/createkoleksi/{id}', [KoleksiController::class, 'create']);
+
+Route::get('/terakhirdibaca', [BacaController::class, 'index'])->name('terakhirdibaca');

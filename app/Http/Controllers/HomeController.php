@@ -10,16 +10,22 @@ class HomeController extends Controller
 {
     public function index(Request $req)
     {
-    $query = buku::query();
-    $input_kategori = $req->query('kategori');        
-    $kategori = kategori::all();
+    $bukuterbaru = buku::query();
+    $input_kategori = $req->query('kategori');
 
-    if(!is_null($input_kategori)){
-        $query->where('kategori_id',$input_kategori);
+    if (!is_null($input_kategori)) {
+        $bukuterbaru->where('kategori_id', $input_kategori);
     }
-    $bukuterbaru = $query->orderBy('created_at', 'desc')->take(6)->get();
-    $bukuterpopuler = $query->orderBy('jumlah_baca', 'desc')->take(6)->get();
-    return view('landing',compact('bukuterbaru','kategori','bukuterpopuler'));
+
+    $bukuterbaru = $bukuterbaru->orderBy('created_at', 'desc')->take(12)->get();
+
+    $bukuterpopuler = buku::query();
+    if (!is_null($input_kategori)) {
+        $bukuterpopuler->where('kategori_id', $input_kategori);
+    }
+
+    $bukuterpopuler = $bukuterpopuler->orderBy('jumlah_baca', 'desc')->take(12)->get();
+    return view('landing',compact('bukuterbaru','bukuterpopuler'));
     }
 
     public function home()
@@ -33,3 +39,4 @@ class HomeController extends Controller
     }
 
 }
+ 

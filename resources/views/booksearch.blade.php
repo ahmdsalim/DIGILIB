@@ -37,9 +37,7 @@
                                                 <div class="row pb-2 mb-4 border-bottom">
                                                     <div class="col-3 col-md-2">
                                                         <figure class="m-0">
-                                                            <a href="" title="" rel="bookmark">
                                                                 <img src="{{asset('img/thumbnail-buku/'.$data->thumbnail)}}" alt="" class="img-thumbnail">
-                                                            </a>
                                                         </figure>
                                                     </div>
                                                     <div class="col-9 col-md-10" style="padding: 0 7px;">
