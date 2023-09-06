@@ -10,6 +10,8 @@ use App\Models\User;
 class Koleksi extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['email','buku_id'];
     
     public function buku()
     {

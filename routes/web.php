@@ -58,6 +58,8 @@ Route::prefix('api')->middleware('auth')->group(function() {
 	Route::get('getSiswa', [SiswaController::class, 'getSiswa'])->name('api.getSiswa');
 	Route::get('getGuru', [GuruController::class, 'getGuru'])->name('api.getGuru');
 	Route::post('read/save',[BacaController::class,'save'])->name('api.read.save');
+	Route::post('collection/collect', [KoleksiController::class, 'collect'])->name('api.collection.collect');
+	Route::post('collection/uncollect', [KoleksiController::class, 'uncollect'])->name('api.collection.uncollect');
 });
 Route::controller(BukuController::class)->group(function () {
     // Route::resource('buku/test', BukuController::class);
@@ -92,13 +94,17 @@ Route::prefix('sekolah')->middleware('auth')->group(function() {
 });
 
 Route::name('sekolah.')->group(function() {
-	Route::resource('siswa', SiswaController::class);
-	Route::resource('guru', GuruController::class);
+	Route::resource('siswa', SiswaController::class)->except('show');
+	Route::resource('guru', GuruController::class)->except('show');
 });
 
 Route::get('baca/{id}/{slug}', [BacaController::class, 'read'])->name('read');
+
 Route::get('/koleksi', [KoleksiController::class, 'index']);
 Route::get('/createkoleksi/{id}', [KoleksiController::class, 'create']);
 
 Route::post('/like/{id}', [LikeController::class, 'index'])->name('like');
 Route::post('/Buku/{buku}/toggle-like', [KoleksiController::class, 'create'])->name('createkoleksi');
+
+Route::get('list-pembaca', [BacaController::class, 'index'])->name('reader.index');
+Route::get('list-pembaca/{id}/detail', [BacaController::class, 'detail'])->name('reader.detail');

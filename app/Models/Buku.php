@@ -18,7 +18,7 @@ class Buku extends Model
 
     public function koleksi()
     {
-    	return $this->belongsTo(Koleksi::class);
+    	return $this->hasMany(Koleksi::class);
     }
 
     public function rating()
@@ -39,6 +39,11 @@ class Buku extends Model
     public function user()
     {
     	return $this->hasOne(User::class,'email','email');
+    }
+
+    public function collectedBy(User $user)
+    {
+        return $this->koleksi->contains('email', $user->email);
     }
 
 }

@@ -87,7 +87,7 @@
             </div>
             @else
             <a href="login">
-              <div class="brand-title">Login</div>
+              <div class="brand-title">Masuk</div>
             </a>
             @endif             
          </div>

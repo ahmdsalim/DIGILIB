@@ -6,23 +6,55 @@ use App\Models\Baca;
 use Illuminate\Http\Request;
 use App\Models\Buku;
 use Auth;
+use App\Models\User;
+use App\Models\Siswa;
+use App\Models\Guru;
 
 class BacaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        
+        $query = User::query();
+        $data['search'] = $request->query('search');
+        $search = $data['search'];
+        $user = Auth::user();
+
+        if($request->has('search') && !empty($search)){
+            $query->where(function($query) use ($search) {
+                $query->where('nama','like',"%{$search}%")
+                      ->orWhere('nisn','like',"%{$search}%");
+            });
+        }
+
+        if(Auth::user()->role == 'sekolah'){
+            $query->whereHasMorph(
+                'userable',
+                [Siswa::class, Guru::class],
+                function ($query) use ($user) {
+                    $query->where('npsn', $user->userable->npsn);
+                }
+            );
+        }
+
+        $data['readers'] = $query->whereIn('role', ['siswa','guru'])
+                                 ->whereHas('baca')
+                                 ->paginate(50);
+        return view('pembaca.index', $data);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function detail($id)
     {
-        //
+        $id = \Crypt::decryptString($id);
+        $data['reader'] = User::findOrFail($id);
+
+        return view('pembaca.detail',$data);
     }
 
     /**

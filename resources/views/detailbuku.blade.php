@@ -20,15 +20,9 @@
                     <div class="d-flex justify-content-between mb-1">
                     <h3 class="card-title">{{$buku->judul}}</h3>
                     @if(isAuth())
-                    <a href="createkoleksi/{{$buku->id}}" type="submit" class="btn btn-info btn-sm">
-                        <i class="demo-psi-heart-2 fs-5 me-2"></i> Wishlist </a>
-                    @else
-                    <form action="{{ route('createkoleksi', $buku->id) }}" method="POST">
-                        @csrf
-                        <button type="submit" class="like-button @if($buku->isLikedBy(Auth::user())) liked @endif">
-                            Like
-                        </button>
-                    </form>
+                    <button id="btnCollection" type="button" class="btn btn-info btn-sm" data-id="{{ Crypt::encryptString($buku->id) }}" data-collected="{{ $buku->collectedBy(auth()->user()) ? 'true' : 'false' }}" data-baseurl="{{url('')}}">
+                        {{ $buku->collectedBy(auth()->user()) ? 'Hapus Koleksi' : 'Koleksi' }}
+                    </button>
                     @endif                                
                 </div>
                     <div>
@@ -139,3 +133,38 @@
     color: white;
 }</style>
 @endpush
+
+@if(isAuth())
+@push('js')
+<script type="text/javascript">
+    const btnCollection = document.getElementById('btnCollection')
+
+    btnCollection.addEventListener('click',async () => {
+        const bookId = btnCollection.getAttribute('data-id')
+        const collected = btnCollection.getAttribute('data-collected') === 'true';
+        const baseUrl = btnCollection.getAttribute('data-baseurl')
+        const url = collected ? `${baseUrl}/api/collection/uncollect` : `${baseUrl}/api/collection/collect`
+        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+
+        try {
+            const response = await axios.post(url, {
+                id: bookId
+            }, {
+                headers: {
+                    'X-CSRF-TOKEN': token
+                }
+            })
+
+            const data = response.data
+
+            if(data.message === 'collected' || data.message === 'uncollected'){
+                btnCollection.textContent = collected ? 'Koleksi' : 'Hapus Koleksi'
+                btnCollection.setAttribute('data-collected', collected ? 'false' : 'true')
+            }
+        }catch(error){
+            console.error('Error:', error)
+        }
+    })
+</script>
+@endpush
+@endif
