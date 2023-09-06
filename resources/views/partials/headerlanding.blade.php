@@ -69,15 +69,32 @@
                         <a href="/koleksi" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                             <span><i class="demo-pli-mail fs-5 me-2"></i>Koleksi</span>
                         </a>
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <i class="demo-pli-male fs-5 me-2"></i>Terakhir Dibaca
-                        </a>                           
                         <a href="javascript:void(0);" class="list-group-item list-group-item-action" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                            <i class="demo-pli-unlock fs-5 me-2"></i> Logout
                            </a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                            @csrf
                         </form>
+                        <div class="list-group-item list-group-item-action border-end-0 py-0">
+                            <hr class="mb-0 mt-1">
+                        </div>
+                        @php
+                           $lastread = auth()->user()->baca()->orderBy('end_at','desc')->first();
+                        @endphp 
+                        <div href="#" class="list-group-item list-group-item-action border-end-0 mt-0">
+                           <span class="text-muted small">Terakhir Dibaca:</span>
+                           <div class="d-flex align-items-center position-relative mt-2">
+                              <div class="flex-shrink-0">
+                                 <img src="{{asset('img/thumbnail-buku/'.$lastread->buku->thumbnail)}}" width="15" height="auto">
+                              </div>
+                              <div class="flex-grow-1 ms-2">
+                                 <a href="{{ route('read', ['id' => $lastread->buku->id, 'slug' => $lastread->buku->slug]) }}" class="stretched-link text-reset text-decoration-none mb-1">{{$lastread->buku->judul}}</a>
+                                 <div class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width: {{round(($lastread->progress/$lastread->buku->jumlah_halaman)*100)}}%; border-radius: 0;" aria-label="Progress Membaca" aria-valuenow="{{round(($lastread->progress/$lastread->buku->jumlah_halaman)*100)}}" aria-valuemin="0" aria-valuemax="100"></div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
                         </div>
                      </div>
                   </div>

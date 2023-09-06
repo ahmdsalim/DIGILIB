@@ -11,6 +11,13 @@
 
     </p>
 @endsection
+
+@php
+    header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
+    header("Pragma: no-cache"); // HTTP 1.0.
+    header("Expires: 0 "); // Proxies.
+@endphp
+
 @section('content')
     <div class="content__boxed">
         <div class="content__wrap">
@@ -55,7 +62,7 @@
                                             <h3 class="card-title">Judul : {{ $buku->judul }}</h3>
                                             @if(isAuth())
                                             <button id="btnCollection" type="button" class="btn btn-info btn-sm" data-id="{{ Crypt::encryptString($buku->id) }}" data-collected="{{ $buku->collectedBy(auth()->user()) ? 'true' : 'false' }}" data-baseurl="{{url('')}}">
-                                                {{ $buku->collectedBy(auth()->user()) ? 'Hapus Koleksi' : 'Koleksi' }}
+                                                {{ $buku->collectedBy(auth()->user()) ? 'Hapus Koleksi' : 'Tambah Ke Koleksi' }}
                                             </button>
                                             @endif
                                         </div>
@@ -209,7 +216,7 @@
             const data = response.data
 
             if(data.message === 'collected' || data.message === 'uncollected'){
-                btnCollection.textContent = collected ? 'Koleksi' : 'Hapus Koleksi'
+                btnCollection.textContent = collected ? 'Tambah Ke Koleksi' : 'Hapus Koleksi'
                 btnCollection.setAttribute('data-collected', collected ? 'false' : 'true')
             }
         }catch(error){
