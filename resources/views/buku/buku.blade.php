@@ -125,7 +125,7 @@
                                                                 <img src="{{ asset('img/thumbnail-buku/' . $buku->thumbnail) }}"
                                                                     alt="" style="width: 50px;">
                                                             @else
-                                                                <img src="" alt="Foto Default">
+                                                                <img src="{{ asset('img/default-pict.png') }}" alt="Foto Default" style="width: 50px;">
                                                             @endif
                                                         </td>
                                                         <td>{{ $buku->judul }}</td>

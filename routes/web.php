@@ -11,6 +11,7 @@ use App\Http\Controllers\KoleksiController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BacaController;
+use App\Http\Controllers\RatingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,7 +68,7 @@ Route::controller(BukuController::class)->group(function () {
     Route::put('/buku/resend/{slug}', [BukuController::class, 'resend'])->name('buku.resend');
     Route::resource('buku', BukuController::class);
 });
-    
+
 Route::get('detailbuku/{id}/{slug}', [BukuController::class, 'showdetail'])->name('buku.detailbuku');
 Route::resource('kategori', KategoriController::class);
 
@@ -85,7 +86,7 @@ Route::prefix('sekolah')->middleware('auth')->group(function() {
 	Route::get('siswa/{siswa}/edit', [SiswaController::class, 'editSiswa'])->name('owner.siswa.edit');
 	Route::put('siswa/{siswa}/update', [SiswaController::class, 'updateSiswa'])->name('owner.siswa.update');
 	Route::delete('siswa/{siswa}/delete', [SiswaController::class, 'destroySiswa'])->name('owner.siswa.destroy');
-
+	
 	Route::get('{sekolah}/guru', [GuruController::class, 'getGuruBySekolah'])->name('owner.guru.index');
 	Route::get('guru/{guru}/edit', [GuruController::class, 'editGuru'])->name('owner.guru.edit');
 	Route::put('guru/{guru}/update', [GuruController::class, 'updateGuru'])->name('owner.guru.update');
@@ -106,3 +107,6 @@ Route::get('/terakhirdibaca', [BacaController::class, 'indexpembaca'])->name('te
 
 Route::get('list-pembaca', [BacaController::class, 'index'])->name('reader.index');
 Route::get('list-pembaca/{id}/detail', [BacaController::class, 'detail'])->name('reader.detail');
+
+
+Route::resource('rating', RatingController::class);
