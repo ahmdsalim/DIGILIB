@@ -152,11 +152,10 @@
                             <div class="d-flex flex-column">
                                 <div class="d-flex justify-content-center">
                                     @if ($buku->thumbnail)
-                                        <img src="{{ asset('img/thumbnail-buku/' . $buku->thumbnail) }}" class="thumbnail"
-                                            style="width: 230px; height:300px;">
+                                        <img src="{{ asset('img/thumbnail-buku/' . $buku->thumbnail) }}"
+                                            class="thumbnail">
                                     @else
-                                        <img src="{{ asset('img/default-pict.png') }}" class="thumbnail"
-                                            style="width: 230px; height:300px;">
+                                        <img src="{{ asset('img/default-pict.png') }}" class="thumbnail">
                                     @endif
 
                                 </div>
@@ -350,13 +349,17 @@
 @endpush
 
 @push('css')
-    <style type="text/css">
-        .thumbnail {
-            border-radius: 0.4375rem;
-            box-shadow: 0 0.125rem 0.25rem rgba(55, 60, 67, .075);
-            max-width: 100%;
-        }
-    </style>
+<style type="text/css">
+    .thumbnail {
+    border-radius: 0.4375rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(55,60,67,.075);
+    max-width: 100%;
+    height: 250px;
+    width: 190px;
+    object-fit: cover;
+    }
+
+</style>
 @endpush
 
 @if (isAuth())

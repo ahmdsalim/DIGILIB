@@ -46,7 +46,10 @@
                 </a>
           </div>
         @empty
-            <p class="fw-bold text-center">Anda Belum Memiliki Data Buku Pada Sesi Ini, <a href="/" style="text-decoration: none;" class="pe-auto">Ayo Membaca...</a></p>
+        <div class="content__boxed">
+        <div class="alert alert-primary fw-bold text-center" role="alert">
+         Anda Belum Memiliki Data Buku Pada Sesi Ini, <a href="/" style="text-decoration: none;" class="pe-auto">Ayo Membaca...</a>
+        </div></div>
         @endforelse        
 
 <div class="mb-3"></div>
@@ -68,7 +71,10 @@
           </a>
         </div>
         @empty
-            <p class="fw-bold text-center">Anda Belum Memiliki Data Buku Pada Sesi Ini, <a href="/landing" style="text-decoration: none;" class="pe-auto">Ayo Membaca...</a></p>
+        <div class="content__boxed">
+        <div class="alert alert-primary fw-bold text-center" role="alert">
+         Anda Belum Memiliki Data Buku Pada Sesi Ini, <a href="/" style="text-decoration: none;" class="pe-auto">Ayo Membaca...</a>
+        </div></div>
         @endforelse        
       </div>
     </div>
