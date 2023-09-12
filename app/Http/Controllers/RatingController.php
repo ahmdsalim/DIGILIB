@@ -28,11 +28,17 @@ class RatingController extends Controller
      */
     public function store(Request $request)
     {
+        $id = $request->input('id');
+        $slug = $request->input('slug');
+
         $rating = new Rating();
-        $rating->email = Auth::user()->nama; // Jika Anda memiliki sistem autentikasi
-        $rating->buku_id = Auth::user()->buku->id; // Gantilah dengan model/item yang sesuai
+        $rating->email = Auth::user()->email;
+        $rating->buku_id = $id;
         $rating->score = $request->score;
         $rating->save();
+
+        return redirect()
+            ->route('buku.detailbuku', ['id' => $id, 'slug' => $slug]);
     }
 
     /**

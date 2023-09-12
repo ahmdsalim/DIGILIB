@@ -29,43 +29,7 @@
                                         <img src="{{ asset('img/default-pict.png') }}" class="img-thumbnail"
                                             style="width: 230px; height:300px;">
                                     @endif
-
                                 </div>
-                                <div class="d-flex flex-row gap-2 align-items-center my-3">
-                                    <div>
-                                        <button class="btn btn-sm btn-icon bg-black rounded-circle"
-                                            style="width: 20px; height:20px;" type="button"
-                                            data-bs-target="#carouselExample" data-bs-slide="prev">
-                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Previous</span>
-                                        </button>
-                                    </div>
-                                    <div id="carouselExample" class="carousel slide">
-                                        <div class="carousel-inner">
-                                            @foreach ($buku as $key => $image_url)
-                                                <div class="carousel-item {{ $key === 0 ? 'active' : '' }}">
-                                                    <div class="row">
-                                                        <div class="col-md-3">
-                                                            <img src="{{ asset('img/slide/', $image_url) }}"
-                                                                class="img-thumbnail d-block w-100"
-                                                                alt="Slide ">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <button class="btn btn-sm btn-icon bg-black rounded-circle"
-                                            style="width: 20px; height:20px;" type="button"
-                                            data-bs-target="#carouselExample" data-bs-slide="next">
-                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Next</span>
-                                        </button>
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
                     </div>
