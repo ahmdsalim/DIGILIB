@@ -74,7 +74,7 @@
                             <!-- Link with submenu -->
                             @if (Auth::check() && Auth::user()->role == 'owner')
                                 <li class="nav-item has-sub">
-                                    <a href="#" class="mininav-toggle nav-link collapsed">
+                                    <a href="#" class="mininav-toggle nav-link collapsed {{ Request::is('kategori*') ? 'active' : '' }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                             viewBox="0 0 256 256" style="margin-right:4px;">
                                             <path fill="currentColor"
@@ -83,9 +83,9 @@
                                         <span class="nav-label ms-1">Data Master</span>
                                     </a>
                                     <!-- Layouts submenu list -->
-                                    <ul class="mininav-content nav collapse">
+                                    <ul class="mininav-content nav collapse ">
                                         <li class="nav-item">
-                                            <a href="{{ route('kategori.index') }}" class="nav-link">Kategori</a>
+                                            <a href="{{ route('kategori.index') }}" class="nav-link {{ Request::is('kategori') ? 'active' : '' }}">Kategori</a>
                                         </li>
                                     </ul>
                                     <!-- END : Layouts submenu list -->

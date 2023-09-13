@@ -193,7 +193,7 @@
                                                 <address class="mb-4 mb-md-0">
                                                     <h5 class="mb-1">No ISBN</h5>
                                                     <div class="col-12 mt-2">
-                                                        <input id="_dm-inputAddress" name="no_isbn"
+                                                        <input id="_dm-inputAddress" name="no_isbn" type="number"
                                                             placeholder="Masukan no isbn"
                                                             @if ($buku->status != 'rejected') @readonly(true) @endif
                                                             onkeydown="preventNegativeInput(event)"
