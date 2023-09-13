@@ -31,7 +31,7 @@
                 <a href="{{route('buku.detailbuku',['id'=>$data->id, 'slug'=>$data->slug])}}" style="text-decoration: none;">
                   <div class="card mb-3">
                     <img class="card-img-top" alt="{{$data->judul}}" src="{{asset('img/thumbnail-buku/'.$data->thumbnail)}}">
-                      <div class="card-body">
+                      <div class="card-body px-1 py-3">
                         <h4 class="card-title">{{$data->judul}} ({{$data->tahun_terbit}})</h4>
                       </div>
                   </div>
@@ -73,6 +73,9 @@
         box-shadow: none;
         text-align: center;
         }
+          .card-body{
+            width: 100px;
+          }
 
         .card-img-top:hover {
             transform: scale(1.05); /* Efek zoom ketika hover */
@@ -102,6 +105,9 @@
               font-weight: bold;
               font-size: 11px;
           }
+            .card-body{
+            width: 122px;
+          }
           .card {
             /*height: 270px;
             width: 140px;*/
@@ -122,6 +128,9 @@
               font-weight: bold;
               font-size: 13px;
           } 
+          .card-body{
+            width: 133px;
+          }
           .card {
           /*height: 270px;
           width: 140px;*/

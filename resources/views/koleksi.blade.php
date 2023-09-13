@@ -29,32 +29,22 @@
       <div class="content__wrap">
         <div class="row">
 
-        @php
-            $prev_started_at = null;
-        @endphp
 
         @forelse ($koleksi as $data)
             @php
                 $current_started_at = $data->created_at->format('Y-m-d');
             @endphp
-
-            @if ($current_started_at != $prev_started_at)
-                <h2><span class="badge bg-dark mb-3">Tanggal {{ $current_started_at }}</span></h2>
-            @endif
-
            <div class="col-4 col-sm-3 col-md-3 col-lg-2">
           <a href="/detailbuku/{{$data->buku->id}}/{{$data->buku->slug}}" style="text-decoration: none;">
             <div class="card mb-3">
               <img class="card-img-top" alt="{{$data->buku->judul}}" src="{{asset('img/thumbnail-buku/'.$data->buku->thumbnail)}}">
-                <div class="card-body">
+                <div class="card-body px-1 py-3">
                   <h4 class="card-title">{{$data->buku->judul}} ({{$data->buku->tahun_terbit}})</h4>
+                  <h7 class="text-muted">Dikoleksi pada<br>{{ $current_started_at }}</h7>
                 </div>
             </div>
           </a>
         </div>
-        @php
-            $prev_started_at = $current_started_at;
-        @endphp
 
         @empty
         <div class="content__boxed">
@@ -79,6 +69,9 @@
         box-shadow: none;
         text-align: center;
         }
+          .card-body{
+            width: 100px;
+          }
 
         .card-img-top:hover {
             transform: scale(1.05); /* Efek zoom ketika hover */
@@ -108,6 +101,9 @@
               font-weight: bold;
               font-size: 11px;
           }
+            .card-body{
+            width: 122px;
+          }
           .card {
             /*height: 270px;
             width: 140px;*/
@@ -120,14 +116,17 @@
         @media only screen and (min-width: 768px) {
           /* For desktop: */
           .card-img-top {
-            height: 210px;
-            width: 140px;
+            height: 200px;
+            width: 133px;
             box-shadow: 0 1rem 1rem -0.75rem rgba(105,96,215,.175);
           }
           .card-title {
               font-weight: bold;
               font-size: 13px;
           } 
+          .card-body{
+            width: 133px;
+          }
           .card {
           /*height: 270px;
           width: 140px;*/

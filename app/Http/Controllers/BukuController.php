@@ -444,13 +444,13 @@ class BukuController extends Controller
 
     public function bukuterbaru(Request $request)
     {
-        $buku = Buku::orderBy('created_at', 'desc')->get();
+        $buku = Buku::orderBy('created_at', 'desc')->paginate(12);
         return view('bukuterbaru', compact('buku'));
     }
 
     public function bukuterpopuler(Request $request)
     {
-        $buku = Buku::orderBy('jumlah_baca', 'desc')->get();
+        $buku = Buku::orderBy('jumlah_baca', 'desc')->paginate(12);
         return view('bukuterpopuler', compact('buku'));
     }
 }

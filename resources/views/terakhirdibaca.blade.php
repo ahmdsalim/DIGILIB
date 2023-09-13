@@ -5,15 +5,15 @@
   <div class="content__wrap">
         <ol class="breadcrumb mb-0">
         <li class="breadcrumb-item"><a href="{{ route('landing') }}">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page"><a href="#">Terakhir Dibaca</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">Riwayat Dibaca</a></li>
     </ol>
   </div>
                 <div class="content__wrap d-md-flex align-items-start justify-content-center mb-5">
                         <div class="d-inline-flex align-items-center position-relative pt-xl-1">
                             <div class="flex-grow-1 text-center">
-                              <div class="display-3 mb-3">Terakhir Dibaca</div>
+                              <div class="display-3 mb-3">Riwayat Dibaca</div>
     <p class="lead">
-      Berikut adalah tampilan list buku yang sudah selesai anda baca dan belum selesai dibaca
+      Berikut adalah tampilan list buku berdasarkan riwayat baca anda
     </p>
 </div>
 </div> 
@@ -39,7 +39,7 @@
                 <a href="{{route('buku.detailbuku',['id'=>$data->buku->id, 'slug'=>$data->buku->slug])}}" style="text-decoration: none;">
                   <div class="card mb-3">
                     <img class="card-img-top" alt="{{$data->buku->judul}}" src="{{asset('img/thumbnail-buku/'.$data->buku->thumbnail)}}">
-                      <div class="card-body">
+                      <div class="card-body px-1 py-3">
                         <h4 class="card-title">{{$data->buku->judul}} ({{$data->buku->tahun_terbit}})</h4>
                       </div>
                   </div>
@@ -48,7 +48,7 @@
         @empty
         <div class="content__boxed">
         <div class="alert alert-primary fw-bold text-center" role="alert">
-         Anda Belum Memiliki Data Buku Pada Sesi Ini, <a href="/" style="text-decoration: none;" class="pe-auto">Ayo Membaca...</a>
+         DIGILIB Memiliki Banyak Buku Yang Menarik Lohh, <a href="/" style="text-decoration: none;" class="pe-auto">Ayo Mulai Membaca...</a>
         </div></div>
         @endforelse        
 
@@ -64,7 +64,7 @@
           <a href="{{route('buku.detailbuku',['id'=>$data->buku->id, 'slug'=>$data->buku->slug])}}" style="text-decoration: none;">
             <div class="card mb-3">
               <img class="card-img-top" alt="{{$data->buku->judul}}" src="{{asset('img/thumbnail-buku/'.$data->buku->thumbnail)}}">
-                <div class="card-body">
+                <div class="card-body px-1 py-3">
                   <h4 class="card-title">{{$data->buku->judul}} ({{$data->buku->tahun_terbit}})</h4>
                 </div>
             </div>
@@ -73,7 +73,7 @@
         @empty
         <div class="content__boxed">
         <div class="alert alert-primary fw-bold text-center" role="alert">
-         Anda Belum Memiliki Data Buku Pada Sesi Ini, <a href="/" style="text-decoration: none;" class="pe-auto">Ayo Membaca...</a>
+         DIGILIB Memiliki Banyak Buku Yang Menarik Lohh, <a href="/" style="text-decoration: none;" class="pe-auto">Ayo Mulai Membaca...</a>
         </div></div>
         @endforelse        
       </div>
@@ -95,6 +95,9 @@
         box-shadow: none;
         text-align: center;
         }
+          .card-body{
+            width: 100px;
+          }
 
         .card-img-top:hover {
             transform: scale(1.05); /* Efek zoom ketika hover */
@@ -124,6 +127,9 @@
               font-weight: bold;
               font-size: 11px;
           }
+            .card-body{
+            width: 122px;
+          }
           .card {
             /*height: 270px;
             width: 140px;*/
@@ -136,14 +142,17 @@
         @media only screen and (min-width: 768px) {
           /* For desktop: */
           .card-img-top {
-            height: 210px;
-            width: 140px;
+            height: 200px;
+            width: 133px;
             box-shadow: 0 1rem 1rem -0.75rem rgba(105,96,215,.175);
           }
           .card-title {
               font-weight: bold;
               font-size: 13px;
           } 
+          .card-body{
+            width: 133px;
+          }
           .card {
           /*height: 270px;
           width: 140px;*/

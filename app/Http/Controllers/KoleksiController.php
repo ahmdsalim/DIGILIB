@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 class KoleksiController extends Controller
 {
     public function index(){
-        $koleksi = Koleksi::with('buku')->get();
+        $koleksi = Koleksi::with('buku')->take(12);
         return view('koleksi', ['koleksi' => $koleksi]);
         //return view('layouts.main');
         //$koleksi = koleksi::all();

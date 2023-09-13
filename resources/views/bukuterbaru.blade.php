@@ -34,13 +34,18 @@
                 <a href="{{route('buku.detailbuku',['id'=>$data->id, 'slug'=>$data->slug])}}" style="text-decoration: none;">
                   <div class="card mb-3">
                     <img class="card-img-top" alt="{{$data->judul}}" src="{{asset('img/thumbnail-buku/'.$data->thumbnail)}}">
-                      <div class="card-body">
+                      <div class="card-body px-1 py-3">
                         <h4 class="card-title">{{$data->judul}} ({{$data->tahun_terbit}})</h4>
                       </div>
                   </div>
                 </a>
           </div>
           @endforeach
+
+<div class="d-flex justify-content-between pt-xl-3">
+  <div></div>
+  {{$buku->withQueryString()->links()}}
+</div>
         </div>
       </div>
     </div>
@@ -59,6 +64,9 @@
         box-shadow: none;
         text-align: center;
         }
+          .card-body{
+            width: 100px;
+          }
 
         .card-img-top:hover {
             transform: scale(1.05); /* Efek zoom ketika hover */
@@ -88,6 +96,9 @@
               font-weight: bold;
               font-size: 11px;
           }
+            .card-body{
+            width: 122px;
+          }
           .card {
             /*height: 270px;
             width: 140px;*/
@@ -100,14 +111,17 @@
         @media only screen and (min-width: 768px) {
           /* For desktop: */
           .card-img-top {
-            height: 210px;
-            width: 140px;
+            height: 200px;
+            width: 133px;
             box-shadow: 0 1rem 1rem -0.75rem rgba(105,96,215,.175);
           }
           .card-title {
               font-weight: bold;
               font-size: 13px;
           } 
+          .card-body{
+            width: 133px;
+          }
           .card {
           /*height: 270px;
           width: 140px;*/
