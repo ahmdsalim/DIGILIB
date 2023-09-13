@@ -12,6 +12,8 @@
 	<div id='viewer' style="width:100vw;height:100vh;margin:0 auto;"></div>
 	@vite('resources/js/app.js')
 	<script>
+	var isError = false
+	var errMsg
 	var latestPage = @json($latestPage);
 	const session = @json($sesi);
 	const newReader = @json($newReader);
@@ -19,7 +21,7 @@
 	  WebViewer({
 	    path: '{{asset("assets/js/lib")}}', // path to the PDF.js Express'lib' folder on your server
 	    licenseKey: 'Zmb9M9JNJJDw9Oi2jJy9',
-	    initialDoc: "{{asset('files/'.$buku->url_pdf)}}",
+	    initialDoc: "{{ Storage::url('files/'.$buku->url_pdf) }}",
 	    disabledElements: [
 	    	'leftPanelButton',
 		    'viewControlsButton',
@@ -36,6 +38,12 @@
 	    
 	    const panTool = Core.Tools.ToolNames.PAN;
 
+	    UI.iframeWindow.addEventListener('loaderror', (err) => {
+	      // Do something with error. eg. instance.showErrorMessage('An error has occurred')
+	      isError = true
+	      errMsg = err 
+	    });
+
 	    UI.setToolMode(panTool);
 	    // adding an event listener for when a document is loaded
 	    // instance.setLayoutMode(instance.LayoutMode.Single);
@@ -46,6 +54,7 @@
 	    		render: () => {
 	    			const button = document.createElement('button')
 	    			button.innerHTML = 'Simpan'
+	    			button.setAttribute('id', 'savebutton')
 	    			button.style.color = '#485056'
 	    			button.style.backgroundColor = '#dde6ee'
 	    			button.style.border = 'none'
@@ -79,28 +88,30 @@
 
 	 let savetimer
 	 function save_read(showToast = false) {
-	 	var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-	 	clearTimeout(savetimer)
-	 	savetimer = setTimeout(() => {
-		 	axios.post('{{route("api.read.save")}}', {
-		 		sesi: session,
-		 		buku_id: book_id,
-		 		progress: latestPage
-		 	}, {
-		 		headers: {
-		 			'X-CSRF-TOKEN': csrfToken
-		 		}
-		 	})
-		 	.then((response) => {
-		 		console.log(response)
-		 		if (showToast) {
-		 			showSuccessToast('Tersimpan',"{{asset('assets/img/icon/success.svg')}}")
-		 		}
-		 	})
-		 	.catch((error) => {
-		 		console.error(error)
-		 	})
-	 	}, 2000)
+	 	if(!isError){
+		 	var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+		 	clearTimeout(savetimer)
+		 	savetimer = setTimeout(() => {
+			 	axios.post('{{route("api.read.save")}}', {
+			 		sesi: session,
+			 		buku_id: book_id,
+			 		progress: latestPage
+			 	}, {
+			 		headers: {
+			 			'X-CSRF-TOKEN': csrfToken
+			 		}
+			 	})
+			 	.then((response) => {
+			 		console.log(response)
+			 		if (showToast) {
+			 			showSuccessToast('Tersimpan',"{{asset('assets/img/icon/success.svg')}}")
+			 		}
+			 	})
+			 	.catch((error) => {
+			 		console.error(error)
+			 	})
+		 	}, 1000)
+		}
 	 }
 	</script>
 </body>

@@ -9,6 +9,7 @@ use Auth;
 use App\Models\User;
 use App\Models\Siswa;
 use App\Models\Guru;
+use DB;
 
 class BacaController extends Controller
 {
@@ -18,16 +19,19 @@ class BacaController extends Controller
     public function indexpembaca(Request $request)
     {
         $user = auth()->user();
-        $selesaibaca = Baca::where('email', $user->email)
+        $selesaibaca = Baca::join('bukus','bacas.buku_id','=','bukus.id')
+                     ->where('bacas.email', $user->email)
+                     ->where('bacas.progress', DB::raw('bukus.jumlah_halaman'))
                      ->orderBy('bacas.started_at', 'desc')
                      ->take(12)
-                     ->get();    
+                     ->get()->unique('buku_id');    
         $lanjutbaca = Baca::join('bukus', 'bacas.buku_id', '=', 'bukus.id')
                      ->where('bacas.email', $user->email)
-                     ->where('bacas.progress', '<', 'buku.jumlah_halaman')
+                     ->where('bacas.progress','<', DB::raw('bukus.jumlah_halaman'))
                      ->orderBy('bacas.started_at', 'desc')
                      ->take(12)
-                     ->get();    
+                     ->get()    
+                     ->unique('buku_id');
         return view('terakhirdibaca', compact('selesaibaca','lanjutbaca'));
     }
 
@@ -114,6 +118,27 @@ class BacaController extends Controller
             $data['newReader'] = false;
         }
         return view('read', $data);
+    }
+
+    public function readinglist(Request $request)
+    {
+        $user = auth()->user();
+        $sort = $request->query('orderby');
+        $data['orderby'] = $sort;
+        $data['readinglist'] = Buku::whereHas('baca', function($query) use ($user, $sort) {
+            if(!empty($sort)){
+                if($sort == 'ongoing'){
+                    $query->where('bacas.progress', '<', DB::raw('bukus.jumlah_halaman'));
+                }elseif ($sort == 'completed') {
+                    $query->where('bacas.progress', DB::raw('bukus.jumlah_halaman'));
+                }
+            }
+            $query->where('bacas.email',$user->email)
+                  ->orderBy('bacas.end_at','desc');
+        })
+        ->paginate(12);
+
+        return view('readinglist', $data);
     }
 
 }
