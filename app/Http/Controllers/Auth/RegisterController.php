@@ -293,7 +293,6 @@ class RegisterController extends Controller
 
     public function registerSuccess()
     {
-
         return view('auth.register-success');
     }
 

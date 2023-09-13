@@ -199,13 +199,13 @@
                                                     {{ $buku->score == '5' ? 'checked' : '' }}>
                                                 <label for="rate5">5 stars</label>
                                             </div> --}}
-                                            <a href="{{ route('read', ['id' => $buku->id, 'slug' => $buku->slug]) }}" class="btn btn-sm btn-outline-light">
-                                                <svg width="15" fill="#373c43" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" stroke="#373c43" stroke-width="0.00020000000000000003"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.43200000000000005"></g><g id="SVGRepo_iconCarrier"> <g id="read"> <g> <path d="M12,18.883a10.8,10.8,0,0,1-9.675-5.728,2.6,2.6,0,0,1,0-2.31A10.8,10.8,0,0,1,12,5.117a10.8,10.8,0,0,1,9.675,5.728h0a2.6,2.6,0,0,1,0,2.31A10.8,10.8,0,0,1,12,18.883ZM12,6.117a9.787,9.787,0,0,0-8.78,5.176,1.586,1.586,0,0,0,0,1.415A9.788,9.788,0,0,0,12,17.883a9.787,9.787,0,0,0,8.78-5.176,1.584,1.584,0,0,0,0-1.414h0A9.787,9.787,0,0,0,12,6.117Z"></path> <path d="M12,16.049A4.049,4.049,0,1,1,16.049,12,4.054,4.054,0,0,1,12,16.049Zm0-7.1A3.049,3.049,0,1,0,15.049,12,3.052,3.052,0,0,0,12,8.951Z"></path> <circle cx="12" cy="12" r="2.028"></circle> </g> </g> </g></svg>
+                                            <button id="btnCollection" type="button" class="btn btn-sm btn-primary" data-id="{{ Crypt::encryptString($buku->id) }}" data-collected="{{ $buku->collectedBy(auth()->user()) ? 'true' : 'false' }}" data-baseurl="{{ url('') }}">
+                                                <svg id="collectionIcon" xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="{{ $buku->collectedBy(auth()->user()) ? 'currentcolor' : 'none' }}" viewBox="0 0 24 24" class="icon" style="color: currentcolor;"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16Z"></path></svg>
+                                            </button>
+                                            <a href="{{ route('read', ['id' => $buku->id, 'slug' => $buku->slug]) }}" class="btn btn-sm btn-dark">
+                                                <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" style="color: currentcolor;"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zm20 0h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
                                                 Baca
                                             </a>
-                                            <button id="btnCollection" type="button" class="btn btn-sm btn-outline-light" data-id="{{ Crypt::encryptString($buku->id) }}" data-collected="{{ $buku->collectedBy(auth()->user()) ? 'true' : 'false' }}" data-baseurl="{{ url('') }}">
-                                                <svg id="collectionIcon" width="17" viewBox="0 0 24 24" fill="{{ $buku->collectedBy(auth()->user()) ? '#373c43' : 'none' }}" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M15.75 5H8.25C7.55964 5 7 5.58763 7 6.3125V19L12 15.5L17 19V6.3125C17 5.58763 16.4404 5 15.75 5Z" stroke="#373c43" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
-                                            </button>
                                         </div>
                                         @endif
                                     </div>
@@ -387,7 +387,7 @@
                     const data = response.data
 
                     if (data.message === 'collected' || data.message === 'uncollected') {
-                        collectionIcon.style.fill = collected ? 'none' : '#373c43'
+                        collectionIcon.style.fill = collected ? 'none' : 'currentcolor'
                         btnCollection.setAttribute('data-collected', collected ? 'false' : 'true')
                     }
                 } catch (error) {
