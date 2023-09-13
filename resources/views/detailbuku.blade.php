@@ -350,7 +350,7 @@
                                                                 <path fill="#ffc700"
                                                                     d="m5.825 22l1.625-7.025L2 10.25l7.2-.625L12 3l2.8 6.625l7.2.625l-5.45 4.725L18.175 22L12 18.275L5.825 22Z" />
                                                             </svg></i>
-                                                        <label>{{round($avgRating,2,2)}} / {{ $countVoter }} Votes</label> <br>
+                                                        <label>{{round($avgRating,2)}} / {{ $countVoter }} Votes</label> <br>
                                                     </div>
                                                 @endif
                                             </address>
@@ -409,30 +409,7 @@
             document.getElementById("readLessBtn").style.display = "none";
         });
     </script>
-    <script>
-        $(document).ready(function() {
-            $('input[type="radio"]').on('change', function() {
-                var score = $('input[name="score"]:checked').val();
 
-                $.ajax({
-                    url: '{{ route('rating.store') }}',
-                    method: 'POST',
-                    data: {
-                        '_token': '{{ csrf_token() }}',
-                        'score': score
-                    },
-                    success: function(response) {
-                        // Tindakan yang perlu dilakukan setelah peringkat disimpan
-                        console.log('Rating berhasil disimpan.');
-                    },
-                    error: function(error) {
-                        // Tindakan yang perlu dilakukan jika terjadi kesalahan
-                        console.error('Terjadi kesalahan saat menyimpan rating.');
-                    }
-                });
-            });
-        });
-    </script>
 @endpush
 
 @push('css')

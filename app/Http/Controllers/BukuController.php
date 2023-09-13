@@ -416,12 +416,10 @@ class BukuController extends Controller
     {
         $user = Auth::user();
         $buku = Buku::where([['id', $id], ['slug', $slug]])->first() ?? abort(404);
-        
+
         $avgRating = Rating::where('buku_id', $buku->id)->avg('score');
 
-        $userHasRated = Rating::where('buku_id', $buku->id)
-            ->where('email', $user->email)
-            ->exists();
+        $userHasRated = Rating::where('buku_id', $buku->id)->exists();
         $countVoter = Rating::where('buku_id', $buku->id)->count('email');
 
         // Ubah cara Anda mengakses deskripsi dari model Buku
@@ -431,7 +429,7 @@ class BukuController extends Controller
         // Kemudian, simpan model Buku dalam array data
         $data['buku'] = $buku;
 
-        return view('detailbuku', compact('buku', 'desk_awal', 'deskripsi','userHasRated','avgRating','countVoter'));
+        return view('detailbuku', compact('buku', 'desk_awal', 'deskripsi', 'userHasRated', 'avgRating', 'countVoter'));
     }
 
     public function search(Request $request)
