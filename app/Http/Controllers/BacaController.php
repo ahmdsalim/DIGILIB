@@ -93,6 +93,7 @@ class BacaController extends Controller
             [
                 'email' => $user->email,
                 'buku_id' => $buku_id,
+                'prev_progress' => $request->prev_progress,
                 'progress' => $request->progress
             ]
         );
@@ -111,9 +112,11 @@ class BacaController extends Controller
         $data['buku']->update(['jumlah_baca' => $data['buku']->jumlah_baca+1]);
         $data['sesi'] = \Str::random(16);
         $data['latestPage'] = 1;
+        $data['prevPage'] = 0;
         $data['newReader'] = true;
         $baca = Baca::where('email',$user->email)->where('buku_id',$id)->orderBy('started_at','desc')->first();
         if($baca) {
+            $data['prevPage'] = $baca->progress;
             $data['latestPage'] = $baca->progress;
             $data['newReader'] = false;
         }

@@ -14,6 +14,7 @@
 	<script>
 	var isError = false
 	var errMsg
+	var prevPage = @json($prevPage);
 	var latestPage = @json($latestPage);
 	const session = @json($sesi);
 	const newReader = @json($newReader);
@@ -49,25 +50,25 @@
 	    // instance.setLayoutMode(instance.LayoutMode.Single);
 	    UI.setHeaderItems(header => {
 	    	header.delete(1)
-	    	header.push({
-	    		type: 'customElement',
-	    		render: () => {
-	    			const button = document.createElement('button')
-	    			button.innerHTML = 'Simpan'
-	    			button.setAttribute('id', 'savebutton')
-	    			button.style.color = '#485056'
-	    			button.style.backgroundColor = '#dde6ee'
-	    			button.style.border = 'none'
-	    			button.style.padding = '7px 15px'
-	    			button.style.fontWeight = 'bold'
-	    			button.style.cursor = 'pointer'
-	    			button.style.borderRadius = '3px'
-	    			button.onclick = () => {
-	    				save_read(true)
-	    			}
-	    			return button
-	    		}
-	    	})
+	    	// header.push({
+	    	// 	type: 'customElement',
+	    	// 	render: () => {
+	    	// 		const button = document.createElement('button')
+	    	// 		button.innerHTML = 'Simpan'
+	    	// 		button.setAttribute('id', 'savebutton')
+	    	// 		button.style.color = '#485056'
+	    	// 		button.style.backgroundColor = '#dde6ee'
+	    	// 		button.style.border = 'none'
+	    	// 		button.style.padding = '7px 15px'
+	    	// 		button.style.fontWeight = 'bold'
+	    	// 		button.style.cursor = 'pointer'
+	    	// 		button.style.borderRadius = '3px'
+	    	// 		button.onclick = () => {
+	    	// 			save_read(true)
+	    	// 		}
+	    	// 		return button
+	    	// 	}
+	    	// })
 	    })
 
 	    Core.documentViewer.addEventListener('documentLoaded', () => {
@@ -95,7 +96,8 @@
 			 	axios.post('{{route("api.read.save")}}', {
 			 		sesi: session,
 			 		buku_id: book_id,
-			 		progress: latestPage
+			 		progress: latestPage,
+			 		prev_progress: prevPage
 			 	}, {
 			 		headers: {
 			 			'X-CSRF-TOKEN': csrfToken

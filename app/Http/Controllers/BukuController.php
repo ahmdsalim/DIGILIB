@@ -419,9 +419,13 @@ class BukuController extends Controller
         
         $avgRating = Rating::where('buku_id', $buku->id)->avg('score');
 
-        $userHasRated = Rating::where('buku_id', $buku->id)
-            ->where('email', $user->email)
-            ->exists();
+        if(isAuth()){
+            $userHasRated = Rating::where('buku_id', $buku->id)
+                ->where('email', $user->email)
+                ->exists();
+        }else {
+            $userHasRated = false;
+        }
         $countVoter = Rating::where('buku_id', $buku->id)->count('email');
 
         // Ubah cara Anda mengakses deskripsi dari model Buku

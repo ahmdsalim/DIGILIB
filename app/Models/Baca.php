@@ -11,7 +11,7 @@ class Baca extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['email','sesi','buku_id','progress','started_at','end_at'];
+    protected $fillable = ['email','sesi','buku_id','prev_progress','progress','started_at','end_at'];
 
     public $timestamps = false;
 
