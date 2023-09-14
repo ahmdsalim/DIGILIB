@@ -260,49 +260,60 @@
                                         <div class="col-md-6">
                                             <address class="mb-4 mb-md-0">
                                                 <h5 class="mb-1">Rating</h5>
-                                                @if (!$userHasRated)
-                                                    <form id="ratingForm" action="{{ route('rating.store') }}"
-                                                        method="POST" autocomplete="off">
-                                                        @csrf
-                                                        <input type="hidden" name="id"
-                                                            value="{{ $buku->id }}">
-                                                        <input type="hidden" name="slug"
-                                                            value="{{ $buku->slug }}">
-                                                        <p class="m-0 font-weight-bold ">Rate This Book</p>
-                                                        <div class="form-group row">
-                                                            <input type="hidden" name="booking_id">
-                                                            <div class="col">
-                                                                <div class="rate">
-                                                                    <input type="radio" checked id="star5"
-                                                                        class="rate" name="score" value="5" />
-                                                                    <label for="star5" title="text">5
-                                                                        stars</label>
-                                                                    <input type="radio" id="star4" class="rate"
-                                                                        name="score" value="4" />
-                                                                    <label for="star4" title="text">4
-                                                                        stars</label>
-                                                                    <input type="radio" id="star3" class="rate"
-                                                                        name="score" value="3" />
-                                                                    <label for="star3" title="text">3
-                                                                        stars</label>
-                                                                    <input type="radio" id="star2" class="rate"
-                                                                        name="score" value="2">
-                                                                    <label for="star2" title="text">2
-                                                                        stars</label>
-                                                                    <input type="radio" id="star1" class="rate"
-                                                                        name="score" value="1" />
-                                                                    <label for="star1" title="text">1
-                                                                        star</label>
+                                                @if(isAuth())
+                                                    @if (!$userHasRated)
+                                                        <form id="ratingForm" action="{{ route('rating.store') }}"
+                                                            method="POST" autocomplete="off">
+                                                            @csrf
+                                                            <input type="hidden" name="id"
+                                                                value="{{ $buku->id }}">
+                                                            <input type="hidden" name="slug"
+                                                                value="{{ $buku->slug }}">
+                                                            <p class="m-0 font-weight-bold ">Rate This Book</p>
+                                                            <div class="form-group row">
+                                                                <input type="hidden" name="booking_id">
+                                                                <div class="col">
+                                                                    <div class="rate">
+                                                                        <input type="radio" checked id="star5"
+                                                                            class="rate" name="score" value="5" />
+                                                                        <label for="star5" title="text">5
+                                                                            stars</label>
+                                                                        <input type="radio" id="star4" class="rate"
+                                                                            name="score" value="4" />
+                                                                        <label for="star4" title="text">4
+                                                                            stars</label>
+                                                                        <input type="radio" id="star3" class="rate"
+                                                                            name="score" value="3" />
+                                                                        <label for="star3" title="text">3
+                                                                            stars</label>
+                                                                        <input type="radio" id="star2" class="rate"
+                                                                            name="score" value="2">
+                                                                        <label for="star2" title="text">2
+                                                                            stars</label>
+                                                                        <input type="radio" id="star1" class="rate"
+                                                                            name="score" value="1" />
+                                                                        <label for="star1" title="text">1
+                                                                            star</label>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
 
-                                                        <div class="col-12 d-grid">
-                                                            <button id="sumbitRating"
-                                                                class="btn btn-sm btn-primary btn-block">Submit
-                                                            </button>
+                                                            <div class="col-12 d-grid">
+                                                                <button id="sumbitRating"
+                                                                    class="btn btn-sm btn-primary btn-block">Submit
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    @else
+                                                        <div class="d-flex flex-row gap-1 align-items-center">
+                                                            <i><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                    height="24" viewBox="0 0 24 24">
+                                                                    <path fill="#ffc700"
+                                                                        d="m5.825 22l1.625-7.025L2 10.25l7.2-.625L12 3l2.8 6.625l7.2.625l-5.45 4.725L18.175 22L12 18.275L5.825 22Z" />
+                                                                </svg></i>
+                                                            <label>{{round($avgRating,2,2)}} / {{ $countVoter }} Votes</label> <br>
                                                         </div>
-                                                    </form>
+                                                    @endif
                                                 @else
                                                     <div class="d-flex flex-row gap-1 align-items-center">
                                                         <i><svg xmlns="http://www.w3.org/2000/svg" width="24"

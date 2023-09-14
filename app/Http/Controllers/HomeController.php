@@ -53,7 +53,7 @@ class HomeController extends Controller
         $data['avg_waktubaca_perhari'] = $totalDays > 0 ? ($totalDuration / 60 / $totalDays) : 0;
 
         $data['total_buku'] = Buku::where('status','publish')->count();
-        $avgpagesread = Baca::select(DB::raw('AVG(progress) as avg_pages_read'))
+        $avgpagesread = Baca::select(DB::raw('AVG((progress-prev_progress)) as avg_pages_read'))
                                        ->get();
         $data['avg_haldibaca'] = $avgpagesread[0]->avg_pages_read;
         $data['total_buku_dibaca'] = Buku::whereHas('baca')->count();
