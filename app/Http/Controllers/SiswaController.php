@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Siswa;
 use App\Models\Sekolah;
+use App\Exports\ExportSiswa;
+use App\Imports\ImportSiswa;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 
 class SiswaController extends Controller
@@ -189,5 +192,15 @@ class SiswaController extends Controller
             return redirect()->back()->with('failed','Gagal');
         }
         return redirect()->back()->with('success','Berhasil');
+    }
+
+    public function import(Request $request){
+        Excel::import(new ImportSiswa, $request->file('file')->store('files'));
+
+        return redirect()->back();
+    }
+
+    public function export(){
+        return Excel::download(new ExportSiswa, 'siswa.xlsx');
     }
 }

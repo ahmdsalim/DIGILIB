@@ -111,3 +111,6 @@ Route::get('list-pembaca/{id}/detail', [BacaController::class, 'detail'])->name(
 
 
 Route::resource('rating', RatingController::class);
+
+Route::post('/import',[SiswaController::class, 'import'])->name('siswa.import');
+Route::get('/export',[SiswaController::class, 'export'])->name('siswa.export');
