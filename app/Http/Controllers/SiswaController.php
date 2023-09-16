@@ -17,6 +17,7 @@ class SiswaController extends Controller
      */
     public function index(Request $request)
     {
+        
         $query = Siswa::query()->where('npsn',auth()->user()->userable->npsn);
         $data['search'] = $request->query('search');
         $search = $data['search'];
@@ -194,13 +195,25 @@ class SiswaController extends Controller
         return redirect()->back()->with('success','Berhasil');
     }
 
-    public function import(Request $request){
-        Excel::import(new ImportSiswa, $request->file('file')->store('files'));
+    public function errorImport(){
 
-        return redirect()->back();
+        return view('sekolah.error-import');
+    }
+
+    public function import(Request $request){
+        $file = $request->file('file')->store('public/files/excel/siswa/');
+
+        $import = new ImportSiswa;
+        $import->import($file);
+
+        if($import->failures()->isNotEmpty()){
+            return redirect()->route('siswa.error-import')->withFailures($import->failures());
+        }
+
+        return redirect()->back()->with('success','Import Data Siswa Berhasil');
     }
 
     public function export(){
-        return Excel::download(new ExportSiswa, 'siswa.xlsx');
+        return Excel::download(new ExportSiswa, 'daftar-siswa.xlsx');
     }
 }

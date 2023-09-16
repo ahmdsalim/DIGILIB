@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportGuru;
 use App\Models\Guru;
 use App\Models\Sekolah;
+use App\Exports\ExportSiswa;
+use App\Imports\ImportGuru;
+use App\Imports\ImportSiswa;
 use Illuminate\Http\Request;
-use Validator;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Validator;
 
 class GuruController extends Controller
 {
@@ -189,5 +194,27 @@ class GuruController extends Controller
             return redirect()->back()->with('failed','Gagal');
         }
         return redirect()->back()->with('success','Berhasil');
+    }
+
+    public function errorImport(){
+
+        return view('sekolah.error-import');
+    }
+
+    public function import(Request $request){
+        $file = $request->file('file')->store('public/files/excel/guru/');
+
+        $import = new ImportGuru;
+        $import->import($file);
+
+        if($import->failures()->isNotEmpty()){
+            return redirect()->route('guru.error-import')->withFailures($import->failures());
+        }
+
+        return redirect()->back()->with('success','Import Data Guru Berhasil');
+    }
+
+    public function export(){
+        return Excel::download(new ExportGuru, 'daftar-guru-digilib.xlsx');
     }
 }

@@ -33,36 +33,41 @@ Route::get('/buku/terpopuler', [BukuController::class, 'bukuterpopuler'])->name(
 
 Auth::routes();
 
-Route::middleware('guest')->group(function() {
-	Route::get('register/sekolah', [App\Http\Controllers\Auth\RegisterController::class, 'showFormSekolah'])->name('register.sekolah');
-	Route::get('register/siswa', [App\Http\Controllers\Auth\RegisterController::class, 'showFormSiswa'])->name('register.siswa');
-	Route::get('register/guru', [App\Http\Controllers\Auth\RegisterController::class, 'showFormGuru'])->name('register.guru');
-	Route::post('register/sekolah/store', [App\Http\Controllers\Auth\RegisterController::class, 'registerSekolah'])->name('register.sekolah.store');
-	Route::post('register/siswa/store', [App\Http\Controllers\Auth\RegisterController::class, 'registerSiswa'])->name('register.siswa.store');
-	Route::post('register/guru/store', [App\Http\Controllers\Auth\RegisterController::class, 'registerGuru'])->name('register.guru.store');
-	Route::get('register/success', [App\Http\Controllers\Auth\RegisterController::class, 'registerSuccess'])->middleware('registered')->name('register.success');
-	Route::get('register/verify/resend', [App\Http\Controllers\Auth\RegisterController::class, 'showResend'])->name('register.show.resend');
-	Route::post('register/verify/resend', [App\Http\Controllers\Auth\RegisterController::class, 'resendEmail'])->middleware('throttle:1,1')->name('register.verify.resend');
-	Route::get('reset-email', [App\Http\Controllers\Auth\RegisterController::class, 'showResetEmail'])->name('reset.email.show');
-	Route::post('reset-email', [App\Http\Controllers\Auth\RegisterController::class, 'resetEmail'])->name('reset.email.post');
-	Route::get('users/account/aktivasi', [UserController::class, 'aktivasi'])->name('users.aktivasi');
-});	
+Route::middleware('guest')->group(function () {
+    Route::get('register/sekolah', [App\Http\Controllers\Auth\RegisterController::class, 'showFormSekolah'])->name('register.sekolah');
+    Route::get('register/siswa', [App\Http\Controllers\Auth\RegisterController::class, 'showFormSiswa'])->name('register.siswa');
+    Route::get('register/guru', [App\Http\Controllers\Auth\RegisterController::class, 'showFormGuru'])->name('register.guru');
+    Route::post('register/sekolah/store', [App\Http\Controllers\Auth\RegisterController::class, 'registerSekolah'])->name('register.sekolah.store');
+    Route::post('register/siswa/store', [App\Http\Controllers\Auth\RegisterController::class, 'registerSiswa'])->name('register.siswa.store');
+    Route::post('register/guru/store', [App\Http\Controllers\Auth\RegisterController::class, 'registerGuru'])->name('register.guru.store');
+    Route::get('register/success', [App\Http\Controllers\Auth\RegisterController::class, 'registerSuccess'])
+        ->middleware('registered')
+        ->name('register.success');
+    Route::get('register/verify/resend', [App\Http\Controllers\Auth\RegisterController::class, 'showResend'])->name('register.show.resend');
+    Route::post('register/verify/resend', [App\Http\Controllers\Auth\RegisterController::class, 'resendEmail'])
+        ->middleware('throttle:1,1')
+        ->name('register.verify.resend');
+    Route::get('reset-email', [App\Http\Controllers\Auth\RegisterController::class, 'showResetEmail'])->name('reset.email.show');
+    Route::post('reset-email', [App\Http\Controllers\Auth\RegisterController::class, 'resetEmail'])->name('reset.email.post');
+    Route::get('users/account/aktivasi', [UserController::class, 'aktivasi'])->name('users.aktivasi');
+});
 
 Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
 Route::get('/dashboard-sekolah', [App\Http\Controllers\HomeController::class, 'homesekolah'])->name('home.sekolah');
 
 Route::resource('sekolah', SekolahController::class);
 
-Route::prefix('api')->middleware('auth')->group(function() {
-	Route::get('getSekolah', [SekolahController::class, 'getSekolah'])->name('api.getSekolah');
-	Route::get('getSiswa', [SiswaController::class, 'getSiswa'])->name('api.getSiswa');
-	Route::get('getGuru', [GuruController::class, 'getGuru'])->name('api.getGuru');
-	Route::post('read/save',[BacaController::class,'save'])->name('api.read.save');
-	Route::post('collection/collect', [KoleksiController::class, 'collect'])->name('api.collection.collect');
-	Route::post('collection/uncollect', [KoleksiController::class, 'uncollect'])->name('api.collection.uncollect');
-});
+Route::prefix('api')
+    ->middleware('auth')
+    ->group(function () {
+        Route::get('getSekolah', [SekolahController::class, 'getSekolah'])->name('api.getSekolah');
+        Route::get('getSiswa', [SiswaController::class, 'getSiswa'])->name('api.getSiswa');
+        Route::get('getGuru', [GuruController::class, 'getGuru'])->name('api.getGuru');
+        Route::post('read/save', [BacaController::class, 'save'])->name('api.read.save');
+        Route::post('collection/collect', [KoleksiController::class, 'collect'])->name('api.collection.collect');
+        Route::post('collection/uncollect', [KoleksiController::class, 'uncollect'])->name('api.collection.uncollect');
+    });
 Route::controller(BukuController::class)->group(function () {
-
     Route::get('/request-publish', [BukuController::class, 'request'])->name('buku.request');
     Route::put('/buku/request/{id}', [BukuController::class, 'requestUpdate'])->name('buku.requestUpdate');
     Route::put('/buku/resend/{slug}', [BukuController::class, 'resend'])->name('buku.resend');
@@ -80,22 +85,29 @@ Route::post('/change-password', [UserController::class, 'changePassword'])->name
 Route::get('/change-passwordpembaca', [UserController::class, 'showChangePasswordPembaca'])->name('pembaca.changepassword.show');
 Route::post('/change-passwordpembaca', [UserController::class, 'changePasswordPembaca'])->name('pembaca.changepassword.store');
 
+Route::prefix('sekolah')
+    ->middleware('auth')
+    ->group(function () {
+        Route::get('{sekolah}/siswa', [SiswaController::class, 'getSiswaBySekolah'])->name('owner.siswa.index');
+        Route::get('siswa/{siswa}/edit', [SiswaController::class, 'editSiswa'])->name('owner.siswa.edit');
+        Route::put('siswa/{siswa}/update', [SiswaController::class, 'updateSiswa'])->name('owner.siswa.update');
+        Route::delete('siswa/{siswa}/delete', [SiswaController::class, 'destroySiswa'])->name('owner.siswa.destroy');
+        Route::post('/import', [SiswaController::class, 'import'])->name('siswa.import');
+        Route::get('/export', [SiswaController::class, 'export'])->name('siswa.export');
+        Route::get('/error-import', [SiswaController::class, 'errorImport'])->name('siswa.error-import');
 
-Route::prefix('sekolah')->middleware('auth')->group(function() {
-	Route::get('{sekolah}/siswa', [SiswaController::class, 'getSiswaBySekolah'])->name('owner.siswa.index');
-	Route::get('siswa/{siswa}/edit', [SiswaController::class, 'editSiswa'])->name('owner.siswa.edit');
-	Route::put('siswa/{siswa}/update', [SiswaController::class, 'updateSiswa'])->name('owner.siswa.update');
-	Route::delete('siswa/{siswa}/delete', [SiswaController::class, 'destroySiswa'])->name('owner.siswa.destroy');
-	
-	Route::get('{sekolah}/guru', [GuruController::class, 'getGuruBySekolah'])->name('owner.guru.index');
-	Route::get('guru/{guru}/edit', [GuruController::class, 'editGuru'])->name('owner.guru.edit');
-	Route::put('guru/{guru}/update', [GuruController::class, 'updateGuru'])->name('owner.guru.update');
-	Route::delete('guru/{guru}/delete', [GuruController::class, 'destroyGuru'])->name('owner.guru.destroy');
-});
+        Route::get('{sekolah}/guru', [GuruController::class, 'getGuruBySekolah'])->name('owner.guru.index');
+        Route::get('guru/{guru}/edit', [GuruController::class, 'editGuru'])->name('owner.guru.edit');
+        Route::put('guru/{guru}/update', [GuruController::class, 'updateGuru'])->name('owner.guru.update');
+        Route::delete('guru/{guru}/delete', [GuruController::class, 'destroyGuru'])->name('owner.guru.destroy');
 
-Route::name('sekolah.')->group(function() {
-	Route::resource('siswa', SiswaController::class)->except('show');
-	Route::resource('guru', GuruController::class)->except('show');
+        Route::post('/import', [GuruController::class, 'import'])->name('guru.import');
+        Route::get('/export', [GuruController::class, 'export'])->name('guru.export');
+    });
+
+Route::name('sekolah.')->group(function () {
+    Route::resource('siswa', SiswaController::class)->except('show');
+    Route::resource('guru', GuruController::class)->except('show');
 });
 
 Route::get('baca/{id}/{slug}', [BacaController::class, 'read'])->name('read');
@@ -103,14 +115,16 @@ Route::get('baca/{id}/{slug}', [BacaController::class, 'read'])->name('read');
 Route::get('/koleksi', [KoleksiController::class, 'index'])->name('koleksi');
 Route::get('/createkoleksi/{id}', [KoleksiController::class, 'create']);
 
-Route::get('/terakhirdibaca', [BacaController::class, 'indexpembaca'])->name('terakhirdibaca'); 
-Route::get('/daftar-bacaan', [BacaController::class, 'readinglist'])->name('daftarbacaan'); 
+Route::get('/terakhirdibaca', [BacaController::class, 'indexpembaca'])->name('terakhirdibaca');
+Route::get('/daftar-bacaan', [BacaController::class, 'readinglist'])->name('daftarbacaan');
 
 Route::get('list-pembaca', [BacaController::class, 'index'])->name('reader.index');
 Route::get('list-pembaca/{id}/detail', [BacaController::class, 'detail'])->name('reader.detail');
 
-
 Route::resource('rating', RatingController::class);
 
-Route::post('/import',[SiswaController::class, 'import'])->name('siswa.import');
-Route::get('/export',[SiswaController::class, 'export'])->name('siswa.export');
+Route::post('/import', [SiswaController::class, 'import'])->name('siswa.import');
+Route::get('/export', [SiswaController::class, 'export'])->name('siswa.export');
+Route::get('/error-import', [SiswaController::class, 'errorImport'])->name('siswa.error-import');
+Route::get('/error-import', [GuruController::class, 'errorImport'])->name('guru.error-import');
+

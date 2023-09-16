@@ -2,28 +2,29 @@
 
 namespace App\Exports;
 
-use App\Models\Siswa;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use App\Models\Guru;
 use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class ExportSiswa implements FromQuery, WithMapping, ShouldAutoSize, WithHeadings
+class ExportGuru implements FromQuery, WithMapping, ShouldAutoSize, WithHeadings
 {
-
     use Exportable;
-    
-    public function query(){
-        return Siswa::query();
-
+    /**
+    * @return \Illuminate\Support\Collection
+    */
+    public function query()
+    {
+        return Guru::query();
     }
 
     public function map($siswa): array
     {
      return [
-        $siswa->nisn,
+        $siswa->nip,
         $siswa->nama,
         $siswa->jk,
         $siswa->telepon,
@@ -35,13 +36,11 @@ class ExportSiswa implements FromQuery, WithMapping, ShouldAutoSize, WithHeading
     public function headings(): array
     {
         return [
-            'NISN',
+            'NIP',
             'Nama',
             'Jenis Kelamin',
             'Telepon',
             'NPSN',
         ];
     }
-    
-        
 }

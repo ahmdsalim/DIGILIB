@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\siswa;
+use App\Models\Guru;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
@@ -10,9 +10,9 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
-class ImportSiswa implements ToModel, WithHeadingRow, WithValidation, SkipsOnFailure
+class ImportGuru implements ToModel, SkipsOnFailure, WithHeadingRow, WithValidation
 {
-    use Importable, SkipsFailures;
+    use Importable,SkipsFailures;
     /**
     * @param array $row
     *
@@ -20,19 +20,19 @@ class ImportSiswa implements ToModel, WithHeadingRow, WithValidation, SkipsOnFai
     */
     public function model(array $row)
     {
-        return new Siswa([
-            'nisn' => $row['nisn'],
+        return new Guru([
+            'nip' => $row['nip'],
             'nama' => $row['nama'],
             'jk' => $row['jk'],
             'telepon' => $row['telepon'],
-            'npsn' => $row['npsn']
+            'npsn' => $row['npsn'],
         ]);
     }
 
     public function rules(): array
     {
         return [
-            'nisn' => 'required|unique:siswas',
+            'nip' => 'required|unique:gurus',
             'nama' => 'required',
             'jk' => 'required',
             'telepon' => 'required',
