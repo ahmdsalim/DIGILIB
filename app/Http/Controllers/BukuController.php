@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buku;
+use App\Models\Rating;
 use App\Models\Kategori;
 use Spatie\PdfToImage\Pdf;
 use Illuminate\Support\Str;
@@ -38,7 +39,7 @@ class BukuController extends Controller
                     $kosong = 'Data tidak tersedia';
                 }
             } else {
-                $data = Buku::where('status','publish') // Tidak mengambil data dengan status 'pending'
+                $data = Buku::where('status', 'publish') // Tidak mengambil data dengan status 'pending'
                     ->orderBy('status', 'desc')
                     ->orderBy('judul', 'asc') // Mengurutkan berdasarkan judul buku secara ascending
                     ->paginate(25);
@@ -357,20 +358,20 @@ class BukuController extends Controller
             $slug = Str::slug($request->judul);
             $file_name = $slug . '-' . time() . '.' . $extension;
             $file->storeAs($destination, $file_name);
-            
+
             $pdfPath = storage_path('app/' . $destination . '/' . $file_name);
             // Path lengkap ke file PDF yang diunggah
-            
+
             // Menggunakan pdfparser untuk menghitung jumlah halaman
             $parser = new Parser();
             $pdf = $parser->parseFile($pdfPath);
             $pages = $pdf->getPages();
-            
+
             // Hitung jumlah halaman
             $pageCount = count($pages);
-            
+
             $upload_file = $file_name;
-            
+
             $data->jumlah_halaman = $pageCount;
             $data->url_pdf = $upload_file;
         }
@@ -387,7 +388,7 @@ class BukuController extends Controller
         $data->no_isbn = $request->no_isbn;
         if (Auth::user()->role === 'owner') {
             $data->status = 'publish';
-        }else {
+        } else {
             $data->status = 'pending';
         }
 
@@ -413,7 +414,15 @@ class BukuController extends Controller
 
     public function showdetail($id, $slug)
     {
+        $user = Auth::user();
         $buku = Buku::where([['id', $id], ['slug', $slug]])->first() ?? abort(404);
+        
+        $avgRating = Rating::where('buku_id', $buku->id)->avg('score');
+
+        $userHasRated = Rating::where('buku_id', $buku->id)
+            ->where('email', $user->email)
+            ->exists();
+        $countVoter = Rating::where('buku_id', $buku->id)->count('email');
 
         // Ubah cara Anda mengakses deskripsi dari model Buku
         $desk_awal = substr($buku->deskripsi, 0, 250);
@@ -422,7 +431,7 @@ class BukuController extends Controller
         // Kemudian, simpan model Buku dalam array data
         $data['buku'] = $buku;
 
-        return view('detailbuku', compact('buku', 'desk_awal', 'deskripsi'));
+        return view('detailbuku', compact('buku', 'desk_awal', 'deskripsi','userHasRated','avgRating','countVoter'));
     }
 
     public function search(Request $request)

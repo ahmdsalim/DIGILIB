@@ -11,6 +11,7 @@ use App\Http\Controllers\KoleksiController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BacaController;
+use App\Http\Controllers\RatingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,9 +40,9 @@ Route::middleware('guest')->group(function() {
 	Route::post('register/sekolah/store', [App\Http\Controllers\Auth\RegisterController::class, 'registerSekolah'])->name('register.sekolah.store');
 	Route::post('register/siswa/store', [App\Http\Controllers\Auth\RegisterController::class, 'registerSiswa'])->name('register.siswa.store');
 	Route::post('register/guru/store', [App\Http\Controllers\Auth\RegisterController::class, 'registerGuru'])->name('register.guru.store');
-	Route::get('register/success', [App\Http\Controllers\Auth\RegisterController::class, 'registerSuccess'])->name('register.success');
+	Route::get('register/success', [App\Http\Controllers\Auth\RegisterController::class, 'registerSuccess'])->middleware('registered')->name('register.success');
 	Route::get('register/verify/resend', [App\Http\Controllers\Auth\RegisterController::class, 'showResend'])->name('register.show.resend');
-	Route::post('register/verify/resend', [App\Http\Controllers\Auth\RegisterController::class, 'resendEmail'])->name('register.verify.resend');
+	Route::post('register/verify/resend', [App\Http\Controllers\Auth\RegisterController::class, 'resendEmail'])->middleware('throttle:1,1')->name('register.verify.resend');
 	Route::get('reset-email', [App\Http\Controllers\Auth\RegisterController::class, 'showResetEmail'])->name('reset.email.show');
 	Route::post('reset-email', [App\Http\Controllers\Auth\RegisterController::class, 'resetEmail'])->name('reset.email.post');
 	Route::get('users/account/aktivasi', [UserController::class, 'aktivasi'])->name('users.aktivasi');
@@ -67,7 +68,7 @@ Route::controller(BukuController::class)->group(function () {
     Route::put('/buku/resend/{slug}', [BukuController::class, 'resend'])->name('buku.resend');
     Route::resource('buku', BukuController::class);
 });
-    
+
 Route::get('detailbuku/{id}/{slug}', [BukuController::class, 'showdetail'])->name('buku.detailbuku');
 Route::resource('kategori', KategoriController::class);
 
@@ -85,7 +86,7 @@ Route::prefix('sekolah')->middleware('auth')->group(function() {
 	Route::get('siswa/{siswa}/edit', [SiswaController::class, 'editSiswa'])->name('owner.siswa.edit');
 	Route::put('siswa/{siswa}/update', [SiswaController::class, 'updateSiswa'])->name('owner.siswa.update');
 	Route::delete('siswa/{siswa}/delete', [SiswaController::class, 'destroySiswa'])->name('owner.siswa.destroy');
-
+	
 	Route::get('{sekolah}/guru', [GuruController::class, 'getGuruBySekolah'])->name('owner.guru.index');
 	Route::get('guru/{guru}/edit', [GuruController::class, 'editGuru'])->name('owner.guru.edit');
 	Route::put('guru/{guru}/update', [GuruController::class, 'updateGuru'])->name('owner.guru.update');
@@ -103,6 +104,10 @@ Route::get('/koleksi', [KoleksiController::class, 'index'])->name('koleksi');
 Route::get('/createkoleksi/{id}', [KoleksiController::class, 'create']);
 
 Route::get('/terakhirdibaca', [BacaController::class, 'indexpembaca'])->name('terakhirdibaca'); 
+Route::get('/daftar-bacaan', [BacaController::class, 'readinglist'])->name('daftarbacaan'); 
 
 Route::get('list-pembaca', [BacaController::class, 'index'])->name('reader.index');
 Route::get('list-pembaca/{id}/detail', [BacaController::class, 'detail'])->name('reader.detail');
+
+
+Route::resource('rating', RatingController::class);

@@ -21,7 +21,6 @@
                         {{Session::get('message')}}
                     </div>
                     @endif
-                    @if(session('registered'))
                     <div class="text-center">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="80px" height="80px" viewBox="0 0 117 117" version="1.1">
                         <title/>
@@ -52,14 +51,12 @@
                     </div>
                     @endif                   
                 </div>
-                @if(session('registered'))
                 <div class="card-footer">
                     <ul>
                         <li>Email aktivasi belum masuk? <a href="{{route('register.show.resend')}}">Kirim ulang.</a></li>
                         <li>Salah mengisi email? <a href="{{route('reset.email.show')}}">Ubah email.</a></li>
                     </ul>
                 </div>
-                @endif
             </div>
         </div>
     </div>

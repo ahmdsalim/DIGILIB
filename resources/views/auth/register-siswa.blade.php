@@ -72,7 +72,7 @@
                                 </span>
                             @enderror
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <label class="form-label">Kata Sandi</label>
                             <input  type="password" class="form-control @error('password') is-invalid @enderror" name="password" required placeholder="Masukkan kata sandi">
 
@@ -82,7 +82,7 @@
                                 </span>
                             @enderror
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <label class="form-label">Konfirmasi Kata Sandi</label>
                             <input type="password" class="form-control" name="password_confirmation" required placeholder="Masukkan ulang kata sandi">
                         </div>

@@ -31,7 +31,9 @@
 
         <div class="d-flex justify-content-between mb-2">
           <h1>Lanjut Membaca</h1>
-          <div></div>    
+          <div class="my-auto">
+            <a href="{{route('daftarbacaan')}}">Lihat Semua</a>
+          </div>    
         </div>
 
         @forelse ($lanjutbaca as $data)
@@ -39,6 +41,9 @@
                 <a href="{{route('buku.detailbuku',['id'=>$data->buku->id, 'slug'=>$data->buku->slug])}}" style="text-decoration: none;">
                   <div class="card mb-3">
                     <img class="card-img-top" alt="{{$data->buku->judul}}" src="{{asset('img/thumbnail-buku/'.$data->buku->thumbnail)}}">
+                    <div class="progress progress-md" style="border-radius: 0;">
+                      <div class="progress-bar bg-warning" role="progressbar" style="width: {{round(($data->progress/$data->buku->jumlah_halaman)*100)}}%; border-radius: 0;" aria-label="Progress Membaca" aria-valuenow="{{round(($data->progress/$data->buku->jumlah_halaman)*100)}}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
                       <div class="card-body px-1 py-3">
                         <h4 class="card-title">{{$data->buku->judul}} ({{$data->buku->tahun_terbit}})</h4>
                       </div>
@@ -50,13 +55,15 @@
         <div class="alert alert-primary fw-bold text-center" role="alert">
          DIGILIB Memiliki Banyak Buku Yang Menarik Lohh, <a href="/" style="text-decoration: none;" class="pe-auto">Ayo Mulai Membaca...</a>
         </div></div>
-        @endforelse        
+        @endforelse       
 
 <div class="mb-3"></div>
 
         <div class="d-flex justify-content-between mb-2">
           <h1>Selesai Dibaca</h1>
-          <div></div>    
+          <div class="my-auto">
+            <a href="{{route('daftarbacaan')}}">Lihat Semua</a>
+          </div>    
         </div>
 
         @forelse ($selesaibaca as $data)                          
@@ -85,85 +92,3 @@
 </div>
 
 @endsection
-
-@push('css')
-<style>
-        .card {
-        /*height: 270px;
-        width: 140px;*/
-        background: none;
-        box-shadow: none;
-        text-align: center;
-        }
-          .card-body{
-            width: 100px;
-          }
-
-        .card-img-top:hover {
-            transform: scale(1.05); /* Efek zoom ketika hover */
-        }
-
-        .card-title {
-            font-weight: bold;
-            font-size: 10px;
-        }
-
-        .card-img-top {
-            height: 148px;
-            width: 100px;
-            object-fit: cover;
-            transition: transform 0.2s;
-            box-shadow: 0 1rem 1rem -0.75rem rgba(105,96,215,.175);
-        }
-
-        @media only screen and (min-width: 600px) {
-          /* For tablets: */
-          .card-img-top {
-            height: 160px;
-            width: 122px;
-            box-shadow: 0 1rem 1rem -0.75rem rgba(105,96,215,.175);
-          }
-          .card-title {
-              font-weight: bold;
-              font-size: 11px;
-          }
-            .card-body{
-            width: 122px;
-          }
-          .card {
-            /*height: 270px;
-            width: 140px;*/
-            background: none;
-            box-shadow: none;
-            text-align: center;
-            }
-        }
-
-        @media only screen and (min-width: 768px) {
-          /* For desktop: */
-          .card-img-top {
-            height: 200px;
-            width: 133px;
-            box-shadow: 0 1rem 1rem -0.75rem rgba(105,96,215,.175);
-          }
-          .card-title {
-              font-weight: bold;
-              font-size: 13px;
-          } 
-          .card-body{
-            width: 133px;
-          }
-          .card {
-          /*height: 270px;
-          width: 140px;*/
-          background: none;
-          box-shadow: none;
-          text-align: center;
-          }
-        }
-        .display-3 {
-          color: #fff;
-          font-family: Ubuntu;
-        }
-</style>
-@endpush

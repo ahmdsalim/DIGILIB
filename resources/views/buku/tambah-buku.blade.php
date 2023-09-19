@@ -60,21 +60,6 @@
                                             </small>
                                         </div>
                                     </div>
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <div class="col-lg-12">
-                                                <div class="p-2 m-2">
-                                                    <div class="text-center">
-                                                        <div id="slide-preview-container"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <h5>Slide</h5>
-                                            <input type="file" id="slide-input" name="slide[]" multiple
-                                                class="form-control" accept="image/*"
-                                                onchange="updateMultiPreview('slide-input', 'slide-preview-container')">
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -146,7 +131,7 @@
                                                     <h5 class="mb-1">Kategori</h5>
                                                     <div class="col-12 mt-2">
                                                         <select
-                                                            class="form-control mySelect 
+                                                            class="form-control select2
                                                                     @error('kategori_id')
                                                                         is-invalid
                                                                     @enderror"
@@ -189,7 +174,7 @@
                                                 <address class="mb-4 mb-md-0">
                                                     <h5 class="mb-1">No ISBN</h5>
                                                     <div class="col-12 mt-2">
-                                                        <input id="_dm-inputAddress" name="no_isbn"
+                                                        <input id="_dm-inputAddress" name="no_isbn" type="number"
                                                             placeholder="Masukan no isbn"
                                                             onkeydown="preventNegativeInput(event)"
                                                             value="{{ old('no_isbn') }}"
@@ -341,8 +326,8 @@
         </script>
         <script>
             /*
-                                                                                                                    We want to preview images, so we need to register the Image Preview plugin
-                                                                                                                    */
+                                                                                                                            We want to preview images, so we need to register the Image Preview plugin
+                                                                                                                            */
             FilePond.registerPlugin(
 
                 // encodes the file as base64 data

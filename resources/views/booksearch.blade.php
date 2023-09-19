@@ -1,23 +1,5 @@
-<!-- resources/views/books/search.blade.php -->
 @extends('layouts.applanding')
-@push('css')
-<style type="text/css">
-    .img-thumbnail {
-        padding: 5px 0 0;
-        background: 0 0;
-        border: 0;
-        border-radius: 0;
-        line-height: 1.42857143;
-        display: inline-block;
-        max-width: 100%;
-        height: auto;
-    }
-    .desc { 
-        text-overflow: ellipsis;
-        overflow: hidden;
-    }
-</style>
-@endpush
+
 @section('content')
             <div class="content__boxed">
                 <div class="content__wrap">

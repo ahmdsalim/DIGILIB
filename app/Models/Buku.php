@@ -46,4 +46,12 @@ class Buku extends Model
         return $this->koleksi->contains('email', $user->email);
     }
 
+    public function readBy(User $user)
+    {
+        return $this->baca()
+                    ->where('email', $user->email)
+                    ->orderByDesc('end_at','desc')
+                    ->first();
+    }
+
 }
