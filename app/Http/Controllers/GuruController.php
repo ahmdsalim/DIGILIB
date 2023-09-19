@@ -196,11 +196,6 @@ class GuruController extends Controller
         return redirect()->back()->with('success','Berhasil');
     }
 
-    public function errorImport(){
-
-        return view('sekolah.error-import');
-    }
-
     public function import(Request $request){
         $file = $request->file('file')->store('public/files/excel/guru/');
 
@@ -216,5 +211,10 @@ class GuruController extends Controller
 
     public function export(){
         return Excel::download(new ExportGuru, 'daftar-guru-digilib.xlsx');
+    }
+
+    public function errorImport(){
+
+        return view('sekolah.error-import');
     }
 }

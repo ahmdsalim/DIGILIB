@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Guru;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
@@ -20,12 +21,15 @@ class ImportGuru implements ToModel, SkipsOnFailure, WithHeadingRow, WithValidat
     */
     public function model(array $row)
     {
+        $user = Auth::user();
+        $npsn = $user->userable->npsn;
+
         return new Guru([
             'nip' => $row['nip'],
             'nama' => $row['nama'],
             'jk' => $row['jk'],
             'telepon' => $row['telepon'],
-            'npsn' => $row['npsn'],
+            'npsn' => $npsn,
         ]);
     }
 

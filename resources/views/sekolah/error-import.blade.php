@@ -23,11 +23,14 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
-                            @if (Auth::user()->role == 'siswa')
-                                <button type="button" onclick="history.back()" class="btn btn-sm btn-primary">
+                            @if (Auth::user()->role == 'sekolah' && str_contains(Route::current()->getName(), 'siswa'))
+                                <a href="{{ route('sekolah.siswa.index') }}" type="button"
+                                    class="btn btn-sm btn-primary">
                                 @else
-                                    <button type="button" onclick="history.back()" class="btn btn-sm btn-primary">
+                                    <a href="{{ route('sekolah.guru.index') }}" type="button"
+                                        class="btn btn-sm btn-primary">
                             @endif
+
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                 <g fill="none">
                                     <path
@@ -36,7 +39,7 @@
                                         d="M3.636 11.293a1 1 0 0 0 0 1.414l5.657 5.657a1 1 0 0 0 1.414-1.414L6.757 13H20a1 1 0 1 0 0-2H6.757l3.95-3.95a1 1 0 0 0-1.414-1.414l-5.657 5.657Z" />
                                 </g>
                             </svg></i> Kembali
-                            </button>
+                        </a>
                             @if (Auth::user()->role == 'siswa')
                                 <form id="importForm" action="{{ route('siswa.import') }}" method="POST"
                                     enctype="multipart/form-data">

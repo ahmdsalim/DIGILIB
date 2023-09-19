@@ -300,7 +300,7 @@
 
                                                             <div class="col-12 d-grid">
                                                                 <button id="sumbitRating"
-                                                                    class="btn btn-sm btn-primary btn-block">Submit
+                                                                    class="btn btn-sm btn-primary btn-block">Rated
                                                                 </button>
                                                             </div>
                                                         </form>

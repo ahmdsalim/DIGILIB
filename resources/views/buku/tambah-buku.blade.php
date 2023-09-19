@@ -15,6 +15,8 @@
     </p> --}}
 @endsection
 
+@push('css')
+    
 <style>
     input[type="number"]::-webkit-inner-spin-button,
     input[type="number"]::-webkit-outer-spin-button {
@@ -26,9 +28,10 @@
         -moz-appearance: textfield;
     }
 </style>
-<style>
 
-</style>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@endpush
+
 
 @section('content')
     <div class="content__boxed">
@@ -131,7 +134,7 @@
                                                     <h5 class="mb-1">Kategori</h5>
                                                     <div class="col-12 mt-2">
                                                         <select
-                                                            class="form-control select2
+                                                            class="form-select select2
                                                                     @error('kategori_id')
                                                                         is-invalid
                                                                     @enderror"
@@ -260,11 +263,7 @@
     </div>
 
     @push('js')
-        <script>
-            $(document).ready(function() {
-                $('#mySelect').select2();
-            });
-        </script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
         <script>
             function updatePreview(input, target) {
@@ -324,29 +323,13 @@
                 }
             }
         </script>
-        <script>
-            /*
-                                                                                                                            We want to preview images, so we need to register the Image Preview plugin
-                                                                                                                            */
-            FilePond.registerPlugin(
-
-                // encodes the file as base64 data
-                FilePondPluginFileEncode,
-
-                // validates the size of the file
-                FilePondPluginFileValidateSize,
-
-                // corrects mobile image orientation
-                FilePondPluginImageExifOrientation,
-
-                // previews dropped images
-                FilePondPluginImagePreview
-            );
-
-            // Select the file input and use create() to turn it into a pond
-            FilePond.create(
-                document.querySelector('input')
-            );
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('.form-select').select2({
+                    border : 'inline',
+                });
+            });
         </script>
+        
     @endpush
 @endsection

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportUser;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\TokenAktivasi;
 use Validator;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -15,14 +17,14 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-    
         if (Auth::user()->role === 'owner') {
             $query = User::query();
             $data['search'] = $request->input('search');
             $search = $data['search'];
-            if($request->has('search') && !empty($request->input('search'))){
+            if ($request->has('search') && !empty($request->input('search'))) {
                 $query->where(function ($query) use ($search) {
-                    $query->where('email', 'like', "%{$search}%")
+                    $query
+                        ->where('email', 'like', "%{$search}%")
                         ->orWhere('nama', 'like', "%{$search}%")
                         ->orWhere('role', 'like', "%{$search}%");
                 });
@@ -32,24 +34,41 @@ class UserController extends Controller
             return view('owner.user.user', $data);
         } elseif (Auth::user()->role === 'sekolah') {
             $tittle = 'User';
-            $header = 'Data '.$tittle;
-            return view('sekolah.user.user',compact('tittle','header'));
+            $header = 'Data ' . $tittle;
+
+            $user = Auth::user();
+            $npsn = $user->userable->npsn;
+            $query = User::whereHas('userable', function ($query) use ($npsn) {
+                $query->where('npsn', $npsn);
+            })->where('role', 'siswa')->orWhere('role','guru')->orderBy('active','desc');
+
+            $data['search'] = $request->input('search');
+            $search = $data['search'];
+            if ($request->has('search') && !empty($request->input('search'))) {
+                $query->where(function ($query) use ($search) {
+                    $query
+                        ->where('email', 'like', "%{$search}%")
+                        ->orWhere('nama', 'like', "%{$search}%")
+                        ->orWhere('role', 'like', "%{$search}%");
+                });
+            }
+
+            $data['users'] = $query->paginate(25);
+
+            return view('sekolah.user.user', compact('tittle', 'header'), $data);
         } else {
-            
         }
-        
     }
 
     public function showProfile()
     {
         return view('profile.admin.index');
     }
-    
+
     public function showProfilePembaca()
     {
         return view('profile.user.index');
     }
-    
 
     public function showChangePassword()
     {
@@ -65,42 +84,50 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'password' => 'required',
-            'new_password' => 'required|confirmed|min:8|different:password'
+            'new_password' => 'required|confirmed|min:8|different:password',
         ]);
 
-        if(!$validator->fails()){
+        if (!$validator->fails()) {
             $user = Auth::user();
-            if(\Hash::check($request->password, $user->password)){
-                $user->fill([
-                    'password' => $request->new_password
-                ])->save();
+            if (\Hash::check($request->password, $user->password)) {
+                $user
+                    ->fill([
+                        'password' => $request->new_password,
+                    ])
+                    ->save();
 
                 return to_route('home')->with('success', 'Berhasil mengubah password');
             }
             $validator->getMessageBag()->add('password', 'Password does not match');
         }
-        return redirect()->back()->withErrors($validator);
+        return redirect()
+            ->back()
+            ->withErrors($validator);
     }
 
     public function changePasswordPembaca(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'password' => 'required',
-            'new_password' => 'required|confirmed|min:8|different:password'
+            'new_password' => 'required|confirmed|min:8|different:password',
         ]);
 
-        if(!$validator->fails()){
+        if (!$validator->fails()) {
             $user = Auth::user();
-            if(\Hash::check($request->password, $user->password)){
-                $user->fill([
-                    'password' => $request->new_password
-                ])->save();
+            if (\Hash::check($request->password, $user->password)) {
+                $user
+                    ->fill([
+                        'password' => $request->new_password,
+                    ])
+                    ->save();
 
                 return to_route('home')->with('success', 'Berhasil mengubah password');
             }
             $validator->getMessageBag()->add('password', 'Password does not match');
         }
-        return redirect()->back()->withErrors($validator);
+        return redirect()
+            ->back()
+            ->withErrors($validator);
     }
 
     /**
@@ -116,13 +143,13 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'nama' => 'required|string|max:128',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8',
             'role' => 'required|string|in:owner,sekolah,siswa,guru',
             'userable' => 'required_if:role,sekolah,siswa,guru',
-            'active' => 'required|in:1,0'
+            'active' => 'required|in:1,0',
         ]);
 
         if (!$validator->fails()) {
@@ -133,22 +160,25 @@ class UserController extends Controller
                 'email' => $data['email'],
                 'password' => $data['password'],
                 'role' => $data['role'],
-                'active' => $data['active']
+                'active' => $data['active'],
             ];
 
-            if(in_array($data['role'], ['sekolah','siswa','guru'])){
+            if (in_array($data['role'], ['sekolah', 'siswa', 'guru'])) {
                 $new['userable_id'] = $data['userable'];
                 $new['userable_type'] = getmodelClass($data['role']);
             }
 
             $saved = User::create($new);
 
-            if(!$saved){
-                return to_route('users.index')->with('failed','Gagal');
+            if (!$saved) {
+                return to_route('users.index')->with('failed', 'Gagal');
             }
-            return to_route('users.index')->with('success','Berhasil');
+            return to_route('users.index')->with('success', 'Berhasil');
         } else {
-            return redirect()->back()->withErrors($validator)->withInput();
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
         }
     }
 
@@ -175,13 +205,13 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'nama' => 'required|string|max:128',
-            'email' => 'required|email|unique:users,email,'.$user->id,
+            'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|min:8',
             'role' => 'required|string|in:owner,sekolah,siswa,guru',
             'userable' => 'required_if:role,sekolah,siswa,guru',
-            'active' => 'required|in:1,0'
+            'active' => 'required|in:1,0',
         ]);
 
         if ($validator->passes()) {
@@ -190,27 +220,29 @@ class UserController extends Controller
                 'nama' => $data['nama'],
                 'email' => $data['email'],
                 'role' => $data['role'],
-                'active' => $data['active']
+                'active' => $data['active'],
             ];
 
-            !empty($data['password']) ?? $new['password'] = $data['password'];
+            !empty($data['password']) ?? ($new['password'] = $data['password']);
 
-            if($data['role'] === 'owner' && in_array($user->role, ['sekolah','siswa','guru'])){
+            if ($data['role'] === 'owner' && in_array($user->role, ['sekolah', 'siswa', 'guru'])) {
                 $new['userable_id'] = null;
                 $new['userable_type'] = null;
-            }elseif($user->role === 'owner' && in_array($data['role'], ['sekolah','siswa','guru'])){
+            } elseif ($user->role === 'owner' && in_array($data['role'], ['sekolah', 'siswa', 'guru'])) {
                 $new['userable_id'] = $data['userable'];
                 $new['userable_type'] = getmodelClass($data['role']);
             }
 
             $saved = $user->update($new);
 
-            if(!$saved){
-                return to_route('users.index')->with('failed','Gagal');
+            if (!$saved) {
+                return to_route('users.index')->with('failed', 'Gagal');
             }
-            return to_route('users.index')->with('success','Berhasil');
+            return to_route('users.index')->with('success', 'Berhasil');
         } else {
-            return redirect()->back()->withErrors($validator);
+            return redirect()
+                ->back()
+                ->withErrors($validator);
         }
     }
 
@@ -221,22 +253,22 @@ class UserController extends Controller
     {
         $delete = $user->delete();
 
-        if(!$delete){
-            return to_route('users.index')->with('failed','Gagal');
+        if (!$delete) {
+            return to_route('users.index')->with('failed', 'Gagal');
         }
-        return to_route('users.index')->with('success','Berhasil');
+        return to_route('users.index')->with('success', 'Berhasil');
     }
 
     public function aktivasi(Request $request)
     {
         $token = $request->query('token');
 
-        if(isset($token)){
+        if (isset($token)) {
             $aktivasi = TokenAktivasi::where('token', $token)->first();
 
-            if($aktivasi){
+            if ($aktivasi) {
                 $user = User::where('email', $aktivasi->email)->update(['active' => 1]);
-                if($user) {
+                if ($user) {
                     $aktivasi->delete();
                     return view('auth.aktivasi')->with(['alert_class' => 'alert-success', 'message' => 'Akun Anda telah berhasil diaktivasi. Silahkan melakukan login kedalam Akun Anda.']);
                 }
@@ -244,5 +276,9 @@ class UserController extends Controller
         }
 
         return view('auth.aktivasi')->with(['alert_class' => 'alert-danger', 'message' => 'Token tidak dikenali. Pastikan melakukan aktivasi melalui pesan email yang telah diberikan.']);
+    }
+
+    public function export(){
+        return Excel::download(new ExportUser, 'daftar-pengguna.xlsx');
     }
 }

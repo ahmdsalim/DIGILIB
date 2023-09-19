@@ -16,7 +16,7 @@ class ExportSiswa implements FromQuery, WithMapping, ShouldAutoSize, WithHeading
     use Exportable;
     
     public function query(){
-        return Siswa::query();
+        return Siswa::query()->where('npsn',auth()->user()->userable->npsn);
 
     }
 

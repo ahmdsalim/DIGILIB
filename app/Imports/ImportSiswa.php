@@ -18,14 +18,22 @@ class ImportSiswa implements ToModel, WithHeadingRow, WithValidation, SkipsOnFai
     *
     * @return \Illuminate\Database\Eloquent\Model|null
     */
+    private $npsn;
+
+    public function __construct(String $npsn) 
+    {
+        $this->npsn = $npsn;
+    }
+
     public function model(array $row)
     {
+
         return new Siswa([
             'nisn' => $row['nisn'],
             'nama' => $row['nama'],
             'jk' => $row['jk'],
             'telepon' => $row['telepon'],
-            'npsn' => $row['npsn']
+            'npsn' => $this->npsn
         ]);
     }
 
@@ -35,8 +43,7 @@ class ImportSiswa implements ToModel, WithHeadingRow, WithValidation, SkipsOnFai
             'nisn' => 'required|unique:siswas',
             'nama' => 'required',
             'jk' => 'required',
-            'telepon' => 'required',
-            'npsn' => 'required'
+            'telepon' => 'required'
         ];
     }
 

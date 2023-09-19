@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportPembaca;
 use App\Models\Baca;
 use Illuminate\Http\Request;
 use App\Models\Buku;
@@ -10,6 +11,7 @@ use App\Models\User;
 use App\Models\Siswa;
 use App\Models\Guru;
 use DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BacaController extends Controller
 {
@@ -142,6 +144,10 @@ class BacaController extends Controller
         ->paginate(12);
 
         return view('readinglist', $data);
+    }
+
+    public function export(){
+        return Excel::download(new ExportPembaca, 'daftar-pembaca-digilib.xlsx');
     }
 
 }

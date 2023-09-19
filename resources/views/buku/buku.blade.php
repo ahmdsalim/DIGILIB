@@ -49,7 +49,7 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li><a class="dropdown-item" href="#">PDF</a></li>
-                                                <li><a class="dropdown-item" href="#">Excel</a></li>
+                                                <li><a class="dropdown-item" href="{{ route('buku.export') }}">Excel</a></li>
                                             </ul>
                                         </div>
                                     </div>

@@ -7,6 +7,7 @@ use App\Models\Sekolah;
 use App\Exports\ExportSiswa;
 use App\Imports\ImportSiswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
 
@@ -195,15 +196,11 @@ class SiswaController extends Controller
         return redirect()->back()->with('success','Berhasil');
     }
 
-    public function errorImport(){
-
-        return view('sekolah.error-import');
-    }
 
     public function import(Request $request){
         $file = $request->file('file')->store('public/files/excel/siswa/');
 
-        $import = new ImportSiswa;
+        $import = new ImportSiswa(Auth::user()->userable->npsn);
         $import->import($file);
 
         if($import->failures()->isNotEmpty()){
@@ -215,5 +212,10 @@ class SiswaController extends Controller
 
     public function export(){
         return Excel::download(new ExportSiswa, 'daftar-siswa.xlsx');
+    }
+
+    public function errorImport(){
+
+        return view('sekolah.error-import');
     }
 }

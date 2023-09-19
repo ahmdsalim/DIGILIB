@@ -22,7 +22,7 @@
 	  WebViewer({
 	    path: '{{asset("assets/js/lib")}}', // path to the PDF.js Express'lib' folder on your server
 	    licenseKey: 'Zmb9M9JNJJDw9Oi2jJy9',
-	    initialDoc: "{{ Storage::url('files/'.$buku->url_pdf) }}",
+	    initialDoc: "{{ Storage::url('files/buku/'.$buku->url_pdf) }}",
 	    disabledElements: [
 	    	'leftPanelButton',
 		    'viewControlsButton',

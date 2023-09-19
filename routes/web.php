@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BacaController;
 use App\Http\Controllers\RatingController;
+use App\Models\Siswa;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,6 +57,8 @@ Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'home'])->
 Route::get('/dashboard-sekolah', [App\Http\Controllers\HomeController::class, 'homesekolah'])->name('home.sekolah');
 
 Route::resource('sekolah', SekolahController::class);
+Route::get('/export-sekolah', [SekolahController::class, 'export'])->name('sekolah.export');
+
 
 Route::prefix('api')
     ->middleware('auth')
@@ -72,12 +75,17 @@ Route::controller(BukuController::class)->group(function () {
     Route::put('/buku/request/{id}', [BukuController::class, 'requestUpdate'])->name('buku.requestUpdate');
     Route::put('/buku/resend/{slug}', [BukuController::class, 'resend'])->name('buku.resend');
     Route::resource('buku', BukuController::class);
+    Route::get('/export-buku', [BukuController::class, 'export'])->name('buku.export');
+    Route::get('/export-req-posting', [BukuController::class, 'exportReqPosting'])->name('buku.req-posting.export');
+
 });
 
+Route::get('/export-detail-buku', [BukuController::class, 'exportDetail'])->name('buku.export-detail');
 Route::get('detailbuku/{id}/{slug}', [BukuController::class, 'showdetail'])->name('buku.detailbuku');
 Route::resource('kategori', KategoriController::class);
 
 Route::resource('users', UserController::class);
+Route::get('/export-user', [UserController::class, 'export'])->name('users.export');
 Route::get('/profile', [UserController::class, 'showProfile'])->name('users.profile');
 Route::get('/profilepembaca', [UserController::class, 'showProfilePembaca'])->name('pembaca.profile');
 Route::get('/change-password', [UserController::class, 'showChangePassword'])->name('users.changepassword.show');
@@ -94,7 +102,6 @@ Route::prefix('sekolah')
         Route::delete('siswa/{siswa}/delete', [SiswaController::class, 'destroySiswa'])->name('owner.siswa.destroy');
         Route::post('/import', [SiswaController::class, 'import'])->name('siswa.import');
         Route::get('/export', [SiswaController::class, 'export'])->name('siswa.export');
-        Route::get('/error-import', [SiswaController::class, 'errorImport'])->name('siswa.error-import');
 
         Route::get('{sekolah}/guru', [GuruController::class, 'getGuruBySekolah'])->name('owner.guru.index');
         Route::get('guru/{guru}/edit', [GuruController::class, 'editGuru'])->name('owner.guru.edit');
@@ -102,8 +109,9 @@ Route::prefix('sekolah')
         Route::delete('guru/{guru}/delete', [GuruController::class, 'destroyGuru'])->name('owner.guru.destroy');
 
         Route::post('/import', [GuruController::class, 'import'])->name('guru.import');
-        Route::get('/export', [GuruController::class, 'export'])->name('guru.export');
+        Route::get('/export-guru', [GuruController::class, 'export'])->name('guru.export');
     });
+    Route::get('/error-import-guru', [GuruController::class, 'errorImport'])->name('guru.error-import');
 
 Route::name('sekolah.')->group(function () {
     Route::resource('siswa', SiswaController::class)->except('show');
@@ -124,7 +132,9 @@ Route::get('list-pembaca/{id}/detail', [BacaController::class, 'detail'])->name(
 Route::resource('rating', RatingController::class);
 
 Route::post('/import', [SiswaController::class, 'import'])->name('siswa.import');
-Route::get('/export', [SiswaController::class, 'export'])->name('siswa.export');
-Route::get('/error-import', [SiswaController::class, 'errorImport'])->name('siswa.error-import');
-Route::get('/error-import', [GuruController::class, 'errorImport'])->name('guru.error-import');
+Route::get('/export-siswa', [SiswaController::class, 'export'])->name('siswa.export');
+Route::get('/error-import-siswa', [SiswaController::class, 'errorImport'])->name('siswa.error-import');
+
+Route::get('/export-pembaca', [BacaController::class, 'export'])->name('baca.export');
+
 

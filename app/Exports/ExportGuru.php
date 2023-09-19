@@ -18,7 +18,7 @@ class ExportGuru implements FromQuery, WithMapping, ShouldAutoSize, WithHeadings
     */
     public function query()
     {
-        return Guru::query();
+        return Guru::query()->where('npsn',auth()->user()->userable->npsn);
     }
 
     public function map($siswa): array
