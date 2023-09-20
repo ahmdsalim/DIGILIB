@@ -26,6 +26,7 @@ class HomeController extends Controller
         }
 
         $bukuterbaru = $bukuterbaru
+            ->where('status', 'publish')
             ->orderBy('created_at', 'desc')
             ->take(12)
             ->get();
@@ -36,6 +37,7 @@ class HomeController extends Controller
         }
 
         $bukuterpopuler = $bukuterpopuler
+            ->where('status', 'publish')
             ->orderBy('jumlah_baca', 'desc')
             ->take(12)
             ->get();
@@ -48,10 +50,7 @@ class HomeController extends Controller
             ->whereHas('baca')
             ->count();
         $data['total_pengguna'] = User::whereIn('role', ['siswa', 'guru'])->count();
-        // $avgread = Baca::select(DB::raw('AVG(TIMESTAMPDIFF(SECOND, started_at, end_at)) as avg_duration'))
-        //                                ->get();
-        // $avgreadinsec = $avgread[0]->avg_duration;
-        // $data['avg_waktubaca'] = $avgreadinsec / 60;
+        
         $averageReadingTimePerDay = Baca::select(DB::raw('DATE(started_at) as reading_date'), DB::raw('SUM(TIMESTAMPDIFF(SECOND, started_at, end_at)) as total_duration'))
             ->groupBy('reading_date')
             ->get();
@@ -136,55 +135,28 @@ class HomeController extends Controller
                 });
             })
             ->count();
-        
-        $data['total_siswa'] = Siswa::where('npsn',$npsn)->count();
-        $data['total_guru'] = Guru::where('npsn',$npsn)->count();
 
-        // $data['topPembaca'] = User::whereHas('userable', function ($query) {
-        //     $query->where('npsn', auth()->user()->userable->npsn);
-        // })
-        // ->join('siswas', 'users.id', '=', 'siswas.id') // Sesuaikan dengan nama kolom yang sesuai
-        // ->select('users.nama', 'users.email', DB::raw('SUM(bacas.progress) as total_progress'))
-        // ->join('bacas', 'bacas.email', '=', 'users.email')
-        // ->groupBy('users.nama', 'users.email')
-        // ->orderByDesc('total_progress')
-        // ->limit(10)
-        // ->get();
+        $data['total_siswa'] = Siswa::where('npsn', $npsn)->count();
+        $data['total_guru'] = Guru::where('npsn', $npsn)->count();
 
         $data['topPembaca'] = Baca::whereHas('user', function ($query) {
             $query->whereHas('userable', function ($query) {
                 $query->where('npsn', auth()->user()->userable->npsn);
             });
         })
-        ->select('email', DB::raw('count(buku_id) as total_buku'))
-        ->groupBy('email')
-        ->orderByDesc('total_buku')
-        ->limit(10)
-        ->get();
-    
-        // $data['topBuku'] = Buku::whereHas('buku', function ($query) {
-        //     $query->whereHas('user', function ($query) {
-        //         $query->whereHas('userable',function($query){
-        //             $query->where('npsn', auth()->user()->userable->npsn);
-        //         });
-        //     });
-        // })
-        // ->select('email', DB::raw('count(buku_id) as total_buku'))
-        // ->where()
-        // ->groupBy('email')
-        // ->orderByDesc('total_buku')
-        // ->limit(10)
-        // ->get();
+            ->select('email', DB::raw('count(buku_id) as total_buku'))
+            ->groupBy('email')
+            ->orderByDesc('total_buku')
+            ->limit(10)
+            ->get();
 
         $data['topBuku'] = Buku::whereHas('koleksi')
-        ->whereHas('user',function($query){
-            $query->whereHas('userable',function($query){
-                $query->where('npsn', auth()->user()->userable->npsn);
-            });
-        })
-        ->get();
-    
-
+            ->whereHas('user', function ($query) {
+                $query->whereHas('userable', function ($query) {
+                    $query->where('npsn', auth()->user()->userable->npsn);
+                });
+            })
+            ->get();
 
         return view('sekolah.home', $data);
     }

@@ -168,9 +168,6 @@ class BukuController extends Controller
      * Store a newly created resource in storage.
      */
 
-    public function countPages()
-    {
-    }
 
     public function store(Request $request)
     {
@@ -179,6 +176,7 @@ class BukuController extends Controller
             [
                 'no_isbn' => 'required|unique:bukus',
                 'judul' => 'required|',
+                'foto' => 'max:1000',
                 'kategori_id' => 'required|',
                 'pengarang' => 'required|',
                 'penerbit' => 'required|',
@@ -228,7 +226,7 @@ class BukuController extends Controller
             $buku->thumbnail = $thumbnail_name;
         }
 
-        $destination = 'public/files';
+        $destination = 'files/buku/';
 
         $file = $request->file('url_pdf');
         $extension = $file->getClientOriginalExtension();
@@ -314,7 +312,9 @@ class BukuController extends Controller
     {
         $validator = Validator::make(
             $request->all(),
-            [],
+            [
+                'foto' => 'max:1000',
+            ],
             [
                 'no_isb.unique' => 'no isbn ' . $request->kategori . ' sudah digunakan',
                 'no_isb.required' => 'no isbn tidak boleh kosong',
@@ -360,7 +360,7 @@ class BukuController extends Controller
             $data->thumbnail = $thumbnail_name;
         }
 
-        $destination = 'public/files/buku/';
+        $destination = 'files/buku/';
 
         if ($request->hasFile('url_pdf')) {
             $file = $request->file('url_pdf');
@@ -427,7 +427,7 @@ class BukuController extends Controller
         $user = Auth::user();
         $buku = Buku::where([['id', $id], ['slug', $slug]])->first() ?? abort(404);
 
-        $avgRating = Rating::where('buku_id', $buku->id)->avg('score');
+        $data['avgRating'] = Rating::where('buku_id', $buku->id)->avg('score');
 
         if(isAuth()){
             $userHasRated = Rating::where('buku_id', $buku->id)
@@ -436,16 +436,16 @@ class BukuController extends Controller
         }else {
             $userHasRated = false;
         }
-        $countVoter = Rating::where('buku_id', $buku->id)->count('email');
+        $data['countVoter'] = Rating::where('buku_id', $buku->id)->count('email');
 
         // Ubah cara Anda mengakses deskripsi dari model Buku
-        $desk_awal = substr($buku->deskripsi, 0, 250);
-        $deskripsi = $buku->deskripsi;
+        $data['desk_awal'] = substr($buku->deskripsi, 0, 250);
+        $data['deskripsi'] = $buku->deskripsi;
 
         // Kemudian, simpan model Buku dalam array data
         $data['buku'] = $buku;
 
-        return view('detailbuku', compact('buku', 'desk_awal', 'deskripsi', 'userHasRated', 'avgRating', 'countVoter'));
+        return view('detailbuku', compact('buku', 'userHasRated', 'countVoter'), $data);
     }
 
     public function search(Request $request)
