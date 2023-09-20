@@ -18,126 +18,13 @@
     header('Expires: 0 '); // Proxies.
 @endphp
 
-@push('css')
-    <style>
-        .rate {
-            float: left;
-            height: 46px;
-            padding: 0 10px;
-        }
-
-        .rate:not(:checked)>input {
-            position: absolute;
-            display: none;
-        }
-
-        .rate:not(:checked)>label {
-            float: right;
-            width: 1em;
-            overflow: hidden;
-            white-space: nowrap;
-            cursor: pointer;
-            font-size: 30px;
-            color: #ccc;
-        }
-
-        .rated:not(:checked)>label {
-            float: right;
-            width: 1em;
-            overflow: hidden;
-            white-space: nowrap;
-            cursor: pointer;
-            font-size: 30px;
-            color: #ccc;
-        }
-
-        .rate:not(:checked)>label:before {
-            content: '★ ';
-        }
-
-        .rate>input:checked~label {
-            color: #ffc700;
-        }
-
-        .rate:not(:checked)>label:hover,
-        .rate:not(:checked)>label:hover~label {
-            color: #deb217;
-        }
-
-        .rate>input:checked+label:hover,
-        .rate>input:checked+label:hover~label,
-        .rate>input:checked~label:hover,
-        .rate>input:checked~label:hover~label,
-        .rate>label:hover~input:checked~label {
-            color: #c59b08;
-        }
-
-        .star-rating-complete {
-            color: #c59b08;
-        }
-
-        .rating-container .form-control:hover,
-        .rating-container .form-control:focus {
-            background: #fff;
-            border: 1px solid #ced4da;
-        }
-
-        .rating-container textarea:focus,
-        .rating-container input:focus {
-            color: #000;
-        }
-
-        .rated {
-            float: left;
-            height: 46px;
-            padding: 0 10px;
-        }
-
-        .rated:not(:checked)>input {
-            position: absolute;
-            display: none;
-        }
-
-        .rated:not(:checked)>label {
-            float: right;
-            width: 1em;
-            overflow: hidden;
-            white-space: nowrap;
-            cursor: pointer;
-            font-size: 30px;
-            color: #ffc700;
-        }
-
-        .rated:not(:checked)>label:before {
-            content: '★ ';
-        }
-
-        .rated>input:checked~label {
-            color: #ffc700;
-        }
-
-        .rated:not(:checked)>label:hover,
-        .rated:not(:checked)>label:hover~label {
-            color: #deb217;
-        }
-
-        .rated>input:checked+label:hover,
-        .rated>input:checked+label:hover~label,
-        .rated>input:checked~label:hover,
-        .rated>input:checked~label:hover~label,
-        .rated>label:hover~input:checked~label {
-            color: #c59b08;
-        }
-    </style>
-@endpush
-
 @section('content')
     <div class="content__boxed">
         <div class="content__wrap">
             <div class="row">
                 <div class="col-md-3 col-sm-12 mb-2">
-                    <div class="card">
-                        <div class="card-body">
+                    <div class="card-detail">
+                        <div class="card-body-detail">
                             <div class="d-flex flex-column">
                                 <div class="d-flex justify-content-center">
                                     @if ($buku->thumbnail)
@@ -154,8 +41,8 @@
 
 
                 <div class="col-md-9 col-sm-12">
-                    <div class="card">
-                        <div class="card-body">
+                    <div class="card-detail">
+                        <div class="card-body-detail">
                             <div class="row">
                                 <div class="col-md-12 mb-3 border-bottom">
                                     <div class="pb-1 d-flex align-items-center">
@@ -179,7 +66,7 @@
                                             </div>
                                         @endif
                                     </div>
-                                    <h3 class="card-title">{{ $buku->judul }}</h3>
+                                    <h3 class="card-title-detail">{{ $buku->judul }}</h3>
                                 </div>
                                 <div class="col-md-12">
                                     <address class="mb-4 mb-md-0">
@@ -260,49 +147,60 @@
                                         <div class="col-md-6">
                                             <address class="mb-4 mb-md-0">
                                                 <h5 class="mb-1">Rating</h5>
-                                                @if (!$userHasRated)
-                                                    <form id="ratingForm" action="{{ route('rating.store') }}"
-                                                        method="POST" autocomplete="off">
-                                                        @csrf
-                                                        <input type="hidden" name="id"
-                                                            value="{{ $buku->id }}">
-                                                        <input type="hidden" name="slug"
-                                                            value="{{ $buku->slug }}">
-                                                        <p class="m-0 font-weight-bold ">Rate This Book</p>
-                                                        <div class="form-group row">
-                                                            <input type="hidden" name="booking_id">
-                                                            <div class="col">
-                                                                <div class="rate">
-                                                                    <input type="radio" checked id="star5"
-                                                                        class="rate" name="score" value="5" />
-                                                                    <label for="star5" title="text">5
-                                                                        stars</label>
-                                                                    <input type="radio" id="star4" class="rate"
-                                                                        name="score" value="4" />
-                                                                    <label for="star4" title="text">4
-                                                                        stars</label>
-                                                                    <input type="radio" id="star3" class="rate"
-                                                                        name="score" value="3" />
-                                                                    <label for="star3" title="text">3
-                                                                        stars</label>
-                                                                    <input type="radio" id="star2" class="rate"
-                                                                        name="score" value="2">
-                                                                    <label for="star2" title="text">2
-                                                                        stars</label>
-                                                                    <input type="radio" id="star1" class="rate"
-                                                                        name="score" value="1" />
-                                                                    <label for="star1" title="text">1
-                                                                        star</label>
+                                                @if(isAuth())
+                                                    @if (!$userHasRated)
+                                                        <form id="ratingForm" action="{{ route('rating.store') }}"
+                                                            method="POST" autocomplete="off">
+                                                            @csrf
+                                                            <input type="hidden" name="id"
+                                                                value="{{ $buku->id }}">
+                                                            <input type="hidden" name="slug"
+                                                                value="{{ $buku->slug }}">
+                                                            <p class="m-0 font-weight-bold ">Rate This Book</p>
+                                                            <div class="form-group row">
+                                                                <input type="hidden" name="booking_id">
+                                                                <div class="col">
+                                                                    <div class="rate">
+                                                                        <input type="radio" checked id="star5"
+                                                                            class="rate" name="score" value="5" />
+                                                                        <label for="star5" title="text">5
+                                                                            stars</label>
+                                                                        <input type="radio" id="star4" class="rate"
+                                                                            name="score" value="4" />
+                                                                        <label for="star4" title="text">4
+                                                                            stars</label>
+                                                                        <input type="radio" id="star3" class="rate"
+                                                                            name="score" value="3" />
+                                                                        <label for="star3" title="text">3
+                                                                            stars</label>
+                                                                        <input type="radio" id="star2" class="rate"
+                                                                            name="score" value="2">
+                                                                        <label for="star2" title="text">2
+                                                                            stars</label>
+                                                                        <input type="radio" id="star1" class="rate"
+                                                                            name="score" value="1" />
+                                                                        <label for="star1" title="text">1
+                                                                            star</label>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
 
-                                                        <div class="col-12 d-grid">
-                                                            <button id="sumbitRating"
-                                                                class="btn btn-sm btn-primary btn-block">Submit
-                                                            </button>
+                                                            <div class="col-12 d-grid">
+                                                                <button id="sumbitRating"
+                                                                    class="btn btn-sm btn-primary btn-block">Rated
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    @else
+                                                        <div class="d-flex flex-row gap-1 align-items-center">
+                                                            <i><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                    height="24" viewBox="0 0 24 24">
+                                                                    <path fill="#ffc700"
+                                                                        d="m5.825 22l1.625-7.025L2 10.25l7.2-.625L12 3l2.8 6.625l7.2.625l-5.45 4.725L18.175 22L12 18.275L5.825 22Z" />
+                                                                </svg></i>
+                                                            <label>{{round($avgRating,2,2)}} / {{ $countVoter }} Votes</label> <br>
                                                         </div>
-                                                    </form>
+                                                    @endif
                                                 @else
                                                     <div class="d-flex flex-row gap-1 align-items-center">
                                                         <i><svg xmlns="http://www.w3.org/2000/svg" width="24"
@@ -310,7 +208,7 @@
                                                                 <path fill="#ffc700"
                                                                     d="m5.825 22l1.625-7.025L2 10.25l7.2-.625L12 3l2.8 6.625l7.2.625l-5.45 4.725L18.175 22L12 18.275L5.825 22Z" />
                                                             </svg></i>
-                                                        <label>{{round($avgRating,2,2)}} / {{ $countVoter }} Votes</label> <br>
+                                                        <label>{{round($avgRating,2)}} / {{ $countVoter }} Votes</label> <br>
                                                     </div>
                                                 @endif
                                             </address>
@@ -369,30 +267,7 @@
             document.getElementById("readLessBtn").style.display = "none";
         });
     </script>
-    <script>
-        $(document).ready(function() {
-            $('input[type="radio"]').on('change', function() {
-                var score = $('input[name="score"]:checked').val();
 
-                $.ajax({
-                    url: '{{ route('rating.store') }}',
-                    method: 'POST',
-                    data: {
-                        '_token': '{{ csrf_token() }}',
-                        'score': score
-                    },
-                    success: function(response) {
-                        // Tindakan yang perlu dilakukan setelah peringkat disimpan
-                        console.log('Rating berhasil disimpan.');
-                    },
-                    error: function(error) {
-                        // Tindakan yang perlu dilakukan jika terjadi kesalahan
-                        console.error('Terjadi kesalahan saat menyimpan rating.');
-                    }
-                });
-            });
-        });
-    </script>
 @endpush
 
 

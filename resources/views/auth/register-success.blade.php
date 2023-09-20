@@ -38,18 +38,7 @@
                     <p class="lead mt-2 text-center">
                         Pendaftaran akun Anda telah berhasil.<br>
                         Silahkan mengecek email untuk mengaktivasi akun Anda.
-                    </p>
-                    @else
-                    <h2 class="my-auto mt-2 text-center">404 Not Found</h2>
-                    <p class="lead mt-2 text-center">
-                        Halaman yang Anda cari tidak ditemukan
-                    </p>
-                    <div class="text-center">
-                        <a href="/" class="btn btn-info">
-                            Kembali
-                        </a>
-                    </div>
-                    @endif                   
+                    </p>                  
                 </div>
                 <div class="card-footer">
                     <ul>

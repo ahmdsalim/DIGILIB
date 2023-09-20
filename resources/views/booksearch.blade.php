@@ -5,8 +5,8 @@
                 <div class="content__wrap">
                     <div class="row justify-content-center">
                         <div class="col-12 col-md-8">
-                            <div class="card">
-                                <div class="card-body p-xl-4">
+                            <div class="card-search">
+                                <div class="card-body-search p-xl-4">
 
                                     <!-- Result information -->
                                     <div class="pb-2 mb-4 border-bottom">
@@ -48,9 +48,18 @@
                                                 @endforeach
                                 </div>
                             </div>
+                            <div class="content__wrap">
+                                                                    <div class="d-flex justify-content-between pt-xl-3">
+                                          <div></div>
+                                          {{$results->withQueryString()->links()}}
+                                          <div></div>
+                                        </div>                                
+</div>
                         </div>
+
                     </div>
 
                 </div>
             </div>
 @endsection
+

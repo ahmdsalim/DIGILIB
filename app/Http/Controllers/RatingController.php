@@ -38,7 +38,8 @@ class RatingController extends Controller
         $rating->save();
 
         return redirect()
-            ->route('buku.detailbuku', ['id' => $id, 'slug' => $slug]);
+            ->route('buku.detailbuku', ['id' => $id, 'slug' => $slug])
+            ->with('Rating Berhasil Di Tambahkan');
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportPembaca;
 use App\Models\Baca;
 use Illuminate\Http\Request;
 use App\Models\Buku;
@@ -10,6 +11,7 @@ use App\Models\User;
 use App\Models\Siswa;
 use App\Models\Guru;
 use DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BacaController extends Controller
 {
@@ -93,6 +95,7 @@ class BacaController extends Controller
             [
                 'email' => $user->email,
                 'buku_id' => $buku_id,
+                'prev_progress' => $request->prev_progress,
                 'progress' => $request->progress
             ]
         );
@@ -111,9 +114,11 @@ class BacaController extends Controller
         $data['buku']->update(['jumlah_baca' => $data['buku']->jumlah_baca+1]);
         $data['sesi'] = \Str::random(16);
         $data['latestPage'] = 1;
+        $data['prevPage'] = 0;
         $data['newReader'] = true;
         $baca = Baca::where('email',$user->email)->where('buku_id',$id)->orderBy('started_at','desc')->first();
         if($baca) {
+            $data['prevPage'] = $baca->progress;
             $data['latestPage'] = $baca->progress;
             $data['newReader'] = false;
         }
@@ -139,6 +144,10 @@ class BacaController extends Controller
         ->paginate(12);
 
         return view('readinglist', $data);
+    }
+
+    public function export(){
+        return Excel::download(new ExportPembaca, 'daftar-pembaca-digilib.xlsx');
     }
 
 }

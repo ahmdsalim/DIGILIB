@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportBuku;
+use App\Exports\ExportDetailBuku;
+use App\Exports\ExportReqPosting;
 use App\Models\Buku;
 use App\Models\Rating;
 use App\Models\Kategori;
@@ -11,6 +14,7 @@ use Illuminate\Http\Request;
 use Smalot\PdfParser\Parser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BukuController extends Controller
 {
@@ -280,7 +284,13 @@ class BukuController extends Controller
 
         $desk_awal = substr($buku->deskripsi, 0, 250);
         $deskripsi = $buku->deskripsi;
-        return view('buku.detail-buku', compact('tittle', 'header', 'buku', 'desk_awal', 'deskripsi'));
+
+        $data['avgRating'] = Rating::where('buku_id', $buku->id)->avg('score');
+
+        $data['countVoter'] = Rating::where('buku_id', $buku->id)->count('email');
+
+
+        return view('buku.detail-buku', compact('tittle', 'header', 'buku', 'desk_awal', 'deskripsi'),$data);
     }
 
     /**
@@ -350,7 +360,7 @@ class BukuController extends Controller
             $data->thumbnail = $thumbnail_name;
         }
 
-        $destination = 'public/files';
+        $destination = 'public/files/buku/';
 
         if ($request->hasFile('url_pdf')) {
             $file = $request->file('url_pdf');
@@ -416,12 +426,16 @@ class BukuController extends Controller
     {
         $user = Auth::user();
         $buku = Buku::where([['id', $id], ['slug', $slug]])->first() ?? abort(404);
-        
+
         $avgRating = Rating::where('buku_id', $buku->id)->avg('score');
 
-        $userHasRated = Rating::where('buku_id', $buku->id)
-            ->where('email', $user->email)
-            ->exists();
+        if(isAuth()){
+            $userHasRated = Rating::where('buku_id', $buku->id)
+                ->where('email', $user->email)
+                ->exists();
+        }else {
+            $userHasRated = false;
+        }
         $countVoter = Rating::where('buku_id', $buku->id)->count('email');
 
         // Ubah cara Anda mengakses deskripsi dari model Buku
@@ -431,7 +445,7 @@ class BukuController extends Controller
         // Kemudian, simpan model Buku dalam array data
         $data['buku'] = $buku;
 
-        return view('detailbuku', compact('buku', 'desk_awal', 'deskripsi','userHasRated','avgRating','countVoter'));
+        return view('detailbuku', compact('buku', 'desk_awal', 'deskripsi', 'userHasRated', 'avgRating', 'countVoter'));
     }
 
     public function search(Request $request)
@@ -461,5 +475,13 @@ class BukuController extends Controller
     {
         $buku = Buku::orderBy('jumlah_baca', 'desc')->paginate(12);
         return view('bukuterpopuler', compact('buku'));
+    }
+
+    public function export(){
+        return Excel::download(new ExportBuku, 'daftar-buku-digilib.xlsx');
+    }
+    
+    public function exportReqPosting(){
+        return Excel::download(new ExportReqPosting, 'detail-request-posting-digilib.xlsx');
     }
 }

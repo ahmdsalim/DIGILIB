@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('buku_id')
                   ->constrained('bukus')
                   ->onDelete('cascade');
+            $table->tinyInteger('prev_progress');
             $table->tinyInteger('progress');
             $table->dateTime('started_at');
             $table->dateTime('end_at');

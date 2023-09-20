@@ -45,6 +45,7 @@
 <div class="d-flex justify-content-between pt-xl-3">
   <div></div>
   {{$buku->withQueryString()->links()}}
+  <div></div>
 </div>
         </div>
       </div>
