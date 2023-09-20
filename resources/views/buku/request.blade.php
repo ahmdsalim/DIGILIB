@@ -72,6 +72,7 @@
                                                 <th>Pengarang</th>
                                                 <th>Penerbit</th>
                                                 <th>No ISBN</th>
+                                                <th>Pemilik</th>
                                                 <th class="text-center">Status</th>
                                                 <th class="text-center">Aksi</th>
                                             </tr>
@@ -90,14 +91,20 @@
                                                     <tr class="align-middle">
                                                         <th scope="row">{{ $index + $data->firstItem() }}</th>
                                                         <td>
-                                                            <img src="{{ asset('thumbnail-buku/' . $buku->thumbnail) }}"
+                                                            @if ($buku->thumbnail)
+                                                            <img src="{{ asset('img/thumbnail-buku/' . $buku->thumbnail) }}"
                                                                 alt="" style="width: 50px;">
+                                                        @else
+                                                            <img src="{{ asset('img/default-pict.png') }}"
+                                                                alt="Foto Default" style="width: 50px;">
+                                                        @endif
                                                         </td>
                                                         <td>{{ $buku->judul }}</td>
                                                         <td>{{ $buku->kategori->kategori }}</td>
                                                         <td>{{ $buku->penulis }}</td>
                                                         <td>{{ $buku->penerbit }}</td>
                                                         <td>{{ $buku->no_isbn }}</td>
+                                                        <td>{{ $buku->user->nama }}</td>
                                                         <td class="fs-5">
                                                             @if ($buku->publish == 1)
                                                                 <div class="badge d-block bg-success">Publish</div>
