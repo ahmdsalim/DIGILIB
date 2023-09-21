@@ -69,7 +69,6 @@ Route::middleware('auth')->group(function(){
     });
 
     Route::get('/export-detail-buku', [BukuController::class, 'exportDetail'])->name('buku.export-detail');
-    Route::get('detailbuku/{id}/{slug}', [BukuController::class, 'showdetail'])->name('buku.detailbuku');
     Route::resource('kategori', KategoriController::class);
 
     Route::resource('users', UserController::class);
@@ -136,6 +135,8 @@ Route::middleware('auth.user')->group(function(){
     Route::get('/daftar-bacaan', [BacaController::class, 'readinglist'])->name('daftarbacaan');
     Route::resource('rating', RatingController::class)->only('store');
 });
+
+Route::get('detailbuku/{id}/{slug}', [BukuController::class, 'showdetail'])->name('buku.detailbuku');
 
 // Route::get('/createkoleksi/{id}', [KoleksiController::class, 'create']);
 
