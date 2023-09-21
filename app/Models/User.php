@@ -61,7 +61,7 @@ class User extends Authenticatable
 
     public function buku()
     {
-        return $this->hasOne(Buku::class, 'email', 'email');
+        return $this->hasMany(Buku::class, 'email', 'email');
     }
 
     public function baca()

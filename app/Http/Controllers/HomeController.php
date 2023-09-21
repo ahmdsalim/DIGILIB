@@ -166,23 +166,24 @@ class HomeController extends Controller
         $data['total_siswa'] = Siswa::where('npsn', $npsn)->count();
         $data['total_guru'] = Guru::where('npsn', $npsn)->count();
 
-        $data['topPembaca'] = Baca::whereHas('user', function ($query) {
+        $data['readers'] = User::whereIn('role', ['siswa','guru'])
+                                 ->whereHas('userable', function($query) use ($npsn) {
+                                    $query->where('npsn', $npsn);
+                                 })
+                                 ->whereHas('baca')
+                                 ->get()
+                                 ->sortByDesc(function ($value) {
+                                    return $value->baca()->get()->unique('buku_id')->count();
+                                 })
+                                 ->take(10);
+
+        $data['topBuku'] = Buku::whereHas('user', function ($query) {
             $query->whereHas('userable', function ($query) {
                 $query->where('npsn', auth()->user()->userable->npsn);
             });
         })
-            ->select('email', DB::raw('count(buku_id) as total_buku'))
-            ->groupBy('email')
-            ->orderByDesc('total_buku')
+            ->orderBy('jumlah_baca')
             ->limit(10)
-            ->get();
-
-        $data['topBuku'] = Buku::whereHas('koleksi')
-            ->whereHas('user', function ($query) {
-                $query->whereHas('userable', function ($query) {
-                    $query->where('npsn', auth()->user()->userable->npsn);
-                });
-            })
             ->get();
 
         return view('sekolah.home', $data);

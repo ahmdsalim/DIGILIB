@@ -225,7 +225,18 @@
                                         @foreach ($topBuku as $buku)
                                             <tr>
                                                 <th class="text-center">{{ $loop->iteration }}</th>
-                                                <td>{{ $buku}}</td>
+                                                <td>
+                                                    @if ($buku->thumbnail)
+                                                        <img class=""
+                                                            src="{{ asset('img/thumbnail-buku/' . $buku->thumbnail) }}"
+                                                            alt="{{ $buku->thumbnail }}" style="width: 50px;">
+                                                    @else
+                                                        <img class=""
+                                                            src="{{ asset('img/default-pict.png') }}" alt="Foto Default">
+                                                    @endif
+                                                </td>
+                                                <td>{{ $buku->judul }}</td>
+                                                <td>{{ $buku->kategori->kategori }}</td>
                                                 {{-- <td class="text-center">{{ $buku->total_buku }}</td> --}}
                                             </tr>
                                         @endforeach
@@ -256,12 +267,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($topPembaca as $pembaca)
+                                        @foreach ($readers as $topPembaca)
                                             <tr>
                                                 <th class="text-center">{{ $loop->iteration }}</th>
-                                                <td>{{ $pembaca->user->userable->nisn }}</td>
-                                                <td>{{ $pembaca->user->nama }}</td>
-                                                <td class="text-center">{{ $pembaca->total_buku }}</td>
+                                                <td>{{$topPembaca->userable->nisn}}</td>
+                                                <td>{{strtoupper($topPembaca->userable->nama)}}</td>
+                                                <td class="text-center fw-bold">{{$topPembaca->baca()->get()->unique('buku_id')->count()}}</td>
+
+                                                {{-- <td class="text-center">{{ $pembaca->total_buku }}</td> --}}
                                             </tr>
                                         @endforeach
                                     </tbody>
