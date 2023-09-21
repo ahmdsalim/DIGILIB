@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Siswa;
 use App\Models\Guru;
 use DB;
+use PDF;
 use Maatwebsite\Excel\Facades\Excel;
 
 class BacaController extends Controller
@@ -150,4 +151,24 @@ class BacaController extends Controller
         return Excel::download(new ExportPembaca, 'daftar-pembaca-digilib.xlsx');
     }
 
+    public function cetakPdf(Request $request)
+    {
+        $query = User::query();
+        $user = Auth::user();
+        if(Auth::user()->role == 'sekolah'){
+            $query->whereHasMorph(
+                'userable',
+                [Siswa::class, Guru::class],
+                function ($query) use ($user) {
+                    $query->where('npsn', $user->userable->npsn);
+                }
+            );
+        }
+
+        $data['pembaca'] = $query->whereIn('role', ['siswa','guru'])
+                                 ->whereHas('baca');      
+        view()->share('data', $data);
+        $pdf = PDF::loadview('pdf.daftar_pembaca');
+        return $pdf->download('daftar_pembaca.pdf');
+    }
 }

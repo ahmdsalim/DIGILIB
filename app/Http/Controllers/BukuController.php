@@ -280,16 +280,19 @@ class BukuController extends Controller
 
         $buku = Buku::where('slug', $slug)->first();
 
-        $desk_awal = substr($buku->deskripsi, 0, 250);
-        $deskripsi = $buku->deskripsi;
+        if ($buku) { // Periksa apakah $buku tidak null
+            $desk_awal = substr($buku->deskripsi, 0, 250);
+            $deskripsi = $buku->deskripsi;
 
-        $data['avgRating'] = Rating::where('buku_id', $buku->id)->avg('score');
+            $data['avgRating'] = Rating::where('buku_id', $buku->id)->avg('score');
+            $data['countVoter'] = Rating::where('buku_id', $buku->id)->count('email');
 
-        $data['countVoter'] = Rating::where('buku_id', $buku->id)->count('email');
-
-
-        return view('buku.detail-buku', compact('tittle', 'header', 'buku', 'desk_awal', 'deskripsi'),$data);
+            return view('buku.detail-buku', compact('tittle', 'header', 'buku', 'desk_awal', 'deskripsi'), $data);
+        } else {
+            // Handle ketika buku tidak ditemukan, misalnya tampilkan pesan atau redirect ke halaman lain.
+        }
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -467,13 +470,13 @@ class BukuController extends Controller
 
     public function bukuterbaru(Request $request)
     {
-        $buku = Buku::orderBy('created_at', 'desc')->paginate(12);
+        $buku = Buku::orderBy('created_at', 'desc')->where('status', 'publish')->paginate(12);
         return view('bukuterbaru', compact('buku'));
     }
 
     public function bukuterpopuler(Request $request)
     {
-        $buku = Buku::orderBy('jumlah_baca', 'desc')->paginate(12);
+        $buku = Buku::orderBy('jumlah_baca', 'desc')->where('status', 'publish')->paginate(12);
         return view('bukuterpopuler', compact('buku'));
     }
 
@@ -483,5 +486,20 @@ class BukuController extends Controller
     
     public function exportReqPosting(){
         return Excel::download(new ExportReqPosting, 'detail-request-posting-digilib.xlsx');
+    }
+
+    public function cetakPdf()
+    {
+    $user = auth()->user();
+
+    if ($user->role == 'owner') {
+        $data = Buku::where('email', $user->email)->get();
+    } else {
+        $data = Buku::where('email', $user->email)->get();
+    }
+
+    view()->share('data', $data);
+    $pdf = PDF::loadview('pdf.daftar_buku');
+    return $pdf->download('daftar_buku.pdf');
     }
 }

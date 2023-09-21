@@ -24,12 +24,14 @@
                             <div class="row">
                                 <!-- Left toolbar -->
                                 <div class="col-md-6 d-flex gap-1 align-items-center mb-3">
+                                @if(auth()->user()->role !== 'sekolah')                                    
                                     <a href="{{ route('users.create') }}"
                                         class="btn btn-primary hstack gap-2 align-self-center">
                                         <i class="demo-psi-add fs-5"></i>
                                         <span class="vr"></span>
                                         Tambah Data
                                     </a>
+                                    @endif
                                     <button class="btn btn-icon btn-outline-light">
                                         <i class="demo-pli-printer fs-5"></i>
                                     </button>
@@ -47,7 +49,7 @@
                                                 <span class="visually-hidden">Toggle Dropdown</span>
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" href="#">PDF</a></li>
+                                                <li><a class="dropdown-item" href="{{route ('user.cetak.pdf') }}">PDF</a></li>
                                                 <li><a class="dropdown-item" href="{{ route('users.export') }}">Excel</a></li>
                                             </ul>
                                         </div>

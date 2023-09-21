@@ -114,6 +114,7 @@
                                 </li>
                                 <!-- END : Regular menu link -->
                             @endif
+                            @if (Auth::check() && Auth::user()->role == 'owner')
                             <li class="nav-item">
                                 <a href="{{ route('users.index') }}"
                                     class="nav-link mininav-toggle {{ str_contains(Route::current()->getName(), 'users') ? 'active' : '' }}">
@@ -127,6 +128,7 @@
                                     <span class="nav-label mininav-content ms-1">User</span>
                                 </a>
                             </li>
+                            @endif
                             @if (Auth::check() && Auth::user()->role == 'owner')
                                 <li class="nav-item">
                                     <a href="{{ route('sekolah.index') }}"

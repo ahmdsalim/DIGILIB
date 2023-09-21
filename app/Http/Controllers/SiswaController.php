@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
+use PDF;
 
 class SiswaController extends Controller
 {
@@ -217,5 +218,13 @@ class SiswaController extends Controller
     public function errorImport(){
 
         return view('sekolah.error-import');
+    }
+
+    public function cetakPdf()
+    {
+        $data = Siswa::all();
+        view()->share('data', $data);
+        $pdf = PDF::loadview('pdf.daftar_siswa');
+        return $pdf->download('daftar_siswa.pdf');
     }
 }
