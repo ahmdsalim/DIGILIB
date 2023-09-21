@@ -34,13 +34,19 @@
                 <a href="{{route('buku.detailbuku',['id'=>$data->id, 'slug'=>$data->slug])}}" style="text-decoration: none;">
                   <div class="card mb-3">
                     <img class="card-img-top" alt="{{$data->judul}}" src="{{asset('img/thumbnail-buku/'.$data->thumbnail)}}">
-                      <div class="card-body">
+                      <div class="card-body px-1 py-3">
                         <h4 class="card-title">{{$data->judul}} ({{$data->tahun_terbit}})</h4>
                       </div>
                   </div>
                 </a>
           </div>
           @endforeach
+
+<div class="d-flex justify-content-between pt-xl-3">
+  <div></div>
+  {{$buku->withQueryString()->links()}}
+  <div></div>
+</div>
         </div>
       </div>
     </div>
@@ -49,76 +55,3 @@
           </div>          
         </div>
 @endsection
-
-@push('css')
-<style>
-        .card {
-        /*height: 270px;
-        width: 140px;*/
-        background: none;
-        box-shadow: none;
-        text-align: center;
-        }
-
-        .card-img-top:hover {
-            transform: scale(1.05); /* Efek zoom ketika hover */
-        }
-
-        .card-title {
-            font-weight: bold;
-            font-size: 10px;
-        }
-
-        .card-img-top {
-            height: 148px;
-            width: 100px;
-            object-fit: cover;
-            transition: transform 0.2s;
-            box-shadow: 0 1rem 1rem -0.75rem rgba(105,96,215,.175);
-        }
-
-        @media only screen and (min-width: 600px) {
-          /* For tablets: */
-          .card-img-top {
-            height: 160px;
-            width: 122px;
-            box-shadow: 0 1rem 1rem -0.75rem rgba(105,96,215,.175);
-          }
-          .card-title {
-              font-weight: bold;
-              font-size: 11px;
-          }
-          .card {
-            /*height: 270px;
-            width: 140px;*/
-            background: none;
-            box-shadow: none;
-            text-align: center;
-            }
-        }
-
-        @media only screen and (min-width: 768px) {
-          /* For desktop: */
-          .card-img-top {
-            height: 210px;
-            width: 140px;
-            box-shadow: 0 1rem 1rem -0.75rem rgba(105,96,215,.175);
-          }
-          .card-title {
-              font-weight: bold;
-              font-size: 13px;
-          } 
-          .card {
-          /*height: 270px;
-          width: 140px;*/
-          background: none;
-          box-shadow: none;
-          text-align: center;
-          }
-        }
-        .display-3 {
-          color: #fff;
-          font-family: Ubuntu;
-        }
-</style>
-@endpush

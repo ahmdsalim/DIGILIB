@@ -75,6 +75,7 @@ Route::controller(BukuController::class)->group(function () {
     Route::put('/buku/request/{id}', [BukuController::class, 'requestUpdate'])->name('buku.requestUpdate');
     Route::put('/buku/resend/{slug}', [BukuController::class, 'resend'])->name('buku.resend');
     Route::resource('buku', BukuController::class);
+    Route::get('buku/cetak-pdf', [BukuController::class, 'cetakPdf'])->name('buku.cetak.pdf');
     Route::get('/export-buku', [BukuController::class, 'export'])->name('buku.export');
     Route::get('/export-req-posting', [BukuController::class, 'exportReqPosting'])->name('buku.req-posting.export');
 
@@ -86,6 +87,7 @@ Route::resource('kategori', KategoriController::class);
 
 Route::resource('users', UserController::class);
 Route::get('/export-user', [UserController::class, 'export'])->name('users.export');
+Route::get('user/cetak-pdf', [UserController::class, 'cetakPdf'])->name('user.cetak.pdf');
 Route::get('/profile', [UserController::class, 'showProfile'])->name('users.profile');
 Route::get('/profilepembaca', [UserController::class, 'showProfilePembaca'])->name('pembaca.profile');
 Route::get('/change-password', [UserController::class, 'showChangePassword'])->name('users.changepassword.show');
@@ -111,7 +113,9 @@ Route::prefix('sekolah')
         Route::post('/import', [GuruController::class, 'import'])->name('guru.import');
         Route::get('/export-guru', [GuruController::class, 'export'])->name('guru.export');
     });
+    Route::get('siswa/cetak-pdf', [SiswaController::class, 'cetakPdf'])->name('siswa.cetak.pdf');
     Route::get('/error-import-guru', [GuruController::class, 'errorImport'])->name('guru.error-import');
+    Route::get('guru/cetak-pdf', [GuruController::class, 'cetakPdf'])->name('guru.cetak.pdf');
 
 Route::name('sekolah.')->group(function () {
     Route::resource('siswa', SiswaController::class)->except('show');
@@ -136,5 +140,5 @@ Route::get('/export-siswa', [SiswaController::class, 'export'])->name('siswa.exp
 Route::get('/error-import-siswa', [SiswaController::class, 'errorImport'])->name('siswa.error-import');
 
 Route::get('/export-pembaca', [BacaController::class, 'export'])->name('baca.export');
-
+Route::get('pembaca/cetak-pdf', [BacaController::class, 'cetakPdf'])->name('pembaca.cetak.pdf');
 

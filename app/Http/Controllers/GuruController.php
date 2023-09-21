@@ -11,6 +11,7 @@ use App\Imports\ImportSiswa;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
+use PDF;
 
 class GuruController extends Controller
 {
@@ -216,5 +217,13 @@ class GuruController extends Controller
     public function errorImport(){
 
         return view('sekolah.error-import');
+    }
+
+    public function cetakPdf()
+    {
+        $data = Guru::all();
+        view()->share('data', $data);
+        $pdf = PDF::loadview('pdf.daftar_guru');
+        return $pdf->download('daftar_guru.pdf');
     }
 }

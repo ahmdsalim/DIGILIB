@@ -9,6 +9,7 @@ use App\Models\TokenAktivasi;
 use Validator;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use PDF;
 
 class UserController extends Controller
 {
@@ -280,5 +281,13 @@ class UserController extends Controller
 
     public function export(){
         return Excel::download(new ExportUser, 'daftar-pengguna.xlsx');
+    }
+
+    public function cetakPdf()
+    {
+        $data = User::all();
+        view()->share('data', $data);
+        $pdf = PDF::loadview('pdf.daftar_user');
+        return $pdf->download('daftar_user.pdf');
     }
 }
