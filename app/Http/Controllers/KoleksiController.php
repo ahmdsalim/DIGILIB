@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+ 
 use App\Models\baca;
 use App\Models\buku;
 use App\Models\user;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 class KoleksiController extends Controller
 {
     public function index(){
-        $koleksi = Koleksi::with('buku')->get();
+        $koleksi = Koleksi::with('buku')->where('email', auth()->user()->email)->get()->take(12);
         return view('koleksi', ['koleksi' => $koleksi]);
         //return view('layouts.main');
         //$koleksi = koleksi::all();

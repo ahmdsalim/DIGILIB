@@ -48,8 +48,8 @@
                                                 <span class="visually-hidden">Toggle Dropdown</span>
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" href="#">PDF</a></li>
-                                                <li><a class="dropdown-item" href="#">Excel</a></li>
+                                                <li><a class="dropdown-item" href="{{route('buku.cetak.pdf') }}">PDF</a></li>
+                                                <li><a class="dropdown-item" href="{{ route('buku.export') }}">Excel</a></li>
                                             </ul>
                                         </div>
                                     </div>

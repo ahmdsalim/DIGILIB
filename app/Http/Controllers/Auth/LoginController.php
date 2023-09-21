@@ -66,4 +66,5 @@ class LoginController extends Controller
     {
         return to_route('login');
     }
+    
 }

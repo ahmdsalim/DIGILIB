@@ -13,6 +13,10 @@
     </p>
 @endsection
 
+@push('js')
+
+@endpush
+
 @section('content')
     <div class="content__boxed">
         <div class="content__wrap">
@@ -34,13 +38,16 @@
                                         <i class="demo-pli-printer fs-5"></i>
                                     </button>
                                     <div class="btn-group">
-                                        <button class="btn btn-icon btn-outline-light"><svg fill="none"
-                                                stroke="currentColor" stroke-width="1.5" width="18" height="18"
-                                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <button type="button" class="btn btn-icon btn-outline-light" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal">
+                                            <svg fill="none" stroke="currentColor" stroke-width="1.5" width="18"
+                                                height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                                aria-hidden="true">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                     d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m6.75 12l-3-3m0 0l-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z">
                                                 </path>
-                                            </svg></button>
+                                            </svg>
+                                        </button>
 
                                         <div class="btn-group dropdown">
                                             <button class="btn btn-icon btn-outline-light" data-bs-toggle="dropdown"
@@ -55,7 +62,7 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li><a class="dropdown-item" href="#">PDF</a></li>
-                                                <li><a class="dropdown-item" href="#">Excel</a></li>
+                                                <li><a class="dropdown-item" href="{{ route('guru.export') }}">Excel</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -156,6 +163,30 @@
                              
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Import Excel</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="importForm" action="{{ route('guru.import') }}" method="POST"
+                        enctype="multipart/form-data">
+                        @csrf
+                        <input class="form-control mb-2" type="file" id="fileInput" name="file" accept=".xlsx">
+                        <small>Belum punya template CSV?</small>
+                        <a href="#">Download template import guru</a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="sumbit" class="btn btn-primary">Import</button>
+                    </form>
                 </div>
             </div>
         </div>

@@ -18,126 +18,13 @@
     header('Expires: 0 '); // Proxies.
 @endphp
 
-@push('css')
-    <style>
-        .rate {
-            float: left;
-            height: 46px;
-            padding: 0 10px;
-        }
-
-        .rate:not(:checked)>input {
-            position: absolute;
-            display: none;
-        }
-
-        .rate:not(:checked)>label {
-            float: right;
-            width: 1em;
-            overflow: hidden;
-            white-space: nowrap;
-            cursor: pointer;
-            font-size: 30px;
-            color: #ccc;
-        }
-
-        .rated:not(:checked)>label {
-            float: right;
-            width: 1em;
-            overflow: hidden;
-            white-space: nowrap;
-            cursor: pointer;
-            font-size: 30px;
-            color: #ccc;
-        }
-
-        .rate:not(:checked)>label:before {
-            content: '★ ';
-        }
-
-        .rate>input:checked~label {
-            color: #ffc700;
-        }
-
-        .rate:not(:checked)>label:hover,
-        .rate:not(:checked)>label:hover~label {
-            color: #deb217;
-        }
-
-        .rate>input:checked+label:hover,
-        .rate>input:checked+label:hover~label,
-        .rate>input:checked~label:hover,
-        .rate>input:checked~label:hover~label,
-        .rate>label:hover~input:checked~label {
-            color: #c59b08;
-        }
-
-        .star-rating-complete {
-            color: #c59b08;
-        }
-
-        .rating-container .form-control:hover,
-        .rating-container .form-control:focus {
-            background: #fff;
-            border: 1px solid #ced4da;
-        }
-
-        .rating-container textarea:focus,
-        .rating-container input:focus {
-            color: #000;
-        }
-
-        .rated {
-            float: left;
-            height: 46px;
-            padding: 0 10px;
-        }
-
-        .rated:not(:checked)>input {
-            position: absolute;
-            display: none;
-        }
-
-        .rated:not(:checked)>label {
-            float: right;
-            width: 1em;
-            overflow: hidden;
-            white-space: nowrap;
-            cursor: pointer;
-            font-size: 30px;
-            color: #ffc700;
-        }
-
-        .rated:not(:checked)>label:before {
-            content: '★ ';
-        }
-
-        .rated>input:checked~label {
-            color: #ffc700;
-        }
-
-        .rated:not(:checked)>label:hover,
-        .rated:not(:checked)>label:hover~label {
-            color: #deb217;
-        }
-
-        .rated>input:checked+label:hover,
-        .rated>input:checked+label:hover~label,
-        .rated>input:checked~label:hover,
-        .rated>input:checked~label:hover~label,
-        .rated>label:hover~input:checked~label {
-            color: #c59b08;
-        }
-    </style>
-@endpush
-
 @section('content')
     <div class="content__boxed">
         <div class="content__wrap">
             <div class="row">
                 <div class="col-md-3 col-sm-12 mb-2">
-                    <div class="card">
-                        <div class="card-body">
+                    <div class="card-detail">
+                        <div class="card-body-detail">
                             <div class="d-flex flex-column">
                                 <div class="d-flex justify-content-center">
                                     @if ($buku->thumbnail)
@@ -154,8 +41,8 @@
 
 
                 <div class="col-md-9 col-sm-12">
-                    <div class="card">
-                        <div class="card-body">
+                    <div class="card-detail">
+                        <div class="card-body-detail">
                             <div class="row">
                                 <div class="col-md-12 mb-3 border-bottom">
                                     <div class="pb-1 d-flex align-items-center">
@@ -179,7 +66,7 @@
                                             </div>
                                         @endif
                                     </div>
-                                    <h3 class="card-title">{{ $buku->judul }}</h3>
+                                    <h3 class="card-title-detail">{{ $buku->judul }}</h3>
                                 </div>
                                 <div class="col-md-12">
                                     <address class="mb-4 mb-md-0">
@@ -300,7 +187,7 @@
 
                                                             <div class="col-12 d-grid">
                                                                 <button id="sumbitRating"
-                                                                    class="btn btn-sm btn-primary btn-block">Submit
+                                                                    class="btn btn-sm btn-primary btn-block">Rated
                                                                 </button>
                                                             </div>
                                                         </form>
@@ -321,7 +208,7 @@
                                                                 <path fill="#ffc700"
                                                                     d="m5.825 22l1.625-7.025L2 10.25l7.2-.625L12 3l2.8 6.625l7.2.625l-5.45 4.725L18.175 22L12 18.275L5.825 22Z" />
                                                             </svg></i>
-                                                        <label>{{round($avgRating,2,2)}} / {{ $countVoter }} Votes</label> <br>
+                                                        <label>{{round($avgRating,2)}} / {{ $countVoter }} Votes</label> <br>
                                                     </div>
                                                 @endif
                                             </address>
@@ -380,44 +267,9 @@
             document.getElementById("readLessBtn").style.display = "none";
         });
     </script>
-    <script>
-        $(document).ready(function() {
-            $('input[type="radio"]').on('change', function() {
-                var score = $('input[name="score"]:checked').val();
 
-                $.ajax({
-                    url: '{{ route('rating.store') }}',
-                    method: 'POST',
-                    data: {
-                        '_token': '{{ csrf_token() }}',
-                        'score': score
-                    },
-                    success: function(response) {
-                        // Tindakan yang perlu dilakukan setelah peringkat disimpan
-                        console.log('Rating berhasil disimpan.');
-                    },
-                    error: function(error) {
-                        // Tindakan yang perlu dilakukan jika terjadi kesalahan
-                        console.error('Terjadi kesalahan saat menyimpan rating.');
-                    }
-                });
-            });
-        });
-    </script>
 @endpush
 
-@push('css')
-    <style type="text/css">
-        .thumbnail {
-            border-radius: 0.4375rem;
-            box-shadow: 0 0.125rem 0.25rem rgba(55, 60, 67, .075);
-            max-width: 100%;
-            height: 250px;
-            width: 190px;
-            object-fit: cover;
-        }
-    </style>
-@endpush
 
 @if (isAuth())
     @push('js')

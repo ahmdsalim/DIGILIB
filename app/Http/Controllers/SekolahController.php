@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportSekolah;
+use DB;
 use App\Models\Sekolah;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use DB;
-use Validator;
+use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SekolahController extends Controller
 {
@@ -162,5 +164,14 @@ class SekolahController extends Controller
         $data = Sekolah::doesntHave('user')->get();
 
         return response()->json($data);
+    }
+
+    public function errorImport(){
+
+        return view('sekolah.error-import');
+    }
+
+    public function export(){
+        return Excel::download(new ExportSekolah, 'daftar-sekolah-digilib.xlsx');
     }
 }

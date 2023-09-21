@@ -4,8 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Siswa;
 use App\Models\Sekolah;
+use App\Exports\ExportSiswa;
+use App\Imports\ImportSiswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
+use PDF;
 
 class SiswaController extends Controller
 {
@@ -14,6 +19,7 @@ class SiswaController extends Controller
      */
     public function index(Request $request)
     {
+        
         $query = Siswa::query()->where('npsn',auth()->user()->userable->npsn);
         $data['search'] = $request->query('search');
         $search = $data['search'];
@@ -189,5 +195,36 @@ class SiswaController extends Controller
             return redirect()->back()->with('failed','Gagal');
         }
         return redirect()->back()->with('success','Berhasil');
+    }
+
+
+    public function import(Request $request){
+        $file = $request->file('file')->store('public/files/excel/siswa/');
+
+        $import = new ImportSiswa(Auth::user()->userable->npsn);
+        $import->import($file);
+
+        if($import->failures()->isNotEmpty()){
+            return redirect()->route('siswa.error-import')->withFailures($import->failures());
+        }
+
+        return redirect()->back()->with('success','Import Data Siswa Berhasil');
+    }
+
+    public function export(){
+        return Excel::download(new ExportSiswa, 'daftar-siswa.xlsx');
+    }
+
+    public function errorImport(){
+
+        return view('sekolah.error-import');
+    }
+
+    public function cetakPdf()
+    {
+        $data = Siswa::all();
+        view()->share('data', $data);
+        $pdf = PDF::loadview('pdf.daftar_siswa');
+        return $pdf->download('daftar_siswa.pdf');
     }
 }
