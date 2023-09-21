@@ -168,7 +168,6 @@ class BukuController extends Controller
      * Store a newly created resource in storage.
      */
 
-
     public function store(Request $request)
     {
         $validator = Validator::make(
@@ -221,12 +220,15 @@ class BukuController extends Controller
 
         // upload thumbnail
         if ($request->hasFile('thumbnail')) {
-            $thumbnail_name = md5(rand(1000, 10000)) . '.' . $request->file('thumbnail')->getClientOriginalExtension();
-            $request->file('thumbnail')->move('img/thumbnail-buku/', $thumbnail_name);
+            $destination = 'public/imgs/thumbnail-buku/';
+
+            $thumbnail = $request->file('thumbnail');
+            $thumbnail_name = md5(rand(1000, 10000)) . '.' . $thumbnail->getClientOriginalExtension();
+            $thumbnail->storeAs($destination, $thumbnail_name);
             $buku->thumbnail = $thumbnail_name;
         }
 
-        $destination = 'files/buku/';
+        $destination = 'public/files/buku/';
 
         $file = $request->file('url_pdf');
         $extension = $file->getClientOriginalExtension();
@@ -280,15 +282,14 @@ class BukuController extends Controller
 
         $buku = Buku::where('slug', $slug)->first();
 
-        $desk_awal = substr($buku->deskripsi, 0, 250);
-        $deskripsi = $buku->deskripsi;
+        $data['desk_awal'] = substr($buku->deskripsi, 0, 250);
+        $data['deskripsi'] = $buku->deskripsi;
 
         $data['avgRating'] = Rating::where('buku_id', $buku->id)->avg('score');
 
         $data['countVoter'] = Rating::where('buku_id', $buku->id)->count('email');
 
-
-        return view('buku.detail-buku', compact('tittle', 'header', 'buku', 'desk_awal', 'deskripsi'),$data);
+        return view('buku.detail-buku', compact('tittle', 'header', 'buku'), $data);
     }
 
     /**
@@ -429,11 +430,11 @@ class BukuController extends Controller
 
         $data['avgRating'] = Rating::where('buku_id', $buku->id)->avg('score');
 
-        if(isAuth()){
+        if (isAuth()) {
             $userHasRated = Rating::where('buku_id', $buku->id)
                 ->where('email', $user->email)
                 ->exists();
-        }else {
+        } else {
             $userHasRated = false;
         }
         $data['countVoter'] = Rating::where('buku_id', $buku->id)->count('email');
@@ -445,7 +446,7 @@ class BukuController extends Controller
         // Kemudian, simpan model Buku dalam array data
         $data['buku'] = $buku;
 
-        return view('detailbuku', compact('buku', 'userHasRated', 'countVoter'), $data);
+        return view('detailbuku', compact('buku', 'userHasRated'), $data);
     }
 
     public function search(Request $request)
@@ -477,11 +478,13 @@ class BukuController extends Controller
         return view('bukuterpopuler', compact('buku'));
     }
 
-    public function export(){
-        return Excel::download(new ExportBuku, 'daftar-buku-digilib.xlsx');
+    public function export()
+    {
+        return Excel::download(new ExportBuku(), 'daftar-buku-digilib.xlsx');
     }
-    
-    public function exportReqPosting(){
-        return Excel::download(new ExportReqPosting, 'detail-request-posting-digilib.xlsx');
+
+    public function exportReqPosting()
+    {
+        return Excel::download(new ExportReqPosting(), 'detail-request-posting-digilib.xlsx');
     }
 }
