@@ -1,15 +1,4 @@
 @extends('layouts.app')
-@push('css')
-<style type="text/css">
-    a {
-        text-decoration: none;
-    }
-
-    h4 {
-        font-family: Poppins;
-    }
-</style>
-@endpush
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

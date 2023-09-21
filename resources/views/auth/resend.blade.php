@@ -1,19 +1,9 @@
 @extends('layouts.app')
-@push('css')
-<style type="text/css">
-    a {
-        text-decoration: none;
-    }
-
-    h4 {
-        font-family: Poppins;
-    }
-</style>
-@endpush
+@section('title','Kirim Ulang E-mail')
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-12 col-md-8 col-lg-6">
             <div class="card px-4 py-2">
                 <div class="card-body">
                     <h4 class="mb-3">Kirim Ulang Email Aktivasi</h4>

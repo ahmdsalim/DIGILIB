@@ -108,7 +108,7 @@ class BacaController extends Controller
     public function read($id, $slug)
     {
         $user = auth()->user();
-        $data['buku'] = Buku::where([['id',$id],['slug',$slug]])->first() ?? abort(404);
+        $data['buku'] = Buku::where([['id',$id],['slug',$slug],['status','publish']])->first() ?? abort(404);
         $data['buku']->update(['jumlah_baca' => $data['buku']->jumlah_baca+1]);
         $data['sesi'] = \Str::random(16);
         $data['latestPage'] = 1;
@@ -128,7 +128,7 @@ class BacaController extends Controller
         $user = auth()->user();
         $sort = $request->query('orderby');
         $data['orderby'] = $sort;
-        $data['readinglist'] = Buku::whereHas('baca', function($query) use ($user, $sort) {
+        $data['readinglist'] = Buku::where('status','publish')->whereHas('baca', function($query) use ($user, $sort) {
             if(!empty($sort)){
                 if($sort == 'ongoing'){
                     $query->where('bacas.progress', '<', DB::raw('bukus.jumlah_halaman'));

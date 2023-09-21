@@ -23,7 +23,7 @@ class Buku extends Model
 
     public function rating()
     {
-    	return $this->belongsTo(Rating::class);
+    	return $this->hasMany(Rating::class);
     }
 
     public function baca()
@@ -52,6 +52,12 @@ class Buku extends Model
                     ->where('email', $user->email)
                     ->orderByDesc('end_at','desc')
                     ->first();
+    }
+
+    public function getRating()
+    {
+        return $this->rating()
+                    ->avg('score');
     }
 
 }

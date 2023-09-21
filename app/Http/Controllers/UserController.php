@@ -238,11 +238,14 @@ class UserController extends Controller
                 $user = User::where('email', $aktivasi->email)->update(['active' => 1]);
                 if($user) {
                     $aktivasi->delete();
-                    return view('auth.aktivasi')->with(['alert_class' => 'alert-success', 'message' => 'Akun Anda telah berhasil diaktivasi. Silahkan melakukan login kedalam Akun Anda.']);
+                    $request->session()->now('alert-class', 'alert-success');
+                    $request->session()->now('message', 'Akun berhasil diaktivasi! Silahkan masuk ke akun anda. <a href='.route('login').'>Klik disini</a>.');
+                    return view('auth.aktivasi');
                 }
             }
         }
-
-        return view('auth.aktivasi')->with(['alert_class' => 'alert-danger', 'message' => 'Token tidak dikenali. Pastikan melakukan aktivasi melalui pesan email yang telah diberikan.']);
+        $request->session()->now('alert-class', 'alert-warning');
+        $request->session()->now('message', '<b>Token tidak dikenali</b><br>Pastikan melakukan aktivasi melalui pesan email yang telah diberikan.');
+        return view('auth.aktivasi');
     }
 }

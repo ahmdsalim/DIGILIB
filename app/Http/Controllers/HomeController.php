@@ -53,10 +53,35 @@ class HomeController extends Controller
         $data['avg_waktubaca_perhari'] = $totalDays > 0 ? ($totalDuration / 60 / $totalDays) : 0;
 
         $data['total_buku'] = Buku::where('status','publish')->count();
-        $avgpagesread = Baca::select(DB::raw('AVG((progress-prev_progress)) as avg_pages_read'))
+        $avgpagesread = Baca::select(DB::raw('DATE(started_at) as reading_date'), DB::raw('AVG((progress-prev_progress)) as avg_pages_read'))
+                                       ->groupBy('reading_date')
                                        ->get();
-        $data['avg_haldibaca'] = $avgpagesread[0]->avg_pages_read;
+        $totalPageRead = 0;
+        $totalPageReadDays = $avgpagesread->count();
+
+        foreach ($avgpagesread as $pagereadDay) {
+            $totalPageRead += $pagereadDay->avg_pages_read;
+        }
+
+        $data['avg_haldibaca'] = $totalPageReadDays > 0 ? ($totalPageRead / $totalPageReadDays) : 0;
         $data['total_buku_dibaca'] = Buku::whereHas('baca')->count();
+
+        $data['buku_terpopuler'] = Buku::where('status','publish')->orderByDesc('jumlah_baca')->take(10)->get();
+
+        // $data['buku_rating_tertinggi'] = Buku::with('rating')
+        //                                      ->withAvg('rating as average_rating', 'score')
+        //                                      ->orderByDesc('average_rating')
+        //                                      ->get()
+        //                                      ->take(10);
+
+        $data['top_users'] = User::with('baca')
+                                 ->withCount('baca as total_baca')
+                                 ->whereIn('role',['siswa','guru'])
+                                 ->where('active',1)
+                                 ->orderByDesc('total_baca')
+                                 ->take(10)
+                                 ->get();
+
         return view('home', $data);
     }
 

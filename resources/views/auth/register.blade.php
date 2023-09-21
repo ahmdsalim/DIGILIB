@@ -1,42 +1,34 @@
 @extends('layouts.app')
-@push('css')
-<style type="text/css">
-    a {
-        text-decoration: none;
-    }
-
-    h4 {
-        font-family: Poppins;
-    }
-</style>
-@endpush
+@section('title','Daftar')
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card p-5">
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="card dgl-login">
+                <header class="text-center">
+                    <h1 class="dgl-title my-2">Daftar sebagai</h1>
+                </header>
                 <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4 class="my-auto">Daftar</h4>
-                        <a href="{{route('login')}}">Masuk</a>
-                    </div>
-                    <div class="row g-3">
+                    <div class="row">
                         <div class="col-md-12">
-                            <a href="{{route('register.sekolah')}}" class="btn btn-outline-primary fs-6 w-100 rounded-pill">
-                                Mendaftar sebagai Sekolah
+                            <a href="{{route('register.sekolah')}}" class="btn btn-primary w-100 signin-btn">
+                                Sekolah
                             </a>
                         </div>
-                        <div class="col-md-12">
-                            <a href="{{route('register.siswa')}}" class="btn btn-outline-primary fs-6 w-100 rounded-pill">
-                                Mendaftar sebagai Siswa
+                        <div class="col-md-12 mt-3">
+                            <a href="{{route('register.siswa')}}" class="btn btn-primary w-100 signin-btn">
+                                Siswa
                             </a>
                         </div>
-                        <div class="col-md-12">
-                            <a href="{{route('register.guru')}}" class="btn btn-outline-primary fs-6 w-100 rounded-pill">
-                                Mendaftar sebagai Guru
+                        <div class="col-md-12 mt-3">
+                            <a href="{{route('register.guru')}}" class="btn btn-primary w-100 signin-btn">
+                                Guru
                             </a>
                         </div>
                     </div>
+                </div>
+                <div class="card-footer footer-login text-center">
+                    <span>Sudah punya akun? <a href="{{route('login')}}">Masuk</a></span>
                 </div>
             </div>
         </div>

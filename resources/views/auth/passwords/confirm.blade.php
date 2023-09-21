@@ -1,14 +1,14 @@
 @extends('layouts.app')
-
+@section('title','Konrimasi Password')
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-12 col-md-8 col-lg-6">
             <div class="card">
-                <div class="card-header">{{ __('Confirm Password') }}</div>
+                <div class="card-header">Konfirmasi Password</div>
 
                 <div class="card-body">
-                    {{ __('Please confirm your password before continuing.') }}
+                    Harap konfirmasi password Anda sebelum melanjutkan.
 
                     <form method="POST" action="{{ route('password.confirm') }}">
                         @csrf
@@ -30,12 +30,12 @@
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Confirm Password') }}
+                                    Konfirmasi Password
                                 </button>
 
                                 @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
+                                        Lupa Password?
                                     </a>
                                 @endif
                             </div>

@@ -88,6 +88,7 @@ class RegisterController extends Controller
 
     public function registerSekolah(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'npsn' => 'required|numeric|unique:sekolahs,npsn',
             'nama' => 'required|max:120',
@@ -104,19 +105,22 @@ class RegisterController extends Controller
 
         if(!$validator->fails()){
             $data = $validator->validated();
-            $sekolah = Sekolah::create([
-                'npsn' => $data['npsn'],
-                'nama' => $data['nama'],
-                'jenjang' => $data['jenjang'],
-                'alamat' => $data['alamat'],
-                'provinsi' => $data['provinsi'],
-                'kota' => $data['kota'],
-                'kecamatan' => $data['kecamatan'],
-                'kelurahan' => $data['kelurahan'],
-                'telepon' => $data['telepon']
-            ]);
 
-            if($sekolah){
+            \DB::beginTransaction();
+
+            try{
+                $sekolah = Sekolah::create([
+                    'npsn' => $data['npsn'],
+                    'nama' => $data['nama'],
+                    'jenjang' => $data['jenjang'],
+                    'alamat' => $data['alamat'],
+                    'provinsi' => $data['provinsi'],
+                    'kota' => $data['kota'],
+                    'kecamatan' => $data['kecamatan'],
+                    'kelurahan' => $data['kelurahan'],
+                    'telepon' => $data['telepon']
+                ]);
+
                 $user = new User([
                     'uuid' => generateUuid(),
                     'email' => $data['email'],
@@ -125,25 +129,27 @@ class RegisterController extends Controller
                     'role' => 'sekolah'
                 ]);
 
-                $user = $sekolah->user()->save($user);
+                    $user = $sekolah->user()->save($user);
 
-                if($user) {
                     $emaildata = [
-                        'nama' => $data['nama'],
-                        'subject' => 'Welcome to DIGILIB!'
+                            'nama' => $data['nama'],
+                            'subject' => 'Welcome to DIGILIB!'
                     ];
 
                     $email = new SendEmail($emaildata);
                     Mail::to($data['email'])->send($email);
 
-                    return to_route('login')->with(['alert-class' => 'alert-success', 'message' => 'Selamat pendaftaran Anda berhasil! Kami telah mengirim Anda email ('.$data['email'].') untuk langkah selanjutnya.']);
-                }else {
-                    $sekolah->delete();
-                    return redirect()->back()->with(['alert-class' => 'alert-danger', 'message' => 'Terjadi kesalahan, coba kembali dalam beberapa saat lagi.']);
-                }
-            }else{
-                return redirect()->back()->with(['alert-class' => 'alert-danger', 'message' => 'Terjadi kesalahan, coba kembali dalam beberapa saat lagi.']); 
-            }
+                    $key = generateUuid();
+                    \Cookie::queue($key, $data['email'], 10);
+
+                    \DB::commit();
+
+                    return redirect()->route('login.action',['key'=>$key,'act'=>'after-registration']);
+            } catch(\Exception $e) {
+                \DB::rollback();
+
+                return redirect()->back()->with(['alert-class' => 'alert-danger', 'message' => 'Terjadi kesalahan, coba kembali dalam beberapa saat lagi.']);
+            }                 
         }else{
             return redirect()->back()->withErrors($validator)->withInput();
         }
@@ -180,7 +186,9 @@ class RegisterController extends Controller
             $data = $validator->validated();
             $siswa = Siswa::where('nisn',$data['nisn'])->firstOrFail();
 
-            if($siswa){
+            \DB::beginTransaction();
+
+            try{
                 $user = new User([
                     'uuid' => generateUuid(),
                     'email' => $data['email'],
@@ -191,7 +199,7 @@ class RegisterController extends Controller
 
                 $user = $siswa->user()->save($user);
 
-                if($user) {
+                
                     $token = Str::random(64);
 
                     TokenAktivasi::insert([
@@ -208,12 +216,16 @@ class RegisterController extends Controller
                     $email = new SendEmailAktivasi($emaildata);
                     Mail::to($data['email'])->send($email);
 
-                    return to_route('register.success')->with('registered', true);
-                }else {
-                    return redirect()->back()->with(['alert-class' => 'alert-danger', 'message' => 'Terjadi kesalahan, coba kembali dalam beberapa saat lagi.']);
-                }
-            }else{
-                return redirect()->back()->with(['alert-class' => 'alert-danger', 'message' => 'Terjadi kesalahan, coba kembali dalam beberapa saat lagi.']); 
+                    $key = generateUuid();
+                    \Cookie::queue($key, $data['email'], 10);
+
+                    \DB::commit();
+
+                    return redirect()->route('login.action',['key'=>$key,'act'=>'email-verification']);
+            } catch(\Exception $e) {
+                \DB::rollback();
+
+                return redirect()->back()->with(['alert-class' => 'alert-danger', 'message' => 'Terjadi kesalahan, coba kembali dalam beberapa saat lagi.']);
             }
         }else{
             return redirect()->back()->withErrors($validator)->withInput();
@@ -251,7 +263,9 @@ class RegisterController extends Controller
             $data = $validator->validated();
             $guru = Guru::where('nip',$data['nip'])->firstOrFail();
 
-            if($guru){
+            \DB::beginTransaction();
+
+            try{
                 $user = new User([
                     'uuid' => generateUuid(),
                     'email' => $data['email'],
@@ -262,7 +276,6 @@ class RegisterController extends Controller
 
                 $user = $guru->user()->save($user);
 
-                if($user) {
                     $token = Str::random(64);
 
                     TokenAktivasi::insert([
@@ -279,21 +292,20 @@ class RegisterController extends Controller
                     $email = new SendEmailAktivasi($emaildata);
                     Mail::to($data['email'])->send($email);
 
-                    return to_route('register.success')->with('registered', true);
-                }else {
-                    return redirect()->back()->with(['alert-class' => 'alert-danger', 'message' => 'Terjadi kesalahan, coba kembali dalam beberapa saat lagi.']);
-                }
-            }else{
-                return redirect()->back()->with(['alert-class' => 'alert-danger', 'message' => 'Terjadi kesalahan, coba kembali dalam beberapa saat lagi.']); 
+                    $key = generateUuid();
+                    \Cookie::queue($key, $data['email'], 10);
+
+                    \DB::commit();
+
+                    return redirect()->route('login.action',['key'=>$key,'act'=>'email-verification']);
+            } catch(Exception $e) {
+                \DB::rollback();
+
+                return redirect()->back()->with(['alert-class' => 'alert-danger', 'message' => 'Terjadi kesalahan, coba kembali dalam beberapa saat lagi.']);
             }
         }else{
             return redirect()->back()->withErrors($validator)->withInput();
         }
-    }
-
-    public function registerSuccess()
-    {
-        return view('auth.register-success');
     }
 
     public function showResend()
@@ -308,7 +320,8 @@ class RegisterController extends Controller
                 'required',
                 Rule::exists('users')->where(function($query) use ($request) {
                     return $query->where('email', $request->email)
-                                 ->where('active', 0);
+                                 ->where('active', 0)
+                                 ->whereIn('role',['siswa','guru']);
                 })
             ]
         ]);
@@ -329,47 +342,80 @@ class RegisterController extends Controller
         return redirect()->back()->with('message', 'Email yang anda masukkan tidak terdaftar atau sudah diaktivasi sebelumnya.');
     }
 
-    public function showResetEmail()
-    {
-        return view('auth.reset-email');
-    }
+    // public function showResetEmail()
+    // {
+    //     return view('auth.reset-email');
+    // }
 
-    public function resetEmail(Request $request)
-    {
-        $validator = Validator::make($request->all(),[
-            'email' => [
-                'required',
-                'email',
-                Rule::exists('users')->where(function($query) use ($request){
-                    return $query->where('active', 0);
-                })
-            ],
-            'new_email' => 'required|email|unique:users,email,'.$request->email,
-            'password' => 'required'
-        ]);
+    // public function resetEmail(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(),[
+    //         'email' => [
+    //             'required',
+    //             'email',
+    //             Rule::exists('users')->where(function($query) use ($request){
+    //                 return $query->where('active', 0);
+    //             })
+    //         ],
+    //         'new_email' => 'required|email|unique:users,email,'.$request->email,
+    //         'password' => 'required'
+    //     ]);
 
-        if(!$validator->fails()){
-            $user = User::where('email',$request->email)->first();
+    //     if(!$validator->fails()){
+    //         $user = User::where('email',$request->email)->first();
 
-            if($user && Hash::check($request->password, $user->password)){
-                $aktivasi = TokenAktivasi::where('email', $request->email)->first();
+    //         if($user && Hash::check($request->password, $user->password)){
+    //             $aktivasi = TokenAktivasi::where('email', $request->email)->first();
                 
-                if($aktivasi){
-                    $emaildata = [
-                        'nama' => $aktivasi->user->nama,
-                        'subject' => 'Aktivasi Akun ('.$aktivasi->user->nama.')',
-                        'token' => $aktivasi->token
-                    ];
+    //             if($aktivasi){
+    //                 $emaildata = [
+    //                     'nama' => $aktivasi->user->nama,
+    //                     'subject' => 'Aktivasi Akun ('.$aktivasi->user->nama.')',
+    //                     'token' => $aktivasi->token
+    //                 ];
 
-                    $user->update(['email' => $request->new_email]);
-                    $email = new SendEmailAktivasi($emaildata);
-                    Mail::to($request->new_email)->send($email);
-                    return redirect()->back()->with('reset', true);
+    //                 $user->update(['email' => $request->new_email]);
+    //                 $email = new SendEmailAktivasi($emaildata);
+    //                 Mail::to($request->new_email)->send($email);
+    //                 return redirect()->back()->with('reset', true);
+    //             }
+    //         }else{
+    //             return redirect()->back()->with('message','Email yang Anda masukkan tidak dikenali.');
+    //         }
+    //     }
+    //     return redirect()->back()->withErrors($validator)->withInput();
+    // }
+
+    public function login_action(Request $request)
+    {
+        $key = $request->query('key');
+        $action = $request->query('act');
+
+        $data = [
+            'title' => 'Kami mohon maaf...',
+            'action' => 'cookie not found'
+
+        ];
+
+        if($key != null && $action != null){
+            if(\Cookie::has($key)){
+                $email = \Cookie::get($key);
+                if($action == 'email-verification'){
+                    $data['title'] = 'Verifikasi Email';
+                    $data['action'] = 'verifikasi-email';
+                    $data['message'] = 'Anda perlu memverifikasi alamat email untuk mengaktifkan akun anda.';
+                    $data['info'] = 'Sebuah email dengan instruksi untuk memverifikasi email anda telah dikirim ke alamat email '.$email.'.';
+                }else if ($action == 'after-registration') {
+                    $data['title'] = 'Pendaftaran Berhasil';
+                    $data['message'] = 'Periksa alamat email anda untuk informasi lebih lanjut.';
+                    $data['info'] = 'Sebuah email dengan informasi untuk langkah selanjutnya telah dikirim ke alamat email '.$email.'.';
+                    $data['action'] = 'more-info';
                 }
-            }else{
-                return redirect()->back()->with('message','Email yang Anda masukkan tidak dikenali.');
+
             }
         }
-        return redirect()->back()->withErrors($validator)->withInput();
+
+        return view('auth.login-action', $data);
     }
+
 }

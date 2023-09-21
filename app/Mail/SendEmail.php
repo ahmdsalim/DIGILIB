@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Address;
 
 class SendEmail extends Mailable
 {
@@ -29,6 +30,9 @@ class SendEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            replyTo: [
+                new Address('noreply@ruangbaca.me',env('APP_NAME')),
+            ],
             subject: $this->data['subject'],
         );
     }

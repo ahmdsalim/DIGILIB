@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class Registered
+class AuthenticatedUser
 {
     /**
      * Handle an incoming request.
@@ -15,10 +15,10 @@ class Registered
      */
     public function handle(Request $request, Closure $next): Response
     {
-    	if(session('registered')){
+    	if(isAuth()){
         	return $next($request);
     	}
 
-    	abort(404);
+    	return to_route('login');
     }
 }
