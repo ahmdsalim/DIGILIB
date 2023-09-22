@@ -92,10 +92,10 @@
                                                         <th scope="row">{{ $index + $data->firstItem() }}</th>
                                                         <td>
                                                             @if ($buku->thumbnail)
-                                                            <img src="{{ asset('img/thumbnail-buku/' . $buku->thumbnail) }}"
-                                                                alt="" style="width: 50px;">
+                                                            <img src="{{ asset('storage/imgs/thumbnail-buku/' . $buku->thumbnail) }}"
+                                                                alt="{{ $buku->judul }}" style="width: 50px;">
                                                         @else
-                                                            <img src="{{ asset('img/default-pict.png') }}"
+                                                            <img src="{{ asset('storage/imgs/default-pict.png') }}"
                                                                 alt="Foto Default" style="width: 50px;">
                                                         @endif
                                                         </td>

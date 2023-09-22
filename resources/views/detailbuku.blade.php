@@ -28,9 +28,9 @@
                             <div class="d-flex flex-column">
                                 <div class="d-flex justify-content-center">
                                     @if ($buku->thumbnail)
-                                        <img src="{{ asset('img/thumbnail-buku/' . $buku->thumbnail) }}" class="thumbnail">
+                                        <img src="{{ asset('storage/imgs/thumbnail-buku/' . $buku->thumbnail) }}" class="thumbnail">
                                     @else
-                                        <img src="{{ asset('img/default-pict.png') }}" class="thumbnail">
+                                        <img src="{{ asset('storage/imgs/default-pict.png') }}" class="thumbnail">
                                     @endif
 
                                 </div>

@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\ExportBuku;
-use App\Exports\ExportDetailBuku;
-use App\Exports\ExportReqPosting;
 use App\Models\Buku;
 use App\Models\Rating;
 use App\Models\Kategori;
 use Spatie\PdfToImage\Pdf;
+use App\Exports\ExportBuku;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Smalot\PdfParser\Parser;
+use App\Exports\ExportDetailBuku;
+use App\Exports\ExportReqPosting;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Validator;
 
 class BukuController extends Controller
 {
@@ -360,8 +360,11 @@ class BukuController extends Controller
         }
 
         if ($request->hasFile('thumbnail')) {
-            $thumbnail_name = md5(rand(1000, 10000)) . '.' . $request->file('thumbnail')->getClientOriginalExtension();
-            $request->file('thumbnail')->move('img/thumbnail-buku/', $thumbnail_name);
+            $destination = 'public/imgs/thumbnail-buku/';
+
+            $thumbnail = $request->file('thumbnail');
+            $thumbnail_name = $data->thumbnail;
+            $thumbnail->storeAs($destination, $thumbnail_name);
             $data->thumbnail = $thumbnail_name;
         }
 

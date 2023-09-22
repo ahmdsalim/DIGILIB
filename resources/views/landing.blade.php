@@ -30,9 +30,9 @@
                 <a href="{{route('buku.detailbuku',['id'=>$data->id, 'slug'=>$data->slug])}}" style="text-decoration: none;">
                   <div class="card mb-3">
                     @if ($data->thumbnail)
-                        <img class="card-img-top" src="{{ asset('img/thumbnail-buku/' . $data->thumbnail) }}" alt="{{ $data->thumbnail }}">
+                        <img class="card-img-top" src="{{ asset('storage/imgs/thumbnail-buku/' . $data->thumbnail) }}" alt="{{ $data->thumbnail }}">
                     @else
-                        <img class="card-img-top" src="{{ asset('img/default-pict.png') }}" alt="Foto Default">
+                        <img class="card-img-top" src="{{ asset('storage/imgs/default-pict.png') }}" alt="digilib">
                     @endif                      
                     <div class="card-body px-1 py-3">
                         <h4 class="card-title">{{$data->judul}} ({{$data->tahun_terbit}})</h4>
@@ -55,10 +55,10 @@
                                             <div class="card mb-3">
                                                 @if ($data->thumbnail)
                                                     <img class="card-img-top"
-                                                        src="{{ asset('img/thumbnail-buku/' . $data->thumbnail) }}"
+                                                        src="{{ asset('storage/imgs/thumbnail-buku/' . $data->thumbnail) }}"
                                                         alt="{{ $data->thumbnail }}">
                                                 @else
-                                                    <img class="card-img-top" src="{{ asset('img/default-pict.png') }}"
+                                                    <img class="card-img-top" src="{{ asset('storage/imgs/default-pict.png') }}"
                                                         alt="Foto Default">
                                                 @endif
                                                 <div class="card-body px-1 py-3">

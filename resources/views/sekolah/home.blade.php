@@ -228,7 +228,7 @@
                                                 <td>
                                                     @if ($buku->thumbnail)
                                                         <img class=""
-                                                            src="{{ asset('img/thumbnail-buku/' . $buku->thumbnail) }}"
+                                                            src="{{ asset('storage/imgs/thumbnail-buku/' . $buku->thumbnail) }}"
                                                             alt="{{ $buku->thumbnail }}" style="width: 50px;">
                                                     @else
                                                         <img class=""

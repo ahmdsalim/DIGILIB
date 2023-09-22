@@ -48,7 +48,7 @@
            <div class="col-4 col-sm-3 col-md-3 col-lg-2">
                 <a href="{{route('buku.detailbuku',['id'=>$data->id, 'slug'=>$data->slug])}}" style="text-decoration: none;">
                   <div class="card mb-3">
-                    <img class="card-img-top" alt="{{$data->judul}}" src="{{asset('img/thumbnail-buku/'.$data->thumbnail)}}">
+                    <img class="card-img-top" alt="{{$data->judul}}" src="{{asset('storage/imgs/thumbnail-buku/'.$data->thumbnail)}}">
                     <div class="progress progress-md" style="border-radius: 0;">
                       <div class="progress-bar bg-warning" role="progressbar" style="width: {{round(($data->readBy(auth()->user())->progress/$data->jumlah_halaman)*100)}}%; border-radius: 0;" aria-label="Progress Membaca" aria-valuenow="{{round(($data->readBy(auth()->user())->progress/$data->jumlah_halaman)*100)}}" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>

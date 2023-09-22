@@ -48,9 +48,9 @@
                                                 <div class="p-2 m-2 ">
                                                     <div class="text-center">
                                                         <img id="thumbnail-preview"
-                                                            src="{{ asset('img/thumbnail-buku/' . $buku->thumbnail) }}"
+                                                            src="{{ asset('storage/imgs/thumbnail-buku/' . $buku->thumbnail) }}"
                                                             style="width:100px; height:120px;"
-                                                            class="rounded object-fit-cover" alt="placeholder">
+                                                            class="rounded object-fit-cover" alt="{{ $buku->judul}}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -60,21 +60,6 @@
                                             <small class="form-text text-muted">
                                                 Ukuran thumbhnail harus 3x4
                                             </small>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <div class="col-lg-12">
-                                                <div class="p-2 m-2">
-                                                    <div class="text-center">
-                                                        <div id="slide-preview-container"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <h5>Slide</h5>
-                                            <input type="file" id="slide-input" name="slide[]" multiple
-                                                class="form-control" accept="image/*"
-                                                onchange="updateMultiPreview('slide-input', 'slide-preview-container')">
                                         </div>
                                     </div>
                                 </div>
