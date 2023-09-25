@@ -33,8 +33,8 @@
             <div class="header-wrapper mb-4">
                 <a href="{{route('landing')}}" style="height: 100%;">
                     <div class="header-logo-wrapper">
-                        <img id="logo" src="{{asset('assets/img/logo-sample.png')}}">
-                        <span id="text-logo">DigitalLibrary</span>
+                        <img id="logo" src="{{asset('assets/img/app-logo-sample.png')}}">
+                        <span id="text-logo">{{ env('APP_NAME') }}</span>
                     </div>
                 </a>
             </div>

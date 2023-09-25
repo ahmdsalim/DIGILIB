@@ -102,9 +102,12 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @php
+                                                $startIndex = ($sekolahs->currentPage() - 1) * $sekolahs->perPage() + 1;
+                                            @endphp
                                             @forelse($sekolahs as $sekolah)
                                             <tr>
-                                                <th class="text-center">{{$loop->iteration}}</th>
+                                                <th class="text-center">{{$startIndex++}}</th>
                                                 <td>{{$sekolah->nama}}</td>
                                                 <td>{{$sekolah->npsn}}</td>
                                                 <td>{{explode("-", $sekolah->provinsi)[1]}}</td>

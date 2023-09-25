@@ -59,7 +59,7 @@
                                                 <span class="visually-hidden">Toggle Dropdown</span>
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" href="#">PDF</a></li>
+                                                <li><a class="dropdown-item" href="{{ route('siswa.cetak.pdf') }}">PDF</a></li>
                                                 <li><a class="dropdown-item" href="{{ route('siswa.export') }}">Excel</a>
                                                 </li>
                                             </ul>
@@ -112,9 +112,12 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @php
+                                                $startIndex = ($siswas->currentPage() - 1) * $siswas->perPage() + 1;
+                                            @endphp
                                             @forelse($siswas as $siswa)
                                                 <tr>
-                                                    <th class="text-center">{{ $loop->iteration }}</th>
+                                                    <th class="text-center">{{ $startIndex++ }}</th>
                                                     <td>{{ $siswa->nama }}</td>
                                                     <td>{{ $siswa->nisn }}</td>
                                                     <td>

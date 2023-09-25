@@ -2,13 +2,13 @@
 @section('breadcrumb')
     <ol class="breadcrumb mb-0">
         <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('sekolah.index') }}">Sekolah</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Guru</li>
+        <li class="breadcrumb-item"><a href="{{ route('sekolah.index') }}">{{$sekolah->nama}}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">List Guru</li>
     </ol>
 @endsection
 
 @section('pagetitle')
-    <h1 class="page-title mb-0 mt-2">Guru</h1>
+    <h1 class="page-title mb-0 mt-2">Daftar Guru</h1>
     <p class="lead">
         {{$sekolah->nama}}
     </p>
@@ -100,9 +100,12 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @php
+                                                $startIndex = ($gurus->currentPage() - 1) * $gurus->perPage() + 1;
+                                            @endphp
                                             @forelse($gurus as $guru)
                                             <tr>
-                                                <th class="text-center">{{$loop->iteration}}</th>
+                                                <th class="text-center">{{$startIndex++}}</th>
                                                 <td>{{$guru->nama}}</td>
                                                 <td>{{$guru->nisn}}</td>
                                                 <td>@if($guru->jk == 'L') Laki-laki @else Perempuan @endif</td>

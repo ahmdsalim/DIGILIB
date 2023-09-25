@@ -11,6 +11,7 @@ use App\Models\Buku;
 use App\Models\Baca;
 use App\Models\Rating;
 use App\Models\Koleksi;
+use App\Models\Notifikasi;
 
 class User extends Authenticatable
 {
@@ -77,6 +78,11 @@ class User extends Authenticatable
     public function koleksi()
     {
         return $this->hasMany(Koleksi::class, 'email', 'email');
+    }
+
+    public function notifikasi()
+    {
+        return $this->hasMany(Notifikasi::class);
     }
 
 }

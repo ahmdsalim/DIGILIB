@@ -29,7 +29,7 @@ class GuruController extends Controller
                       ->orWhere('nip','like',"%{$search}%");
             });
         }
-        $data['gurus'] = $query->paginate(50);
+        $data['gurus'] = $query->orderBy('nama','asc')->paginate(50);
         return view('sekolah.guru.index',$data);
     }
 

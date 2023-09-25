@@ -73,7 +73,9 @@
                                     <th>Error</th>
                                     <th>Value</th>
                                 </tr>
-
+                                @php
+                                    try {
+                                @endphp
                                 @foreach (session()->get('failures') as $validasi)
                                     <tr>
                                         <td>{{ $validasi->row() }}</td>
@@ -88,6 +90,11 @@
                                         <td>{{ $validasi->values()[$validasi->attribute()] }}</td>
                                     </tr>
                                 @endforeach
+                                @php
+                                    }catch(Exception $e){
+                                        echo '<script>alert("Pastikan Format File Excel Sesuai Dengan Template.")</script>';
+                                    }
+                                @endphp
                             </table>
                         @endif
                     </div>

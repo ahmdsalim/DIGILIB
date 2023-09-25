@@ -24,12 +24,6 @@
                             <div class="row">
                                 <!-- Left toolbar -->
                                 <div class="col-md-6 d-flex gap-1 align-items-center mb-3">
-                                    <a href="{{ route('users.create') }}"
-                                        class="btn btn-primary hstack gap-2 align-self-center">
-                                        <i class="demo-psi-add fs-5"></i>
-                                        <span class="vr"></span>
-                                        Tambah Data
-                                    </a>
                                     <button class="btn btn-icon btn-outline-light">
                                         <i class="demo-pli-printer fs-5"></i>
                                     </button>
@@ -91,48 +85,25 @@
                                                 <th class="text-center">No</th>
                                                 <th>Nama</th>
                                                 <th>Username</th>
+                                                <th>ID (NISN/NIP)</th>
                                                 <th>Status</th>
                                                 <th>Akses</th>
-                                                <th class="text-center">Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @php
+                                                $startIndex = ($users->currentPage() - 1) * $users->perPage() + 1;
+                                            @endphp
                                             @forelse($users as $user)
                                             <tr>
-                                                <th class="text-center">{{$loop->iteration}}</th>
+                                                <th class="text-center">{{$startIndex++}}</th>
                                                 <td>{{$user->nama}}</td>
                                                 <td>{{$user->email}}</td>
+                                                <td>{{$user->role == 'siswa' ? $user->userable->nisn : $user->userable->nip}}</td>
                                                 <td class="fs-5">
                                                     <div class="badge {{$user->active ? 'bg-success' : 'bg-danger'}}">{{$user->active ? 'Active' : 'Inactive'}}</div>
                                                 </td>
                                                 <td>{{ucfirst($user->role)}}</td>
-                                                <td>
-                                                    <div class="text-nowrap text-center">
-                                                        <a href="{{route('users.show',$user->id)}}" class="btn btn-icon btn-sm btn-light"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 256 256">
-                                                                <path fill="currentColor" d="M247.31 124.76c-.35-.79-8.82-19.58-27.65-38.41C194.57 61.26 162.88 48 128 48S61.43 61.26 36.34 86.35C17.51 105.18 9 124 8.69 124.76a8 8 0 0 0 0 6.5c.35.79 8.82 19.57 27.65 38.4C61.43 194.74 93.12 208 128 208s66.57-13.26 91.66-38.34c18.83-18.83 27.3-37.61 27.65-38.4a8 8 0 0 0 0-6.5ZM128 192c-30.78 0-57.67-11.19-79.93-33.25A133.47 133.47 0 0 1 25 128a133.33 133.33 0 0 1 23.07-30.75C70.33 75.19 97.22 64 128 64s57.67 11.19 79.93 33.25A133.46 133.46 0 0 1 231.05 128c-7.21 13.46-38.62 64-103.05 64Zm0-112a48 48 0 1 0 48 48a48.05 48.05 0 0 0-48-48Zm0 80a32 32 0 1 1 32-32a32 32 0 0 1-32 32Z"></path>
-                                                            </svg></a>
-                                                        <a href="{{route('users.edit',$user->id)}}" class="btn btn-icon btn-sm btn-light"><svg
-                                                                fill="none" stroke="currentColor" stroke-width="1.5"
-                                                                width="18" height="18" viewBox="0 0 24 24"
-                                                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10">
-                                                                </path>
-                                                            </svg></a>
-                                                        <form class="d-inline-block" action="{{route('users.destroy',$user->id)}}" method="POST">
-                                                        @method('delete')
-                                                        @csrf    
-                                                        <button type="button" class="btn btn-icon btn-sm btn-light" onclick="confirmOnDel(this)"><svg
-                                                                fill="none" stroke="currentColor" stroke-width="1.5"
-                                                                width="18" height="18" viewBox="0 0 24 24"
-                                                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0">
-                                                                </path>
-                                                            </svg></button>
-                                                        </form>
-                                                    </div>
-                                                </td>
                                             </tr>
                                             @empty
                                             <tr>

@@ -5,10 +5,10 @@
          <div class="brand-wrap">
             <!-- Brand logo -->
             <a href="index.html" class="brand-img stretched-link">
-            <img src="{{asset('assets/img/logo.svg')}}" alt="Logo" class="logo" width="40" height="40">
+            <img src="{{asset('assets/img/app-logo-sample.png')}}" alt="Logo" class="logo" width="40" height="40">
             </a>
             <!-- Brand title -->
-            <div class="brand-title">DIGILIB</div>
+            <div class="brand-title">{{ env('APP_NAME') }}</div>
             <!-- You can also use IMG or SVG instead of a text element. -->
          </div>
       </div>
@@ -27,75 +27,41 @@
             <!-- Notification Dropdown -->
             <div class="dropdown">
                <!-- Toggler -->
+               @php
+                  $latestnotif = auth()->user()->notifikasi()->where('is_read',false)->latest()->limit(5)->get();
+               @endphp
                <button class="header__btn btn btn-icon btn-sm" type="button" data-bs-toggle="dropdown" aria-label="Notification dropdown" aria-expanded="false">
                <span class="d-block position-relative">
                <i class="demo-psi-bell"></i>
-               <span class="badge badge-super rounded bg-danger p-1">
+               @if($latestnotif->contains('is_read',false))<span class="badge badge-super rounded bg-danger p-1">
                <span class="visually-hidden">unread messages</span>
                </span>
+               @endif
                </span>
                </button>
                <!-- Notification dropdown menu -->
                <div class="dropdown-menu dropdown-menu-end w-md-300px">
                   <div class="border-bottom px-3 py-2 mb-3">
-                     <h5>Notifications</h5>
+                     <h5>Pemberitahuan</h5>  
                   </div>
                   <div class="list-group list-group-borderless">
                      <!-- List item -->
-                     <div class="list-group-item list-group-item-action d-flex align-items-start mb-3">
-                        <div class="flex-shrink-0 me-3">
-                           <i class="demo-psi-data-settings text-muted fs-2"></i>
-                        </div>
-                        <div class="flex-grow-1 ">
-                           <a href="#" class="h6 d-block mb-0 stretched-link text-decoration-none">Your storage is full</a>
-                           <small class="text-muted">Local storage is nearly full.</small>
+                     @forelse($latestnotif as $notif)
+                     <div class="list-group-item list-group-item-action {{$notif->is_read ? '' : 'bg-unseen'}} d-flex align-items-start mb-2">
+                        <div class="flex-grow-1">
+                           <a href="{{ route('inbox.show', Crypt::encryptString($notif->id)) }}" class="h6 d-block mb-0 stretched-link text-decoration-none">{{ $notif->title }}</a>
+                           <small class="text-muted">{{ $notif->created_at->diffForHumans() }}</small>
                         </div>
                      </div>
-                     <!-- List item -->
-                     <div class="list-group-item list-group-item-action d-flex align-items-start mb-3">
-                        <div class="flex-shrink-0 me-3">
-                           <i class="demo-psi-file-edit text-blue-200 fs-2"></i>
-                        </div>
-                        <div class="flex-grow-1 ">
-                           <a href="#" class="h6 d-block mb-0 stretched-link text-decoration-none">Writing a New Article</a>
-                           <small class="text-muted">Wrote a news article for the John Mike</small>
+                     @empty
+                     <div class="list-group-item list-group-item-action d-flex align-items-start mb-2">
+                        <div class="flex-grow-1">
+                           <div class="h6 d-block mb-0 text-muted text-decoration-none text-center">Tidak ada notifikasi terbaru</div>
                         </div>
                      </div>
-                     <!-- List item -->
-                     <div class="list-group-item list-group-item-action d-flex align-items-start mb-3">
-                        <div class="flex-shrink-0 me-3">
-                           <i class="demo-psi-speech-bubble-7 text-green-300 fs-2"></i>
-                        </div>
-                        <div class="flex-grow-1 ">
-                           <div class="d-flex justify-content-between align-items-start">
-                              <a href="#" class="h6 mb-0 stretched-link text-decoration-none">Comment sorting</a>
-                              <span class="badge bg-info rounded ms-auto">NEW</span>
-                           </div>
-                           <small class="text-muted">You have 1,256 unsorted comments.</small>
-                        </div>
-                     </div>
-                     <!-- List item -->
-                     <div class="list-group-item list-group-item-action d-flex align-items-start mb-3">
-                        <div class="flex-shrink-0 me-3">
-                           <img class="img-xs rounded-circle" src="assets/img/profile-photos/7.png" alt="Profile Picture" loading="lazy">
-                        </div>
-                        <div class="flex-grow-1 ">
-                           <a href="#" class="h6 d-block mb-0 stretched-link text-decoration-none">Lucy Sent you a message</a>
-                           <small class="text-muted">30 minutes ago</small>
-                        </div>
-                     </div>
-                     <!-- List item -->
-                     <div class="list-group-item list-group-item-action d-flex align-items-start mb-3">
-                        <div class="flex-shrink-0 me-3">
-                           <img class="img-xs rounded-circle" src="assets/img/profile-photos/3.png" alt="Profile Picture" loading="lazy">
-                        </div>
-                        <div class="flex-grow-1 ">
-                           <a href="#" class="h6 d-block mb-0 stretched-link text-decoration-none">Jackson Sent you a message</a>
-                           <small class="text-muted">1 hours ago</small>
-                        </div>
-                     </div>
-                     <div class="text-center mb-2">
-                        <a href="#" class="btn-link">Show all Notifications</a>
+                     @endforelse
+                     <div class="text-center mb-2 mt-1">
+                        <a href="{{ route('inbox.index') }}" class="btn-link">Lihat Semua Notifikasi</a>
                      </div>
                   </div>
                </div>

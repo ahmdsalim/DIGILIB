@@ -99,9 +99,12 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @php
+                                                $startIndex = ($users->currentPage() - 1) * $users->perPage() + 1;
+                                            @endphp
                                             @forelse($users as $user)
                                             <tr>
-                                                <th class="text-center">{{$loop->iteration}}</th>
+                                                <th class="text-center">{{$startIndex++}}</th>
                                                 <td>{{$user->nama}}</td>
                                                 <td>{{$user->email}}</td>
                                                 <td class="fs-5">

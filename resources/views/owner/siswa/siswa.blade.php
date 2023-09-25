@@ -2,13 +2,13 @@
 @section('breadcrumb')
     <ol class="breadcrumb mb-0">
         <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('sekolah.index') }}">Sekolah</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Siswa</li>
+        <li class="breadcrumb-item"><a href="{{ route('sekolah.index') }}">{{ $sekolah->nama }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">List Siswa</li>
     </ol>
 @endsection
 
 @section('pagetitle')
-    <h1 class="page-title mb-0 mt-2">Siswa</h1>
+    <h1 class="page-title mb-0 mt-2">Daftar Siswa</h1>
     <p class="lead">
         {{ $sekolah->nama }}
     </p>
@@ -125,9 +125,12 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @php
+                                                $startIndex = ($siswas->currentPage() - 1) * $siswas->perPage() + 1;
+                                            @endphp
                                             @forelse($siswas as $siswa)
                                                 <tr>
-                                                    <th class="text-center">{{ $loop->iteration }}</th>
+                                                    <th class="text-center">{{ $startIndex++ }}</th>
                                                     <td>{{ $siswa->nama }}</td>
                                                     <td>{{ $siswa->nisn }}</td>
                                                     <td>

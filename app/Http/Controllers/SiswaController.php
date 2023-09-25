@@ -29,7 +29,7 @@ class SiswaController extends Controller
                       ->orWhere('nisn','like',"%{$search}%");
             });
         }
-        $data['siswas'] = $query->paginate(50);
+        $data['siswas'] = $query->orderBy('nama','asc')->paginate(25);
         return view('sekolah.siswa.index',$data);
     }
 

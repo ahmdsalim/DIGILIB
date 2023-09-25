@@ -10,12 +10,20 @@ use Validator;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
+use App\Events\UserActivated;
+use DB;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
+    public function __construct()
+    {
+        $this->middleware('role:owner', ['only' => ['create','store','edit','show','update','destroy']]);
+    }
+
     public function index(Request $request)
     {
         if (Auth::user()->role === 'owner') {
@@ -31,20 +39,23 @@ class UserController extends Controller
                 });
             }
 
-            $data['users'] = $query->paginate(25);
+            $data['users'] = $query->orderBy('active','desc')->paginate(25);
             return view('owner.user.user', $data);
         } elseif (Auth::user()->role === 'sekolah') {
-            $tittle = 'User';
-            $header = 'Data ' . $tittle;
+            $title = 'User';
+            $header = 'Data ' . $title;
 
             $user = Auth::user();
             $npsn = $user->userable->npsn;
-            $query = User::whereHas('userable', function ($query) use ($npsn) {
-                $query->where('npsn', $npsn);
-            })->where('role', 'siswa')->orWhere('role','guru')->orderBy('active','desc');
+            $query = User::query()
+                ->whereHas('userable', function ($query) use ($npsn) {
+                    $query->where('npsn', $npsn);
+                })
+                ->whereIn('role', ['siswa', 'guru']); // Menggunakan whereIn untuk role siswa dan guru
 
             $data['search'] = $request->input('search');
             $search = $data['search'];
+
             if ($request->has('search') && !empty($request->input('search'))) {
                 $query->where(function ($query) use ($search) {
                     $query
@@ -54,10 +65,11 @@ class UserController extends Controller
                 });
             }
 
-            $data['users'] = $query->paginate(25);
+            $data['users'] = $query->orderBy('active', 'desc')->paginate(25);
 
-            return view('sekolah.user.user', compact('tittle', 'header'), $data);
+            return view('sekolah.user.user', compact('title', 'header'), $data);
         } else {
+            abort(404);
         }
     }
 
@@ -265,19 +277,35 @@ class UserController extends Controller
         $token = $request->query('token');
 
         if (isset($token)) {
-            $aktivasi = TokenAktivasi::where('token', $token)->first();
+            DB::beginTransaction();
 
-            if ($aktivasi) {
-                $user = User::where('email', $aktivasi->email)->update(['active' => 1]);
-                if ($user) {
+            try {
+                $aktivasi = TokenAktivasi::where('token', $token)->first();
+
+                if ($aktivasi) {
+                    $user = User::where('email', $aktivasi->email)->update(['active' => 1]);
+
+                    $datauser = User::where('email', $aktivasi->email)->first();
+
+                    event(new UserActivated($datauser));
+
                     $aktivasi->delete();
+                        
+                    DB::commit();
+                        
                     $request->session()->now('alert-class', 'alert-success');
                     $request->session()->now('message', 'Akun berhasil diaktivasi! Silahkan masuk ke akun anda. <a href='.route('login').'>Klik disini</a>.');
+
                     return view('auth.aktivasi');
                 }
+            } catch(\Exception $e) {
+                DB::rollback();
+                $request->session()->now('alert-class', 'alert-danger');
+                $request->session()->now('message', 'Terjadi Kesalahan. Silahkan coba kembali');
+                return view('auth.aktivasi');
             }
         }
-        $request->session()->now('alert-class', 'alert-warning');
+        $request->session()->now('alert-class', 'alert-info');
         $request->session()->now('message', '<b>Token tidak dikenali</b><br>Pastikan melakukan aktivasi melalui pesan email yang telah diberikan.');
         return view('auth.aktivasi');
     }

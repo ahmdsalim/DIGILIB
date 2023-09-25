@@ -95,9 +95,9 @@
                                             @forelse($readers as $reader)
                                             <tr>
                                                 <th class="text-center">{{$loop->iteration}}</th>
-                                                <td>{{strtoupper($reader->userable->nama)}}</td>
+                                                <td>{{$reader->userable->nama}}</td>
                                                 <td>@if($reader->role == 'siswa') {{$reader->userable->nisn}} @else {{$reader->userable->nip}} @endif</td>
-                                                <td>{{strtoupper($reader->email)}}</td>
+                                                <td>{{$reader->email}}</td>
                                                 <td class="text-dark fw-bold">{{strtoupper($reader->role)}}</td>
                                                 <td class="text-center fw-bold">{{count($reader->baca()->orderBy('end_at','desc')->get()->unique('buku_id'))}}</td>
                                                 <td>

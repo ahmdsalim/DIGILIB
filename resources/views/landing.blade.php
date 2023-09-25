@@ -4,9 +4,9 @@
     <div class="content__header content__boxed mb-4">
         <div class="content__wrap">
             <div class="pt-3 mb-4 text-center">
-                <div class="display-1" style="font-family: Ubuntu,sans-serif;">DIGILIB</div>
+                <div class="display-2" style="font-family: Ubuntu,sans-serif;">{{ env('APP_NAME') }}</div>
                 <h3 class="mb-4">
-                    <div class="badge text-light" style="font-family: Ubuntu,sans-serif;">Digital Library</div>
+                    <div class="badge text-light" style="font-family: Ubuntu,sans-serif;">Perpustakaan Digital</div>
                 </h3>
             </div>
         </div>

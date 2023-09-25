@@ -497,7 +497,7 @@ class BukuController extends Controller
     $user = auth()->user();
 
     if ($user->role == 'owner') {
-        $data = Buku::where('email', $user->email)->get();
+        $data = Buku::all();
     } else {
         $data = Buku::where('email', $user->email)->get();
     }

@@ -109,7 +109,7 @@
                             </div>
                             <div class="flex-grow-1 ms-3">
                                 <h5 class="h2 mb-0">{{ round($avg_haldibaca, 2) }}</h5>
-                                <p class="mb-0">Rata<sup>2</sup> Halaman Dibaca</p>
+                                <p class="mb-0">Rata<sup>2</sup> Hal. Dibaca (Perhari)</p>
                             </div>
                         </div>
                     </div>

@@ -61,7 +61,7 @@
                                                 <span class="visually-hidden">Toggle Dropdown</span>
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" href="#">PDF</a></li>
+                                                <li><a class="dropdown-item" href="{{ route('guru.cetak.pdf') }}">PDF</a></li>
                                                 <li><a class="dropdown-item" href="{{ route('guru.export') }}">Excel</a></li>
                                             </ul>
                                         </div>
@@ -112,9 +112,12 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @php
+                                                $startIndex = ($gurus->currentPage() - 1) * $gurus->perPage() + 1;
+                                            @endphp
                                             @forelse($gurus as $guru)
                                             <tr>
-                                                <th class="text-center">{{$loop->iteration}}</th>
+                                                <th class="text-center">{{$startIndex++}}</th>
                                                 <td>{{$guru->nama}}</td>
                                                 <td>{{$guru->nip}}</td>
                                                 <td>@if($guru->jk == 'L') Laki-laki @else Perempuan @endif</td>

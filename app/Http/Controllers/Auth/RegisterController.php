@@ -18,6 +18,7 @@ use App\Mail\SendEmail;
 use App\Mail\SendEmailAktivasi;
 use Str;
 use Illuminate\Validation\Rule;
+use App\Events\UserRegistered;
 
 class RegisterController extends Controller
 {
@@ -131,13 +132,15 @@ class RegisterController extends Controller
 
                     $user = $sekolah->user()->save($user);
 
-                    $emaildata = [
-                            'nama' => $data['nama'],
-                            'subject' => 'Welcome to DIGILIB!'
-                    ];
+                    event(new UserRegistered($user));
 
-                    $email = new SendEmail($emaildata);
-                    Mail::to($data['email'])->send($email);
+                    // $emaildata = [
+                    //         'nama' => $data['nama'],
+                    //         'subject' => 'Welcome to DIGILIB!'
+                    // ];
+
+                    // $email = new SendEmail($emaildata);
+                    // Mail::to($data['email'])->send($email);
 
                     $key = generateUuid();
                     \Cookie::queue($key, $data['email'], 10);
@@ -207,14 +210,16 @@ class RegisterController extends Controller
                         'email' => $user->email
                     ]);
 
-                    $emaildata = [
-                        'nama' => $user->nama,
-                        'subject' => 'Aktivasi Akun ('.$user->nama.')',
-                        'token' => $token
-                    ];
+                    event(new UserRegistered($user, $token));
 
-                    $email = new SendEmailAktivasi($emaildata);
-                    Mail::to($data['email'])->send($email);
+                    // $emaildata = [
+                    //     'nama' => $user->nama,
+                    //     'subject' => 'Aktivasi Akun ('.$user->nama.')',
+                    //     'token' => $token
+                    // ];
+
+                    // $email = new SendEmailAktivasi($emaildata);
+                    // Mail::to($data['email'])->send($email);
 
                     $key = generateUuid();
                     \Cookie::queue($key, $data['email'], 10);
@@ -283,14 +288,16 @@ class RegisterController extends Controller
                         'email' => $user->email
                     ]);
 
-                    $emaildata = [
-                        'nama' => $user->nama,
-                        'subject' => 'Aktivasi Akun ('.$user->nama.')',
-                        'token' => $token
-                    ];
+                    event(new UserRegistered($user, $token));
 
-                    $email = new SendEmailAktivasi($emaildata);
-                    Mail::to($data['email'])->send($email);
+                    // $emaildata = [
+                    //     'nama' => $user->nama,
+                    //     'subject' => 'Aktivasi Akun ('.$user->nama.')',
+                    //     'token' => $token
+                    // ];
+
+                    // $email = new SendEmailAktivasi($emaildata);
+                    // Mail::to($data['email'])->send($email);
 
                     $key = generateUuid();
                     \Cookie::queue($key, $data['email'], 10);

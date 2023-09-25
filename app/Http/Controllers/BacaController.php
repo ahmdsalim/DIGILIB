@@ -49,7 +49,7 @@ class BacaController extends Controller
         if($request->has('search') && !empty($search)){
             $query->where(function($query) use ($search) {
                 $query->where('nama','like',"%{$search}%")
-                      ->orWhere('nisn','like',"%{$search}%");
+                      ->orWhere('email','like',"%{$search}%");
             });
         }
 
@@ -65,7 +65,7 @@ class BacaController extends Controller
 
         $data['readers'] = $query->whereIn('role', ['siswa','guru'])
                                  ->whereHas('baca')
-                                 ->paginate(50);
+                                 ->paginate(25);
         return view('pembaca.index', $data);
     }
 

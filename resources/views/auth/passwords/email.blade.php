@@ -4,8 +4,10 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-12 col-md-8 col-lg-6">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
+            <div class="card p-0 p-lg-3">
+                <div class="card-header">
+                    <h5>Reset Password</h5>
+                </div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -18,9 +20,9 @@
                         @csrf
 
                         <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">Email</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-12">
+                                <label for="email" class="text-md-end">Email</label>
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
                                 @error('email')
@@ -32,7 +34,7 @@
                         </div>
 
                         <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
+                            <div class="col-md-6">
                                 <button type="submit" class="btn btn-primary">
                                     Kirim Link Reset Password
                                 </button>
