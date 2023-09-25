@@ -21,7 +21,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-    @vite(['resources/assets/css/bootstrap.min.75a07e3a3100a6fed983b15ad1b297c127a8c2335854b0efc3363731475cbed6.css','resources/assets/css/nifty.min.4d1ebee0c2ac4ed3c2df72b5178fb60181cfff43375388fee0f4af67ecf44050.css','resources/assets/css/auth.css'])
+    @vite(['resources/assets/css/bootstrap.min.css','resources/assets/css/nifty.min.css','resources/assets/css/auth.css'])
     @stack('css')
     <!-- Scripts -->
     @vite('resources/js/app.js')

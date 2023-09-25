@@ -33,7 +33,7 @@
            <div class="col-4 col-sm-3 col-md-3 col-lg-2">
                 <a href="{{route('buku.detailbuku',['id'=>$data->id, 'slug'=>$data->slug])}}" style="text-decoration: none;">
                   <div class="card mb-3">
-                    <img class="card-img-top" alt="{{$data->judul}}" src="{{asset('img/thumbnail-buku/'.$data->thumbnail)}}">
+                    <img class="card-img-top" alt="{{$data->judul}}" src="{{asset('storage/imgs/thumbnail-buku/'.$data->thumbnail)}}">
                       <div class="card-body px-1 py-3">
                         <h4 class="card-title">{{$data->judul}} ({{$data->tahun_terbit}})</h4>
                       </div>

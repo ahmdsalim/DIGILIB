@@ -19,28 +19,33 @@ th {
   color: white;
 }
 </style>
-    <title>Daftar Siswa</title>
+    <title>Daftar Sekolah</title>
 </head>
 <body style="text-align: center;">
-<h2>Daftar Siswa</h2>
+<h2>Daftar Sekolah</h2>
 
 <table>
   <tr>
     <th>No</th>
-    <th>NISN</th>
-    <th>Nama</th>
-    <th>Jenis Kelamin</th>
-    <th>Telepon</th>
     <th>NPSN</th>
+    <th>Nama</th>
+    <th>Provinsi</th>
+    <th>Telepon</th>    
+    <th>Status</th>
+
   </tr>
-  @foreach ($data as $siswa)
+  @foreach ($data as $sekolah)
   <tr>
     <td>{{$loop->iteration}}</td>
-    <td>{{ $siswa->nisn }}</td>
-    <td>{{ $siswa->nama }}</td>
-    <td>{{ $siswa->jk }}</td>
-    <td>{{ $siswa->telepon }}</td>
-    <td>{{ $siswa->npsn }}</td>
+    <td>{{ $sekolah->npsn }}</td>
+    <td>{{ $sekolah->nama }}</td>   
+    <td>{{ $sekolah->provinsi }}</td>
+    <td>{{ $sekolah->telepon }}</td>
+    <td>@if ($sekolah->active)
+        Aktif
+        @else
+        NonAktif
+    @endif</td>
   </tr>
   @endforeach
 </table>

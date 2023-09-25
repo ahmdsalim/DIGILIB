@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
+use PDF;
 
 class SekolahController extends Controller
 {
@@ -173,5 +174,13 @@ class SekolahController extends Controller
 
     public function export(){
         return Excel::download(new ExportSekolah, 'daftar-sekolah-digilib.xlsx');
+    }
+
+    public function cetakPdf()
+    {
+        $data = Sekolah::all();
+        view()->share('data', $data);
+        $pdf = PDF::loadview('pdf.daftar_sekolah');
+        return $pdf->download('daftar_sekolah.pdf');
     }
 }

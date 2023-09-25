@@ -123,7 +123,7 @@
                                                         <td>
                                                             @if ($buku->thumbnail)
                                                                 <img src="{{ asset('storage/imgs/thumbnail-buku/' . $buku->thumbnail) }}"
-                                                                    alt="" style="width: 50px;">
+                                                                    alt="{{ $buku->judul }}" style="width: 50px;">
                                                             @else
                                                                 <img src="{{ asset('storage/imgs/default-pict.png') }}"
                                                                     alt="Foto Default" style="width: 50px;">

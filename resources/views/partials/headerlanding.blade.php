@@ -4,7 +4,7 @@
       <div class="header__brand">
          <div class="brand-wrap">
             <h3 class="my-auto"><a href="/" style="text-decoration: none; color: white; font-family: Ubuntu,sans-serif;
-            ">{{ env('APP_NAME') }}</a></h3>            <!-- You can also use IMG or SVG instead of a text element. -->
+            ">{{ env('APP_NAME') }}</a></h3>
          </div>
       </div>
       <!-- End - Brand -->

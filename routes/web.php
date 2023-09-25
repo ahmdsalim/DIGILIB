@@ -51,15 +51,6 @@ Route::middleware('guest')->group(function() {
 	Route::get('auth/login-action', [RegisterController::class, 'login_action'])->name('login.action');
 });	
 
-Route::middleware('auth')->group(function(){
-    
-
-    //Undefined Route
-    Route::get('/export-detail-buku', [BukuController::class, 'exportDetail'])->name('buku.export-detail');
-
-
-});
-
 //Akses User Owner CRUD dan Sekolah (Index)
 //Special Treatment
 Route::resource('users', UserController::class);
@@ -85,6 +76,7 @@ Route::group(['middleware' => 'auth'], function() {
     	//CRUD Sekolah
 	    Route::resource('sekolah', SekolahController::class);
 	    Route::get('/export-sekolah', [SekolahController::class, 'export'])->name('sekolah.export');
+        Route::get('sekolah/cetak/pdf', [SekolahController::class, 'cetakPdf'])->name('sekolah.cetak.pdf');
 
     	//Buku
     	Route::get('/request-publish', [BukuController::class, 'request'])->name('buku.request');
@@ -125,14 +117,14 @@ Route::group(['middleware' => 'auth'], function() {
 
         //Buku
         Route::resource('buku', BukuController::class);
-        Route::get('buku/cetak-pdf', [BukuController::class, 'cetakPdf'])->name('buku.cetak.pdf');
+        Route::get('buku/cetak/pdf', [BukuController::class, 'cetakPdf'])->name('buku.cetak.pdf');
         Route::get('/export-buku', [BukuController::class, 'export'])->name('buku.export');
 
         //Siswa Guru
         Route::get('/export-siswa', [SiswaController::class, 'export'])->name('siswa.export');
-        Route::get('siswa/cetak-pdf', [SiswaController::class, 'cetakPdf'])->name('siswa.cetak.pdf');
+        Route::get('siswa/cetak/pdf', [SiswaController::class, 'cetakPdf'])->name('siswa.cetak.pdf');
         Route::get('/export-guru', [GuruController::class, 'export'])->name('guru.export');
-        Route::get('guru/cetak-pdf', [GuruController::class, 'cetakPdf'])->name('guru.cetak.pdf');
+        Route::get('guru/cetak/pdf', [GuruController::class, 'cetakPdf'])->name('guru.cetak.pdf');
 
         //Notifikasi
         Route::get('inbox', [NotifikasiController::class, 'index'])->name('inbox.index');
@@ -161,8 +153,6 @@ Route::group(['middleware' => 'auth'], function() {
         //Akses User Sekolah END <<
 	});
 });
-
-
 
 Route::middleware('auth.user')->group(function(){
 	Route::get('akun/profil', [UserController::class, 'showProfilePembaca'])->name('pembaca.profile');

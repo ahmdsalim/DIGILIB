@@ -26,7 +26,7 @@ th {
 
 <table>
   <tr>
-    <th>ID</th>
+    <th>No</th>
     <th>Nama</th>
     <th>Email</th>
     <th>Role</th>
@@ -34,12 +34,14 @@ th {
   </tr>
   @foreach ($data as $user)
   <tr>
-    <td>{{ $user->id }}</td>
+    <td>{{$loop->iteration}}</td>
     <td>{{ $user->nama }}</td>
     <td>{{ $user->email }}</td>
     <td>{{ $user->role }}</td>
-    <td>@if ($user->active == 1)
+    <td>@if ($sekolah->active)
         Aktif
+        @else
+        NonAktif
     @endif</td>
   </tr>
   @endforeach

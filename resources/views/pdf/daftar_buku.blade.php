@@ -26,30 +26,24 @@ th {
 
 <table>
   <tr>
-    <th>ID</th>
+    <th>No</th>
     <th>Judul</th>
     <th>Penulis</th>
     <th>Penerbit</th>
+    <th>Kategori</th>    
     <th>Tahun Terbit</th>
-    <th>Jumlah Halaman</th>
-    <th>Kategori</th>
-    <th>Email</th>
     <th>No ISBN</th>
-    <th>Jumlah Baca</th>
     <th>Status</th>
   </tr>
   @foreach ($data as $buku)
   <tr>
-    <td>{{ $buku->id }}</td>
+    <td>{{$loop->iteration}}</td>
     <td>{{ $buku->judul }}</td>
     <td>{{ $buku->penulis }}</td>
     <td>{{ $buku->penerbit }}</td>
-    <td>{{ $buku->tahun_terbit }}</td>
-    <td>{{ $buku->jumlah_halaman }}</td>
     <td>{{ $buku->kategori->kategori }}</td>
-    <td>{{ $buku->email }}</td>
+    <td>{{ $buku->tahun_terbit }}</td>
     <td>{{ $buku->no_isbn }}</td>  
-    <td>{{ $buku->jumlah_baca }}</td>  
     <td>{{ $buku->status }}</td>    
   </tr>
   @endforeach

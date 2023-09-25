@@ -19,7 +19,7 @@
                                                 <div class="row pb-2 mb-4 border-bottom">
                                                     <div class="col-3 col-md-2">
                                                         <figure class="m-0">
-                                                                <img src="{{asset('img/thumbnail-buku/'.$data->thumbnail)}}" alt="" class="img-thumbnail">
+                                                                <img src="{{asset('storage/imgs/thumbnail-buku/'.$data->thumbnail)}}" alt="{{ $data->judul }}" class="img-thumbnail">
                                                         </figure>
                                                     </div>
                                                     <div class="col-9 col-md-10" style="padding: 0 7px;">

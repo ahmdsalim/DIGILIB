@@ -155,6 +155,7 @@ class BacaController extends Controller
     {
         $query = User::query();
         $user = Auth::user();
+
         if(Auth::user()->role == 'sekolah'){
             $query->whereHasMorph(
                 'userable',
@@ -165,8 +166,12 @@ class BacaController extends Controller
             );
         }
 
-        $data['pembaca'] = $query->whereIn('role', ['siswa','guru'])
-                                 ->whereHas('baca');      
+        $data = $query->whereHas('baca')
+                      ->get()
+                      ->sortByDesc(function ($value) {
+                            return $value->baca()->get()->unique('buku_id')->count();
+                        });
+     
         view()->share('data', $data);
         $pdf = PDF::loadview('pdf.daftar_pembaca');
         return $pdf->download('daftar_pembaca.pdf');

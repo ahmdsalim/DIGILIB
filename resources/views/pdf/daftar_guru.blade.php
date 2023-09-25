@@ -26,7 +26,7 @@ th {
 
 <table>
   <tr>
-    <th>ID</th>
+    <th>No</th>
     <th>NIP</th>
     <th>Nama</th>
     <th>Jenis Kelamin</th>
@@ -35,7 +35,7 @@ th {
   </tr>
   @foreach ($data as $guru)
   <tr>
-    <td>{{ $guru->id }}</td>
+    <td>{{$loop->iteration}}</td>
     <td>{{ $guru->nip }}</td>
     <td>{{ $guru->nama }}</td>
     <td>{{ $guru->jk }}</td>

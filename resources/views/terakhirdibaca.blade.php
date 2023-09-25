@@ -40,7 +40,7 @@
            <div class="col-4 col-sm-3 col-md-3 col-lg-2">
                 <a href="{{route('buku.detailbuku',['id'=>$data->buku->id, 'slug'=>$data->buku->slug])}}" style="text-decoration: none;">
                   <div class="card mb-3">
-                    <img class="card-img-top" alt="{{$data->buku->judul}}" src="{{asset('img/thumbnail-buku/'.$data->buku->thumbnail)}}">
+                    <img class="card-img-top" alt="{{$data->buku->judul}}" src="{{asset('storage/imgs/thumbnail-buku/'.$data->buku->thumbnail)}}">
                     <div class="progress progress-md" style="border-radius: 0;">
                       <div class="progress-bar bg-warning" role="progressbar" style="width: {{round(($data->progress/$data->buku->jumlah_halaman)*100)}}%; border-radius: 0;" aria-label="Progress Membaca" aria-valuenow="{{round(($data->progress/$data->buku->jumlah_halaman)*100)}}" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
@@ -70,7 +70,7 @@
            <div class="col-4 col-sm-3 col-md-3 col-lg-2">
           <a href="{{route('buku.detailbuku',['id'=>$data->buku->id, 'slug'=>$data->buku->slug])}}" style="text-decoration: none;">
             <div class="card mb-3">
-              <img class="card-img-top" alt="{{$data->buku->judul}}" src="{{asset('img/thumbnail-buku/'.$data->buku->thumbnail)}}">
+              <img class="card-img-top" alt="{{$data->buku->judul}}" src="{{asset('storage/imgs/thumbnail-buku/'.$data->buku->thumbnail)}}">
                 <div class="card-body px-1 py-3">
                   <h4 class="card-title">{{$data->buku->judul}} ({{$data->buku->tahun_terbit}})</h4>
                 </div>
