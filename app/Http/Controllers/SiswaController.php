@@ -220,10 +220,19 @@ class SiswaController extends Controller
         return view('sekolah.error-import');
     }
 
-    public function cetakPdf()
+    public function cetakPdf(Request $request)
     {
-        $data = Siswa::all();
+    $user = auth()->user();
+
+        if ($user->role == 'sekolah') {
+            $npsn = $user->userable->npsn;
+        }else{
+            $npsn = $request->query('npsn');
+        }
+        $data = Siswa::where('npsn', $npsn)->get();
+
         view()->share('data', $data);
+
         $pdf = PDF::loadview('pdf.daftar_siswa');
         return $pdf->download('daftar_siswa.pdf');
     }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Buku;
 use App\Models\Rating;
 use App\Models\Kategori;
-use Spatie\PdfToImage\Pdf;
+use PDF;
 use App\Exports\ExportBuku;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -282,7 +282,6 @@ class BukuController extends Controller
 
         $buku = Buku::where('slug', $slug)->first();
 
-        if ($buku) { // Periksa apakah $buku tidak null
             $desk_awal = substr($buku->deskripsi, 0, 250);
             $deskripsi = $buku->deskripsi;
 
@@ -290,9 +289,6 @@ class BukuController extends Controller
             $data['countVoter'] = Rating::where('buku_id', $buku->id)->count('email');
 
             return view('buku.detail-buku', compact('tittle', 'header', 'buku', 'desk_awal', 'deskripsi'), $data);
-        } else {
-            // Handle ketika buku tidak ditemukan, misalnya tampilkan pesan atau redirect ke halaman lain.
-        }
     }
 
 
@@ -500,13 +496,13 @@ class BukuController extends Controller
     $user = auth()->user();
 
     if ($user->role == 'owner') {
-        $data = Buku::where('email', $user->email)->get();
-    } else {
+        $data = Buku::where('status', 'publish')->get();
+    } elseif ($user->role == 'sekolah') {
         $data = Buku::where('email', $user->email)->get();
     }
 
     view()->share('data', $data);
-    $pdf = PDF::loadview('pdf.daftar_buku');
+    $pdf = PDF::loadView('pdf.daftar_buku');
     return $pdf->download('daftar_buku.pdf');
     }
 }

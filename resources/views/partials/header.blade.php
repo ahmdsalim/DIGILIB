@@ -4,11 +4,9 @@
       <div class="header__brand">
          <div class="brand-wrap">
             <!-- Brand logo -->
-            <a href="index.html" class="brand-img stretched-link">
-            <img src="{{asset('assets/img/logo.svg')}}" alt="Logo" class="logo" width="40" height="40">
-            </a>
+
             <!-- Brand title -->
-            <div class="brand-title">DIGILIB</div>
+            <div class="brand-title">Ruang Baca</div>
             <!-- You can also use IMG or SVG instead of a text element. -->
          </div>
       </div>

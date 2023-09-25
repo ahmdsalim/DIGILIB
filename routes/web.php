@@ -62,7 +62,7 @@ Route::middleware('auth')->group(function(){
         Route::put('/buku/request/{id}', [BukuController::class, 'requestUpdate'])->name('buku.requestUpdate');
         Route::put('/buku/resend/{slug}', [BukuController::class, 'resend'])->name('buku.resend');
         Route::resource('buku', BukuController::class);
-        Route::get('buku/cetak-pdf', [BukuController::class, 'cetakPdf'])->name('buku.cetak.pdf');
+        Route::get('buku.cetak/pdf', [BukuController::class, 'cetakPdf'])->name('buku.cetak.pdf');
         Route::get('/export-buku', [BukuController::class, 'export'])->name('buku.export');
         Route::get('/export-req-posting', [BukuController::class, 'exportReqPosting'])->name('buku.req-posting.export');
         
@@ -128,6 +128,9 @@ Route::name('sekolah.')->middleware('auth')->group(function () {
     Route::resource('siswa', SiswaController::class)->except('show');
     Route::resource('guru', GuruController::class)->except('show');
 });
+
+Route::get('sklh/cetak-pdf', [SekolahController::class, 'cetakPdf'])->name('sekolah.cetak.pdf');
+
 
 Route::middleware('auth.user')->group(function(){
     Route::get('baca/{id}/{slug}', [BacaController::class, 'read'])->name('read');

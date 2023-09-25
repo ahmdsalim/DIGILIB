@@ -61,7 +61,7 @@
                                                 <span class="visually-hidden">Toggle Dropdown</span>
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" href="#">PDF</a></li>
+                                                <li><a class="dropdown-item" href="{{ route('guru.cetak.pdf')}}">PDF</a></li>
                                                 <li><a class="dropdown-item" href="{{ route('guru.export') }}">Excel</a></li>
                                             </ul>
                                         </div>

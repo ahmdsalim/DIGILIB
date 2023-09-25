@@ -4,7 +4,7 @@
       <div class="header__brand">
          <div class="brand-wrap">
             <h2 class="my-auto"><a href="/" style="text-decoration: none; color: white; font-family: Ubuntu,sans-serif;
-            ">DIGILIB</a></h2>            <!-- You can also use IMG or SVG instead of a text element. -->
+            ">Ruang Baca</a></h2>            <!-- You can also use IMG or SVG instead of a text element. -->
          </div>
       </div>
       <!-- End - Brand -->

@@ -26,7 +26,7 @@ th {
 
 <table>
   <tr>
-    <th>ID</th>
+    <th>No</th>
     <th>Nama</th>
     <th>NISN/NIP</th>
     <th>Email</th>
@@ -36,10 +36,10 @@ th {
   @foreach ($data as $pembaca)
   <tr>
     <td>{{$loop->iteration}}</td>
-    <td>{{ strtoupper($pembaca->userable->nama) }}</td>
+    <td>{{ $pembaca->nama }}</td>
     <td>@if ($pembaca->role == 'siswa') {{$pembaca->userable->nisn}} @else {{$pembaca->userable->nip}} @endif</td>
-    <td>{{ strtoupper($pembaca->email) }}</td>
-    <td>{{ strtoupper($pembaca->role) }}</td>
+    <td>{{ $pembaca->email }}</td>
+    <td>{{ $pembaca->role }}</td>
     <td>{{ count($pembaca->baca()->orderBy('end_at','desc')->get()->unique('buku_id')) }}</td>    
   </tr>
   @endforeach

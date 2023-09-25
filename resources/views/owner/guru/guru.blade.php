@@ -49,7 +49,7 @@
                                                 <span class="visually-hidden">Toggle Dropdown</span>
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" href="{{route ('guru.cetak.pdf')}}">PDF</a></li>
+                                                <li><a class="dropdown-item" href="{{ route('guru.cetak.pdf', ['npsn' => $sekolah->npsn]) }}">PDF</a></li>
                                                 <li><a class="dropdown-item" href="{{ route('guru.export') }}">Excel</a></li>
                                             </ul>
                                         </div>
@@ -108,7 +108,7 @@
                                                 <td>@if($guru->jk == 'L') Laki-laki @else Perempuan @endif</td>
                                                 <td>{{$guru->telepon}}</td>
                                                 <td class="fs-5">
-                                                    <div class="badge {{isset($guru->user) && $guru->user->active ? 'bg-success' : 'bg-danger'}}">{{isset($guru->user) && $guru->user->active ? 'User ('.$guru->user->email.')' : 'Non-user'}}</div>
+                                                    <div class="badge {{isset($guru->user) && $guru->user->active ? 'bg-success' : 'bg-danger'}}">{{isset($guru->user) && $guru->user->active ? 'User ('.$guru->user->email.')' : 'Non-user'}}</div> 
                                                 </td>
                                                 <td>
                                                     <div class="text-nowrap text-center">
