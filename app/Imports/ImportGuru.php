@@ -38,9 +38,8 @@ class ImportGuru implements ToModel, SkipsOnFailure, WithHeadingRow, WithValidat
         return [
             'nip' => 'required|unique:gurus',
             'nama' => 'required',
-            'jk' => 'required',
+            'jk' => 'required|in:L,P',
             'telepon' => 'required',
-            'npsn' => 'required'
         ];
     }
 

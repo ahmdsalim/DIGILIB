@@ -16,7 +16,6 @@
 @endsection
 
 @push('css')
-    
 <style>
     input[type="number"]::-webkit-inner-spin-button,
     input[type="number"]::-webkit-outer-spin-button {
@@ -28,10 +27,7 @@
         -moz-appearance: textfield;
     }
 </style>
-
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @endpush
-
 
 @section('content')
     <div class="content__boxed">
@@ -80,7 +76,7 @@
                                         <address class="mb-4 mb-md-0">
                                             <h4 class="mb-1">Deskripsi</h4>
                                             <div class="col-12 mt-2">
-                                                <textarea name="deskripsi" id="_dm-inputAddress" value="{{ old('deskripsi') }}" cols="5" rows="3"
+                                                <textarea name="deskripsi" id="_dm-inputAddress" value="{{ old('deskripsi') }}" cols="5" rows="3" 
                                                     class="form-control 
                                                 "></textarea>
                                             </div>
@@ -134,7 +130,7 @@
                                                     <h5 class="mb-1">Kategori</h5>
                                                     <div class="col-12 mt-2">
                                                         <select
-                                                            class="form-select select2
+                                                            class="form-select
                                                                     @error('kategori_id')
                                                                         is-invalid
                                                                     @enderror"
@@ -196,7 +192,7 @@
                                             <div class="col-md-6 right">
                                                 <address class="mb-4 mb-md-0">
                                                     <h5 class="mb-1"></h5>
-                                                    <h5 class="mb-1">Url PDF</h5>
+                                                    <h5 class="mb-1">Upload Buku</h5>
                                                     <div class="col-12 mt-2">
                                                         <input id="_dm-inputAddress" type="file" name="url_pdf"
                                                             placeholder="Masukan url pdf" accept="application/pdf"
@@ -261,75 +257,75 @@
         </div>
         <!-- END : Basic card -->
     </div>
-
+    </div>
+@endsection
     @push('js')
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-        <script>
-            function updatePreview(input, target) {
-                let file = input.files[0];
-                let reader = new FileReader();
-
-                reader.readAsDataURL(file);
-                reader.onload = function() {
-                    let img = document.getElementById(target);
-                    // can also use "this.result"
-                    img.src = reader.result;
-                }
-            }
-
-            function updateMultiPreview(inputId, targetContainer) {
-                let input = document.getElementById(inputId);
-                let images = input.files;
-                let previewContainer = document.getElementById(targetContainer);
-                previewContainer.innerHTML = ''; // Clear existing preview
-
-                for (let i = 0; i < images.length; i++) {
-                    let reader = new FileReader();
-                    reader.readAsDataURL(images[i]);
-
-                    reader.onload = function() {
-                        let imgContainer = document.createElement('div');
-                        imgContainer.classList.add('d-flex', 'flex', 'align-middle', 'position-relative',
-                            'mb-3'); // Add position relative class and margin bottom
-
-                        let imgElement = document.createElement('img');
-                        imgElement.src = reader.result;
-                        imgElement.style.width = '70px'; // 
-
-                        let fileName = document.createElement('p');
-                        fileName.innerText = images[i].name; // Display file name
-
-                        let cancelButton = document.createElement('button');
-                        cancelButton.innerText = 'Cancel';
-                        cancelButton.classList.add('btn', 'btn-danger', 'btn-sm', 'position-absolute', 'top-0',
-                            'end-0'); // Add Bootstrap classes
-                        cancelButton.addEventListener('click', function() {
-                            previewContainer.removeChild(imgContainer); // Remove the image container
-                        });
-
-                        imgContainer.appendChild(imgElement);
-                        imgContainer.appendChild(fileName);
-                        imgContainer.appendChild(cancelButton);
-                        previewContainer.appendChild(imgContainer);
-                    }
-                }
-            }
-        </script>
-        <script>
-            function preventNegativeInput(event) {
-                if (event.key === "-" || event.key === "e" || event.key === "E") {
-                    event.preventDefault();
-                }
-            }
-        </script>
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $('.form-select').select2({
-                    border : 'inline',
-                });
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.form-select').select2({
+                border : 'inline',
             });
-        </script>
+        });
+    </script>
+    <script>
+        function updatePreview(input, target) {
+            let file = input.files[0];
+            let reader = new FileReader();
+
+            reader.readAsDataURL(file);
+            reader.onload = function() {
+                let img = document.getElementById(target);
+                // can also use "this.result"
+                img.src = reader.result;
+            }
+        }
+
+        function updateMultiPreview(inputId, targetContainer) {
+            let input = document.getElementById(inputId);
+            let images = input.files;
+            let previewContainer = document.getElementById(targetContainer);
+            previewContainer.innerHTML = ''; // Clear existing preview
+
+            for (let i = 0; i < images.length; i++) {
+                let reader = new FileReader();
+                reader.readAsDataURL(images[i]);
+
+                reader.onload = function() {
+                    let imgContainer = document.createElement('div');
+                    imgContainer.classList.add('d-flex', 'flex', 'align-middle', 'position-relative',
+                        'mb-3'); // Add position relative class and margin bottom
+
+                    let imgElement = document.createElement('img');
+                    imgElement.src = reader.result;
+                    imgElement.style.width = '70px'; // 
+
+                    let fileName = document.createElement('p');
+                    fileName.innerText = images[i].name; // Display file name
+
+                    let cancelButton = document.createElement('button');
+                    cancelButton.innerText = 'Cancel';
+                    cancelButton.classList.add('btn', 'btn-danger', 'btn-sm', 'position-absolute', 'top-0',
+                        'end-0'); // Add Bootstrap classes
+                    cancelButton.addEventListener('click', function() {
+                        previewContainer.removeChild(imgContainer); // Remove the image container
+                    });
+
+                    imgContainer.appendChild(imgElement);
+                    imgContainer.appendChild(fileName);
+                    imgContainer.appendChild(cancelButton);
+                    previewContainer.appendChild(imgContainer);
+                }
+            }
+        }
+    </script>
+    <script>
+        function preventNegativeInput(event) {
+            if (event.key === "-" || event.key === "e" || event.key === "E") {
+                event.preventDefault();
+            }
+        }
+    </script>
+        
         
     @endpush
-@endsection
+

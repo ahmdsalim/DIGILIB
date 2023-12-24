@@ -21,6 +21,7 @@ class UserController extends Controller
 
     public function __construct()
     {
+        $this->middleware('auth', ['only' => 'index']);
         $this->middleware('role:owner', ['only' => ['create','store','edit','show','update','destroy']]);
     }
 
@@ -39,7 +40,7 @@ class UserController extends Controller
                 });
             }
 
-            $data['users'] = $query->orderBy('active','desc')->paginate(25);
+            $data['users'] = $query->orderBy('created_at','desc')->paginate(25);
             return view('owner.user.user', $data);
         } elseif (Auth::user()->role === 'sekolah') {
             $title = 'User';
@@ -65,11 +66,11 @@ class UserController extends Controller
                 });
             }
 
-            $data['users'] = $query->orderBy('active', 'desc')->paginate(25);
+            $data['users'] = $query->orderBy('created_at', 'desc')->paginate(25);
 
             return view('sekolah.user.user', compact('title', 'header'), $data);
         } else {
-            abort(404);
+            abort(401);
         }
     }
 
@@ -108,8 +109,8 @@ class UserController extends Controller
                         'password' => $request->new_password,
                     ])
                     ->save();
-
-                return to_route('home')->with('success', 'Berhasil mengubah password');
+                $routename = $user->role === 'owner' ? 'home' : 'home.sekolah';
+                return to_route($routename)->with('success', 'Berhasil mengubah password');
             }
             $validator->getMessageBag()->add('password', 'Password does not match');
         }
@@ -244,6 +245,9 @@ class UserController extends Controller
             } elseif ($user->role === 'owner' && in_array($data['role'], ['sekolah', 'siswa', 'guru'])) {
                 $new['userable_id'] = $data['userable'];
                 $new['userable_type'] = getmodelClass($data['role']);
+            }else {
+                $new['userable_id'] = $data['userable'];
+                $new['userable_type'] = getmodelClass($data['role']);
             }
 
             $saved = $user->update($new);
@@ -251,6 +255,7 @@ class UserController extends Controller
             if (!$saved) {
                 return to_route('users.index')->with('failed', 'Gagal');
             }
+            
             return to_route('users.index')->with('success', 'Berhasil');
         } else {
             return redirect()

@@ -73,19 +73,24 @@
                                         <h4 class="mb-1">Deskripsi</h4>
                                         <div class="description">
                                             <p>
-                                                @if (strlen($buku->deskripsi) > 100)
-                                                    <span id="shortDescription">{{ $desk_awal }}...</span>
-                                                    <span id="fullDescription"
-                                                        style="display: none;">{{ $deskripsi }}</span>
-                                                    <a href="#" id="readMoreBtn">Baca Selengkapnya</a>
-                                                @else
-                                                    {{ $buku->deskripsi }}
+                                                @if($buku->deskripsi)
+                                                    @if (strlen($buku->deskripsi) > 100)
+                                                        <span id="shortDescription">{{ $desk_awal }}...</span>
+                                                        <span id="fullDescription"
+                                                            style="display: none;">{{ $deskripsi }}</span>
+                                                        <a href="#" id="readMoreBtn">Baca Selengkapnya</a>
+                                                    @else
+                                                        {{ $buku->deskripsi }}
+                                                    @endif
+    
+                                                    @if (strlen($buku->deskripsi) > 100)
+                                                        <a href="#" id="readLessBtn" style="display: none;">Read
+                                                            Less</a>
+                                                    @endif
+                                                @else 
+                                                    Tidak ada deskripsi
                                                 @endif
-
-                                                @if (strlen($buku->deskripsi) > 100)
-                                                    <a href="#" id="readLessBtn" style="display: none;">Read
-                                                        Less</a>
-                                                @endif
+                                                
                                             </p>
                                         </div>
                                     </address>
@@ -225,7 +230,7 @@
     </div>
 @endsection
 @push('js')
-    <script>
+    <!-- <script>
         $(document).ready(function() {
             $('#submitRating').click(function(e) {
                 e.preventDefault();
@@ -248,7 +253,7 @@
                 });
             });
         });
-    </script>
+    </script> -->
 
     <script>
         document.getElementById("readMoreBtn").addEventListener("click", function(event) {

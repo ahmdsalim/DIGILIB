@@ -37,7 +37,11 @@
            <div class="col-4 col-sm-3 col-md-3 col-lg-2">
           <a href="/detailbuku/{{$data->buku->id}}/{{$data->buku->slug}}" style="text-decoration: none;">
             <div class="card mb-3">
-              <img class="card-img-top" alt="{{$data->buku->judul}}" src="{{asset('storage/imgs/thumbnail-buku/'.$data->buku->thumbnail)}}">
+              @if ($data->buku->thumbnail)
+                    <img class="card-img-top" src="{{ Storage::url('imgs/thumbnail-buku/'.$data->buku->thumbnail) }}" alt="{{ $data->judul }}" loading="lazy">
+              @else
+                <img class="card-img-top" src="{{ Storage::url('imgs/default-pict.png') }}" alt="thumbnail" loading="lazy">
+              @endif
                 <div class="card-body px-1 py-3">
                   <h4 class="card-title">{{$data->buku->judul}} ({{$data->buku->tahun_terbit}})</h4>
                   <h7 class="text-muted">Dikoleksi pada<br>{{ $current_started_at }}</h7>

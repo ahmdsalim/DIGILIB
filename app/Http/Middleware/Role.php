@@ -14,13 +14,13 @@ class Role
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, $rolename): Response
+    public function handle(Request $request, Closure $next, ...$roles): Response
     {
     	$user = Auth::user();
-    	if($user->role === $rolename){
+    	if(in_array($user->role, $roles)){
         	return $next($request);
     	}
 
-    	abort(404);
+    	abort(401);
     }
 }

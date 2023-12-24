@@ -116,6 +116,7 @@
        const userField = document.getElementById('userField')
        const userSelect = document.getElementById('userSelect')
        const userLabel = document.getElementById('userLabel')
+       @if(isset($user)) const prevRole = '{{ $user->role }}' @endif
 
        function toggleUserField(selected) {
            if (selected === 'sekolah') {
@@ -153,18 +154,26 @@
 
                     userSelect.innerHTML = ''
                     var firstOpt = document.createElement('option')
-                    @if(!isset($user))
-                        firstOpt.value = ''
-                        firstOpt.text = data.length > 0 ? 'Pilih' : 'Data tidak ditemukan'
-                    @else
+                        
+                    @if(isset($user))
+                
                         @if($user->role != 'owner')
-                        firstOpt.value = "{{$user->userable_id}}"
-                        firstOpt.text = "{{$user->userable->nama}} - {{$user->userable->id}}"
-                        firstOpt.selected = true
+                        if(roleSelect.value == prevRole){
+                            firstOpt.value = "{{$user->userable_id}}"
+                            firstOpt.text = "{{$user->userable->nama}} - {{$user->userable->id}}"
+                            firstOpt.selected = true
+                        } else {
+                            firstOpt.value = ''
+                            firstOpt.text = data.length > 0 ? 'Pilih' : 'Data tidak ditemukan'
+                        }
                         @else
                         firstOpt.value = ''
                         firstOpt.text = data.length > 0 ? 'Pilih' : 'Data tidak ditemukan'
                         @endif
+    
+                    @else
+                        firstOpt.value = ''
+                        firstOpt.text = data.length > 0 ? 'Pilih' : 'Data tidak ditemukan'
                     @endif
                     userSelect.appendChild(firstOpt)
                     if(data.length > 0){

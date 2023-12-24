@@ -2,7 +2,8 @@
 
 namespace App\Imports;
 
-use App\Models\siswa;
+use App\Models\Siswa;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
@@ -18,22 +19,17 @@ class ImportSiswa implements ToModel, WithHeadingRow, WithValidation, SkipsOnFai
     *
     * @return \Illuminate\Database\Eloquent\Model|null
     */
-    private $npsn;
-
-    public function __construct(String $npsn) 
-    {
-        $this->npsn = $npsn;
-    }
-
     public function model(array $row)
     {
+        $user = Auth::user();
+        $npsn = $user->userable->npsn;
 
         return new Siswa([
             'nisn' => $row['nisn'],
             'nama' => $row['nama'],
             'jk' => $row['jk'],
             'telepon' => $row['telepon'],
-            'npsn' => $this->npsn
+            'npsn' => $npsn,
         ]);
     }
 
@@ -42,7 +38,7 @@ class ImportSiswa implements ToModel, WithHeadingRow, WithValidation, SkipsOnFai
         return [
             'nisn' => 'required|unique:siswas',
             'nama' => 'required',
-            'jk' => 'required',
+            'jk' => 'required|in:L,P',
             'telepon' => 'required'
         ];
     }

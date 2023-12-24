@@ -6,5 +6,5 @@ window.axios = axios;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Swal = Swal;
 
-import '../assets/js/bootstrap.min.js'
+import '../assets/js/bootstrap.bundle.min.js'
 import '../assets/js/nifty.min.js'

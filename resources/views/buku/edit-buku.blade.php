@@ -26,9 +26,6 @@
         -moz-appearance: textfield;
     }
 </style>
-<style>
-
-</style>
 
 @section('content')
     <div class="content__boxed">
@@ -133,7 +130,7 @@
                                                     <h5 class="mb-1">Kategori</h5>
                                                     <div class="col-12 mt-2">
                                                         <select
-                                                            class="form-control mySelect 
+                                                            class="form-select
                                                                     @error('kategori_id')
                                                                         is-invalid
                                                                     @enderror"
@@ -180,7 +177,7 @@
                                                     <div class="col-12 mt-2">
                                                         <input id="_dm-inputAddress" name="no_isbn" type="number"
                                                             placeholder="Masukan no isbn"
-                                                            @if ($buku->status != 'rejected') @readonly(true) @endif
+                                                            @if ($buku->status != 'rejected' && Auth::user()->role != 'owner') @readonly(true) @endif
                                                             onkeydown="preventNegativeInput(event)"
                                                             value="{{ $buku->no_isbn }}"
                                                             class="form-control 
@@ -197,7 +194,7 @@
                                             </div>
                                             <div class="col-md-6 right">
                                                 <address class="mb-4 mb-md-0">
-                                                    <h5 class="mb-1">Url PDF</h5>
+                                                    <h5 class="mb-1">Upload Buku</h5>
                                                     <div class="col-12 mt-2">
                                                         <input id="fileInput" type="file" name="url_pdf"
                                                             placeholder="Masukan url pdf" accept="application/pdf"
@@ -262,89 +259,73 @@
         </div>
         <!-- END : Basic card -->
     </div>
-
-    @push('js')
-        <script>
-            function updatePreview(input, target) {
-                let file = input.files[0];
-                let reader = new FileReader();
-
-                reader.readAsDataURL(file);
-                reader.onload = function() {
-                    let img = document.getElementById(target);
-                    // can also use "this.result"
-                    img.src = reader.result;
-                }
-            }
-
-            function updateMultiPreview(inputId, targetContainer) {
-                let input = document.getElementById(inputId);
-                let images = input.files;
-                let previewContainer = document.getElementById(targetContainer);
-                previewContainer.innerHTML = ''; // Clear existing preview
-
-                for (let i = 0; i < images.length; i++) {
-                    let reader = new FileReader();
-                    reader.readAsDataURL(images[i]);
-
-                    reader.onload = function() {
-                        let imgContainer = document.createElement('div');
-                        imgContainer.classList.add('d-flex', 'flex', 'align-middle', 'position-relative',
-                            'mb-3'); // Add position relative class and margin bottom
-
-                        let imgElement = document.createElement('img');
-                        imgElement.src = reader.result;
-                        imgElement.style.width = '70px'; // 
-
-                        let fileName = document.createElement('p');
-                        fileName.innerText = images[i].name; // Display file name
-
-                        let cancelButton = document.createElement('button');
-                        cancelButton.innerText = 'Cancel';
-                        cancelButton.classList.add('btn', 'btn-danger', 'btn-sm', 'position-absolute', 'top-0',
-                            'end-0'); // Add Bootstrap classes
-                        cancelButton.addEventListener('click', function() {
-                            previewContainer.removeChild(imgContainer); // Remove the image container
-                        });
-
-                        imgContainer.appendChild(imgElement);
-                        imgContainer.appendChild(fileName);
-                        imgContainer.appendChild(cancelButton);
-                        previewContainer.appendChild(imgContainer);
-                    }
-                }
-            }
-        </script>
-        <script>
-            function preventNegativeInput(event) {
-                if (event.key === "-" || event.key === "e" || event.key === "E") {
-                    event.preventDefault();
-                }
-            }
-        </script>
-        <script>
-            /*
-                                                                                                        We want to preview images, so we need to register the Image Preview plugin
-                                                                                                        */
-            FilePond.registerPlugin(
-
-                // encodes the file as base64 data
-                FilePondPluginFileEncode,
-
-                // validates the size of the file
-                FilePondPluginFileValidateSize,
-
-                // corrects mobile image orientation
-                FilePondPluginImageExifOrientation,
-
-                // previews dropped images
-                FilePondPluginImagePreview
-            );
-
-            // Select the file input and use create() to turn it into a pond
-            FilePond.create(
-                document.querySelector('input')
-            );
-        </script>
-    @endpush
+    </div>
 @endsection
+@push('js')
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.form-select').select2({
+            border : 'inline',
+        });
+    });
+</script>
+<script>
+    function updatePreview(input, target) {
+        let file = input.files[0];
+        let reader = new FileReader();
+
+        reader.readAsDataURL(file);
+        reader.onload = function() {
+            let img = document.getElementById(target);
+            // can also use "this.result"
+            img.src = reader.result;
+        }
+    }
+
+    function updateMultiPreview(inputId, targetContainer) {
+        let input = document.getElementById(inputId);
+        let images = input.files;
+        let previewContainer = document.getElementById(targetContainer);
+        previewContainer.innerHTML = ''; // Clear existing preview
+
+        for (let i = 0; i < images.length; i++) {
+            let reader = new FileReader();
+            reader.readAsDataURL(images[i]);
+
+            reader.onload = function() {
+                let imgContainer = document.createElement('div');
+                imgContainer.classList.add('d-flex', 'flex', 'align-middle', 'position-relative',
+                    'mb-3'); // Add position relative class and margin bottom
+
+                let imgElement = document.createElement('img');
+                imgElement.src = reader.result;
+                imgElement.style.width = '70px'; // 
+
+                let fileName = document.createElement('p');
+                fileName.innerText = images[i].name; // Display file name
+
+                let cancelButton = document.createElement('button');
+                cancelButton.innerText = 'Cancel';
+                cancelButton.classList.add('btn', 'btn-danger', 'btn-sm', 'position-absolute', 'top-0',
+                    'end-0'); // Add Bootstrap classes
+                cancelButton.addEventListener('click', function() {
+                    previewContainer.removeChild(imgContainer); // Remove the image container
+                });
+
+                imgContainer.appendChild(imgElement);
+                imgContainer.appendChild(fileName);
+                imgContainer.appendChild(cancelButton);
+                previewContainer.appendChild(imgContainer);
+            }
+        }
+    }
+</script>
+<script>
+    function preventNegativeInput(event) {
+        if (event.key === "-" || event.key === "e" || event.key === "E") {
+            event.preventDefault();
+        }
+    }
+</script>
+@endpush
+

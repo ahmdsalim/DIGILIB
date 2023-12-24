@@ -67,8 +67,8 @@ class HomeController extends Controller
 
         $data['total_buku'] = Buku::where('status','publish')->count();
         $avgpagesread = Baca::select(DB::raw('DATE(started_at) as reading_date'), DB::raw('AVG((progress-prev_progress)) as avg_pages_read'))
-                                       ->groupBy('reading_date')
-                                       ->get();
+                                      ->groupBy('reading_date')
+                                      ->get();
         $totalPageRead = 0;
         $totalPageReadDays = $avgpagesread->count();
 
@@ -94,7 +94,7 @@ class HomeController extends Controller
                                  ->orderByDesc('total_baca')
                                  ->limit(10)
                                  ->get();
-
+        // dd($data['top_users']);
         return view('home', $data);
     }
 

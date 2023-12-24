@@ -28,8 +28,6 @@ class ExportGuru implements FromQuery, WithMapping, ShouldAutoSize, WithHeadings
         $siswa->nama,
         $siswa->jk,
         $siswa->telepon,
-        $siswa->npsn,
-
      ];   
     }
 
@@ -40,7 +38,6 @@ class ExportGuru implements FromQuery, WithMapping, ShouldAutoSize, WithHeadings
             'Nama',
             'Jenis Kelamin',
             'Telepon',
-            'NPSN',
         ];
     }
 }

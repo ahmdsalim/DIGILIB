@@ -61,13 +61,7 @@
 
                                 <!-- Right Toolbar -->
                                 <div class="col-md-6 d-flex gap-1 align-items-center justify-content-md-end mb-3">
-                                    <div class="header-searchbox">
-                                        <!-- Searchbox toggler for small devices -->
-                                        <label for="header-search-input"
-                                            class=" header__btn d-md-none btn btn-icon rounded-pill shadow-none border-0 btn-sm"
-                                            type="button">
-                                            <i class="demo-psi-magnifi-glass"></i>
-                                        </label>
+                                    <div class="">
                                         <!-- Searchbox input -->
                                         <form class="searchbox searchbox--auto-expand searchbox--hide-btn input-group">
                                             <input id="header-search-input" class="searchbox__input form-control "
@@ -75,7 +69,7 @@
                                             <div class="searchbox__backdrop">
                                                 <button
                                                     class="searchbox__btn header__btn btn btn-icon rounded shadow-none border-0 btn-sm"
-                                                    type="button" id="button-addon2">
+                                                    type="sumbit" id="button-addon2">
                                                     <i class="demo-pli-magnifi-glass"></i>
                                                 </button>
                                             </div>
@@ -97,6 +91,8 @@
                                                 <th>NPSN</th>
                                                 <th>Provinsi</th>
                                                 <th>Telepon</th>
+                                                <th>Jml Siswa</th>
+                                                <th>Jml Guru</th>
                                                 <th>Status</th>
                                                 <th class="text-center">Aksi</th>
                                             </tr>
@@ -112,6 +108,8 @@
                                                 <td>{{$sekolah->npsn}}</td>
                                                 <td>{{explode("-", $sekolah->provinsi)[1]}}</td>
                                                 <td>{{$sekolah->telepon}}</td>
+                                                <td>{{$sekolah->siswa->count()}}</td>
+                                                <td>{{$sekolah->guru->count()}}</td>
                                                 <td class="fs-5">
                                                     <div class="badge {{isset($sekolah->user) && $sekolah->user->active ? 'bg-success' : 'bg-danger'}}">{{isset($sekolah->user) && $sekolah->user->active ? 'Member' : 'Non-member'}}</div>
                                                 </td>

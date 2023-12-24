@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Siswa;
 use App\Models\Guru;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Sekolah extends Model
 {

@@ -70,13 +70,7 @@
 
                                 <!-- Right Toolbar -->
                                 <div class="col-md-6 d-flex gap-1 align-items-center justify-content-md-end mb-3">
-                                    <div class="header-searchbox">
-                                        <!-- Searchbox toggler for small devices -->
-                                        <label for="header-search-input"
-                                            class=" header__btn d-md-none btn btn-icon rounded-pill shadow-none border-0 btn-sm"
-                                            type="button">
-                                            <i class="demo-psi-magnifi-glass"></i>
-                                        </label>
+                                    <div class="">
                                         <!-- Searchbox input -->
                                         <form class="searchbox searchbox--auto-expand searchbox--hide-btn input-group">
                                             <input id="header-search-input" class="searchbox__input form-control "
@@ -85,7 +79,7 @@
                                             <div class="searchbox__backdrop">
                                                 <button
                                                     class="searchbox__btn header__btn btn btn-icon rounded shadow-none border-0 btn-sm"
-                                                    type="button" id="button-addon2">
+                                                    type="sumbit" id="button-addon2">
                                                     <i class="demo-pli-magnifi-glass"></i>
                                                 </button>
                                             </div>
@@ -200,7 +194,7 @@
                         @csrf
                         <input class="form-control mb-2" type="file" id="fileInput" name="file" accept=".xlsx">
                         <small>Belum punya template CSV?</small>
-                        <a href="#">Download template import siswa</a>
+                        <a href="{{ asset('assets/template_import/Template_Import_Siswa.xlsx') }}">Download template</a>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>

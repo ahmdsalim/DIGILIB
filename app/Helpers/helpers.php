@@ -21,7 +21,7 @@ if (!function_exists('getmodelclass')) {
 	{
 		return match ($role) {
 	        'sekolah' => App\Models\Sekolah::class,
-	        'siswa' => App\Models\siswa::class,
+	        'siswa' => App\Models\Siswa::class,
 	        'guru' => App\Models\Guru::class,
 	        default => '',
 	    };

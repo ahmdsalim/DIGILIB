@@ -20,7 +20,7 @@
                                 </svg>
                             </div>
                             <div class="flex-grow-1 ms-3">
-                                <h5 class="h2 mb-0">{{ round(($total_pembaca / $total_pengguna) * 100) . '%' }} <span
+                                <h5 class="h2 mb-0">{{ $total_pembaca == 0 || $total_pengguna == 0 ? '0%' : round(($total_pembaca / $total_pengguna) * 100) . '%' }} <span
                                         class="fs-5">({{ $total_pembaca . '/' . $total_pengguna }})</span></h5>
                                 <p class="mb-0">Indeks Membaca</p>
                             </div>

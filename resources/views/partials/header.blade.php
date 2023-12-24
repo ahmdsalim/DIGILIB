@@ -4,11 +4,11 @@
       <div class="header__brand">
          <div class="brand-wrap">
             <!-- Brand logo -->
-            <a href="index.html" class="brand-img stretched-link">
+            <a href="{{ route('landing') }}" class="brand-img stretched-link">
             <img src="{{asset('assets/img/app-logo-sample.png')}}" alt="Logo" class="logo" width="40" height="40">
             </a>
             <!-- Brand title -->
-            <div class="brand-title">{{ env('APP_NAME') }}</div>
+            <div class="brand-title">RuangBaca</div>
             <!-- You can also use IMG or SVG instead of a text element. -->
          </div>
       </div>
@@ -61,7 +61,7 @@
                      </div>
                      @endforelse
                      <div class="text-center mb-2 mt-1">
-                        <a href="{{ route('inbox.index') }}" class="btn-link">Lihat Semua Notifikasi</a>
+                        <a href="{{ route('inbox.index') }}" class=" text-decoration-none">Lihat Semua Notifikasi</a>
                      </div>
                   </div>
                </div>

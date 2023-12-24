@@ -202,21 +202,21 @@ class BukuController extends Controller
         }
 
         $buku = new Buku();
-        $images = []; // Mengganti $slide menjadi $images
+        // $images = []; // Mengganti $slide menjadi $images
 
-        // upload slide
-        if ($request->hasFile('slide')) {
-            // Memeriksa apakah ada file slide yang diunggah
-            foreach ($request->file('slide') as $file) {
-                $image_name = md5(rand(1000, 10000));
-                $ext = strtolower($file->getClientOriginalExtension()); // Menggunakan getgetClientOriginalExtension() untuk mendapatkan ekstensi file
-                $image_full_name = $image_name . '.' . $ext;
-                $upload_path = 'img/slide/';
-                $image_url = $upload_path . $image_full_name;
-                $file->move($upload_path, $image_full_name);
-                $images[] = $image_url;
-            }
-        }
+        // // upload slide
+        // if ($request->hasFile('slide')) {
+        //     // Memeriksa apakah ada file slide yang diunggah
+        //     foreach ($request->file('slide') as $file) {
+        //         $image_name = md5(rand(1000, 10000));
+        //         $ext = strtolower($file->getClientOriginalExtension()); // Menggunakan getgetClientOriginalExtension() untuk mendapatkan ekstensi file
+        //         $image_full_name = $image_name . '.' . $ext;
+        //         $upload_path = 'img/slide/';
+        //         $image_url = $upload_path . $image_full_name;
+        //         $file->move($upload_path, $image_full_name);
+        //         $images[] = $image_url;
+        //     }
+        // }
 
         // upload thumbnail
         if ($request->hasFile('thumbnail')) {
@@ -232,7 +232,7 @@ class BukuController extends Controller
 
         $file = $request->file('url_pdf');
         $extension = $file->getClientOriginalExtension();
-        $slug = Str::slug($request->judul);
+        $slug = Str::slug(strtolower($request->judul));
         $file_name = $slug . '-' . time() . '.' . $extension;
         $file->storeAs($destination, $file_name);
 
@@ -249,14 +249,14 @@ class BukuController extends Controller
 
         $upload_file = $file_name;
 
-        $buku->slide = implode('|', $images); // Mengganti $image menjadi $images
+        // $buku->slide = implode('|', $images); // Mengganti $image menjadi $images
         $buku->judul = $request->judul;
-        $buku->slug = Str::slug($buku->judul);
+        $buku->slug = Str::slug(strtolower($buku->judul));
         $buku->penulis = $request->pengarang;
         $buku->penerbit = $request->penerbit;
         $buku->tahun_terbit = $request->tahun_terbit;
         $buku->jumlah_halaman = $pageCount;
-        $buku->kategori_id = 1;
+        $buku->kategori_id = $request->kategori_id;
         $buku->email = Auth::user()->email;
         $buku->url_pdf = $upload_file;
         $buku->deskripsi = $request->deskripsi;
@@ -339,21 +339,21 @@ class BukuController extends Controller
 
         $data = Buku::findorfail($id);
 
-        $images = []; // Mengganti $slide menjadi $images
+        // $images = []; // Mengganti $slide menjadi $images
 
-        // upload slide
-        if ($request->hasFile('slide')) {
-            // Memeriksa apakah ada file slide yang diunggah
-            foreach ($request->file('slide') as $file) {
-                $image_name = md5(rand(1000, 10000));
-                $ext = strtolower($file->getClientOriginalExtension()); // Menggunakan getgetClientOriginalExtension() untuk mendapatkan ekstensi file
-                $image_full_name = $image_name . '.' . $ext;
-                $upload_path = 'img/slide/';
-                $image_url = $upload_path . $image_full_name;
-                $file->move($upload_path, $image_full_name);
-                $images[] = $image_url;
-            }
-        }
+        // // upload slide
+        // if ($request->hasFile('slide')) {
+        //     // Memeriksa apakah ada file slide yang diunggah
+        //     foreach ($request->file('slide') as $file) {
+        //         $image_name = md5(rand(1000, 10000));
+        //         $ext = strtolower($file->getClientOriginalExtension()); // Menggunakan getgetClientOriginalExtension() untuk mendapatkan ekstensi file
+        //         $image_full_name = $image_name . '.' . $ext;
+        //         $upload_path = 'img/slide/';
+        //         $image_url = $upload_path . $image_full_name;
+        //         $file->move($upload_path, $image_full_name);
+        //         $images[] = $image_url;
+        //     }
+        // }
 
         if ($request->hasFile('thumbnail')) {
             $destination = 'public/imgs/thumbnail-buku/';
@@ -369,7 +369,7 @@ class BukuController extends Controller
         if ($request->hasFile('url_pdf')) {
             $file = $request->file('url_pdf');
             $extension = $file->getClientOriginalExtension();
-            $slug = Str::slug($request->judul);
+            $slug = Str::slug(strtolower($request->judul));
             $file_name = $slug . '-' . time() . '.' . $extension;
             $file->storeAs($destination, $file_name);
 
@@ -390,14 +390,14 @@ class BukuController extends Controller
             $data->url_pdf = $upload_file;
         }
 
-        $data->slide = implode('|', $images); // Mengganti $image menjadi $images
+        // $data->slide = implode('|', $images); // Mengganti $image menjadi $images
         $data->judul = $request->judul;
-        $data->slug = Str::slug($data->judul);
+        $data->slug = Str::slug(strtolower($data->judul));
         $data->penulis = $request->penulis;
         $data->penerbit = $request->penerbit;
         $data->tahun_terbit = $request->tahun_terbit;
-        $data->kategori_id = 1;
-        $data->email = Auth::user()->email;
+        $data->kategori_id = $request->kategori_id;
+        $data->edited_by = Auth::user()->email;
         $data->deskripsi = $request->deskripsi;
         $data->no_isbn = $request->no_isbn;
         if (Auth::user()->role === 'owner') {

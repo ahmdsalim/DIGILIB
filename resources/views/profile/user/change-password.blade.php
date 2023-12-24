@@ -7,8 +7,8 @@
 @endsection
 
 @section('pagetitle')
-    <h1 class="page-title mb-0 mt-2">Ubah Password</h1>
-    <p class="lead">
+    <h1 class="page-title mb-0 mt-2 text-center">Ubah Password</h1>
+    <p class="lead text-center">
         Masukkan Password Yang Secure Dan Mudah Diingat
     </p>
 @endsection
@@ -17,15 +17,14 @@
     <div class="content__boxed">
         <div class="content__wrap">
             <section>
-                <div class="row">
-                    <div class="col-md-12 mb-3">
-                        <div class="card h-100">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-5 mb-3">
+                        <div class="card bg-white">
                             <div class="card-body">
-                                <h5 class="card-title">Ubah Password</h5>
                                 <!-- Block styled form -->
-                                <form class="row g-3" method="post" action="{{route('pembaca.changepassword.store')}}">
+                                <form class="row g-2" method="post" action="{{route('pembaca.changepassword.store')}}">
                                 @csrf
-                                   <div class="col-12 col-md-6">
+                                   <div class="col-12 text-start">
                                       <label class="form-label">Password Lama</label>
                                       <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" required="">
                                       @error('password')
@@ -34,9 +33,7 @@
                                       </span>
                                       @enderror                                      
                                    </div>
-                                   <!-- col break -->
-                                   <div class="w-100"></div>
-                                   <div class="col-12 col-md-6">
+                                   <div class="col-12 text-start">
                                       <label class="form-label">Password Baru</label>
                                       <input type="password" class="form-control @error('new_password') is-invalid @enderror" name="new_password" required="">
                                       @error('new_password')
@@ -45,14 +42,12 @@
                                       </span>
                                       @enderror                                      
                                    </div>
-                                   <!-- col break -->
-                                   <div class="w-100"></div>
-                                   <div class="col-12 col-md-6">
+                                   <div class="col-12 text-start">
                                       <label class="form-label">Konfirmasi Password</label>
                                       <input type="password" class="form-control" name="new_password_confirmation" required="">
                                    </div>
-                                   <div class="col-12"> 
-                                      <button type="submit" class="btn btn-primary">Submit</button>
+                                   <div class="col-12 text-end"> 
+                                      <button type="submit" class="btn btn-primary">Ubah Password</button>
                                    </div>
                                 </form>
                                 <!-- END : Block styled form -->

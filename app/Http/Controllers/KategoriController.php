@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+
 
 class KategoriController extends Controller
 {
@@ -17,7 +19,7 @@ class KategoriController extends Controller
         $tittle = 'Kategori';
         $header = 'Data ' . $tittle;
 
-        $data = Kategori::paginate(25);
+        $data = Kategori::orderBy('kategori','asc')->paginate(25);
         if ($data->isEmpty()) {
             $kosong = 'Data tidak tersedia';
         }
@@ -60,8 +62,9 @@ class KategoriController extends Controller
 
         $kategori = new Kategori();
         $kategori->kategori = $request->kategori;
-        $kategori->slug = '12345';
+        $kategori->slug = Str::slug(strtolower($request->kategori));
         $kategori->save();
+        
         return redirect()
             ->route('kategori.index')
             ->with('success', 'Data Telah Berhasil Di Tambahkan');

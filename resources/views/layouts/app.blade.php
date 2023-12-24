@@ -3,7 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="title" content="RuangBaca">
+    <meta name="description" content="RuangBaca merupakan situs yang menyediakan buku-buku digital yang dapat dibaca secara online dan gratis.">
+    <meta name="keywords" content="baca buku, buku digital, baca gratis">
+    <meta name="robots" content="index, follow">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -17,6 +20,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    
+
     
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -34,7 +39,7 @@
                 <a href="{{route('landing')}}" style="height: 100%;">
                     <div class="header-logo-wrapper">
                         <img id="logo" src="{{asset('assets/img/app-logo-sample.png')}}">
-                        <span id="text-logo">{{ env('APP_NAME') }}</span>
+                        <span id="text-logo">RuangBaca</span>
                     </div>
                 </a>
             </div>

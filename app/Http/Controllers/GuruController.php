@@ -7,7 +7,6 @@ use App\Models\Guru;
 use App\Models\Sekolah;
 use App\Exports\ExportSiswa;
 use App\Imports\ImportGuru;
-use App\Imports\ImportSiswa;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;

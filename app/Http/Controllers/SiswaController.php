@@ -198,10 +198,10 @@ class SiswaController extends Controller
     }
 
 
-    public function import(Request $request){
+     public function import(Request $request){
         $file = $request->file('file')->store('public/files/excel/siswa/');
 
-        $import = new ImportSiswa(Auth::user()->userable->npsn);
+        $import = new ImportSiswa;
         $import->import($file);
 
         if($import->failures()->isNotEmpty()){

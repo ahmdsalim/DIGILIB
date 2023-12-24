@@ -27,8 +27,6 @@ class ExportSiswa implements FromQuery, WithMapping, ShouldAutoSize, WithHeading
         $siswa->nama,
         $siswa->jk,
         $siswa->telepon,
-        $siswa->npsn,
-
      ];   
     }
 
@@ -39,7 +37,6 @@ class ExportSiswa implements FromQuery, WithMapping, ShouldAutoSize, WithHeading
             'Nama',
             'Jenis Kelamin',
             'Telepon',
-            'NPSN',
         ];
     }
     

@@ -67,6 +67,11 @@ class RegisterController extends Controller
         ]);
     }
 
+    public function showRegistrationForm()
+    {
+        return view('auth.register');
+    }
+
     /**
      * Create a new user instance after a valid registration.
      *
@@ -112,7 +117,7 @@ class RegisterController extends Controller
             try{
                 $sekolah = Sekolah::create([
                     'npsn' => $data['npsn'],
-                    'nama' => $data['nama'],
+                    'nama' => Str::title($data['nama']),
                     'jenjang' => $data['jenjang'],
                     'alamat' => $data['alamat'],
                     'provinsi' => $data['provinsi'],
@@ -125,7 +130,7 @@ class RegisterController extends Controller
                 $user = new User([
                     'uuid' => generateUuid(),
                     'email' => $data['email'],
-                    'nama' => $data['nama'],
+                    'nama' => Str::title($data['nama']),
                     'password' => $data['password'],
                     'role' => 'sekolah'
                 ]);
@@ -195,7 +200,7 @@ class RegisterController extends Controller
                 $user = new User([
                     'uuid' => generateUuid(),
                     'email' => $data['email'],
-                    'nama' => $siswa->nama,
+                    'nama' => Str::title($siswa->nama),
                     'password' => $data['password'],
                     'role' => 'siswa'
                 ]);
@@ -274,7 +279,7 @@ class RegisterController extends Controller
                 $user = new User([
                     'uuid' => generateUuid(),
                     'email' => $data['email'],
-                    'nama' => $guru->nama,
+                    'nama' => Str::title($guru->nama),
                     'password' => $data['password'],
                     'role' => 'guru'
                 ]);

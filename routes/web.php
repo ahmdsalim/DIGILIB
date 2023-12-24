@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BacaController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Models\Siswa;
+// use App\Models\Siswa;
 use App\Http\Controllers\NotifikasiController;
 
 /*
@@ -34,9 +34,10 @@ Route::get('/search', [BukuController::class, 'search'])->name('book.search');
 Route::get('/buku/terbaru', [BukuController::class, 'bukuterbaru'])->name('bukuterbaru');
 Route::get('/buku/terpopuler', [BukuController::class, 'bukuterpopuler'])->name('bukuterpopuler');
 
-Auth::routes();
+Auth::routes(['login','logout']);
 
 Route::middleware('guest')->group(function() {
+    Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 	Route::get('register/sekolah', [RegisterController::class, 'showFormSekolah'])->name('register.sekolah');
 	Route::get('register/siswa', [RegisterController::class, 'showFormSiswa'])->name('register.siswa');
 	Route::get('register/guru', [RegisterController::class, 'showFormGuru'])->name('register.guru');
@@ -87,7 +88,7 @@ Route::group(['middleware' => 'auth'], function() {
 	    Route::resource('kategori', KategoriController::class);
 	    
 	    //RUD Guru
-	    Route::get('owner/{sekolah}/guru', [GuruController::class, 'getGuruBySekolah'])->name('owner.guru.index');
+	    Route::get('owner/{sekolah}/list-guru', [GuruController::class, 'getGuruBySekolah'])->name('owner.guru.index');
 	    Route::get('owner/guru/{guru}/edit', [GuruController::class, 'editGuru'])->name('owner.guru.edit');
 	    Route::put('owner/guru/{guru}/update', [GuruController::class, 'updateGuru'])->name('owner.guru.update');
 	    Route::delete('owner/guru/{guru}/delete', [GuruController::class, 'destroyGuru'])->name('owner.guru.destroy');
@@ -99,6 +100,7 @@ Route::group(['middleware' => 'auth'], function() {
         //Akses User Owner END <<
 	});
 
+    Route::group(['middleware' => 'role:owner,sekolah'], function() {
         //Akses Keduanya START >>
         //User
         Route::get('/export-user', [UserController::class, 'export'])->name('users.export');
@@ -131,6 +133,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('inbox/{id}', [NotifikasiController::class, 'show'])->name('inbox.show');
         Route::get('inbox/delete/{id}', [NotifikasiController::class, 'destroy'])->name('inbox.destroy');
         //Akses Keduanya END <<
+    });
         
     Route::group(['middleware' => 'role:sekolah'], function() {
 
@@ -166,6 +169,21 @@ Route::middleware('auth.user')->group(function(){
 });
 
 Route::get('detailbuku/{id}/{slug}', [BukuController::class, 'showdetail'])->name('buku.detailbuku');
+
+// Route::get('/config-clear', function(){
+//  \Illuminate\Support\Facades\Artisan::call('config:clear');
+//  echo 'Caches cleared successfully!';
+// });
+
+//Route::get('/cache-clear', function(){
+//  \Illuminate\Support\Facades\Artisan::call('cache:clear');
+//  echo 'Cache cleared successfully!';
+//});
+
+//Route::get('/storage-link', function(){
+//  \Illuminate\Support\Facades\Artisan::call('storage:link');
+//  echo 'Storage linked successfully!';
+//});
 
 // Route::get('/createkoleksi/{id}', [KoleksiController::class, 'create']);
 

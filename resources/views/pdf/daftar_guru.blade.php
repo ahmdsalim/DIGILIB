@@ -31,7 +31,6 @@ th {
     <th>Nama</th>
     <th>Jenis Kelamin</th>
     <th>Telepon</th>
-    <th>NPSN</th>
   </tr>
   @foreach ($data as $guru)
   <tr>
@@ -40,7 +39,6 @@ th {
     <td>{{ $guru->nama }}</td>
     <td>{{ $guru->jk }}</td>
     <td>{{ $guru->telepon }}</td>
-    <td>{{ $guru->npsn }}</td>
   </tr>
   @endforeach
 </table>

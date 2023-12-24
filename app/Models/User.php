@@ -12,6 +12,8 @@ use App\Models\Baca;
 use App\Models\Rating;
 use App\Models\Koleksi;
 use App\Models\Notifikasi;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Str;
 
 class User extends Authenticatable
 {
@@ -83,6 +85,14 @@ class User extends Authenticatable
     public function notifikasi()
     {
         return $this->hasMany(Notifikasi::class);
+    }
+    
+    protected function nama(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => ucwords($value),
+            set: fn (string $value) => Str::title($value),
+        );
     }
 
 }

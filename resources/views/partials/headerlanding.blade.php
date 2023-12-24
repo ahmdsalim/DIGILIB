@@ -1,10 +1,14 @@
-<header class="header">
+<header class="header sticky-top shadow-sm">
    <div class="header__inner">
       <!-- Brand -->
       <div class="header__brand">
          <div class="brand-wrap">
-            <h3 class="my-auto"><a href="/" style="text-decoration: none; color: white; font-family: Ubuntu,sans-serif;
-            ">{{ env('APP_NAME') }}</a></h3>
+                        <a href="/" class="brand-img stretched-link">
+            <img src="{{asset('assets/img/app-logo-sample.png')}}" alt="Logo" class="logo" width="40" height="40">
+            </a>
+            <!-- Brand title -->
+            <div class="brand-title">{{ env('APP_NAME') }}</div>
+            <!-- You can also use IMG or SVG instead of a text element. -->
          </div>
       </div>
       <!-- End - Brand -->
@@ -14,10 +18,12 @@
             <!-- Navigation Toggler -->
             <div class="header-searchbox">
                <!-- Searchbox toggler for small devices -->
+                @if(request()->route()->getName() != 'pembaca.profile' && request()->route()->getName() != 'pembaca.changepassword.show' && request()->route()->getName() != 'koleksi' && request()->route()->getName() != 'buku.detailbuku' && request()->route()->getName() != 'daftarbacaan')
                <label for="header-search-input" class="header__btn d-md-none btn btn-icon rounded-pill shadow-none border-0 btn-sm" type="button">
                <i class="demo-psi-magnifi-glass"></i>
                </label>
-                  @if(request()->route()->getName() != 'pembaca.profile' && request()->route()->getName() != 'pembaca.changepassword.show' && request()->route()->getName() != 'koleksi' && request()->route()->getName() != 'buku.detailbuku' && request()->route()->getName() != 'terakhirdibaca')                 
+               @endif
+                  @if(request()->route()->getName() != 'pembaca.profile' && request()->route()->getName() != 'pembaca.changepassword.show' && request()->route()->getName() != 'koleksi' && request()->route()->getName() != 'buku.detailbuku' && request()->route()->getName() != 'daftarbacaan')                 
                   <form action="{{ route('book.search') }}" method="GET" class="searchbox searchbox--auto-expand searchbox--hide-btn input-group">
                   <input id="header-search-input" class="searchbox__input form-control bg-transparent" name="keyword" type="search" placeholder="Cari ..." aria-label="Search">
                   <div class="searchbox__backdrop">
@@ -91,7 +97,7 @@
                            <span class="text-muted small">Terakhir Dibaca:</span>
                            <div class="d-flex align-items-center position-relative mt-2">
                               <div class="flex-shrink-0">
-                                 <img src="{{asset('img/thumbnail-buku/'.$lastread->buku->thumbnail)}}" width="15" height="auto">
+                                 <img src="{{Storage::url('imgs/thumbnail-buku/'.$lastread->buku->thumbnail)}}" width="15" height="auto">
                               </div>
                               <div class="flex-grow-1 ms-2">
                                  <a href="{{ route('read', ['id' => $lastread->buku->id, 'slug' => $lastread->buku->slug]) }}" class="stretched-link text-reset text-decoration-none mb-1">{{$lastread->buku->judul}}</a>

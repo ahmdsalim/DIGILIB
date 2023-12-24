@@ -46,6 +46,7 @@
 
                                                     <!-- Date and attachment icon -->
                                                     <div class="flex-shrink-0 ms-auto order-xl-3">
+                                                        @php \Carbon\Carbon::setLocale('id'); @endphp
                                                         <small class="text-muted">{{ $notif->created_at->diffForHumans() }}</small>
                                                     </div>
                                                     <!-- END : Date and attachment icon -->

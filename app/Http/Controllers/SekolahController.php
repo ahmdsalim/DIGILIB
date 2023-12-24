@@ -28,7 +28,7 @@ class SekolahController extends Controller
                       ->orWhere('provinsi','like',"%{$search}%");
             });
         }
-        $data['sekolahs'] = $query->paginate(25);
+        $data['sekolahs'] = $query->orderBy('created_at','desc')->paginate(25);
         return view('owner.sekolah.index',$data);
     }
 
