@@ -16,7 +16,7 @@ define('LARAVEL_START', microtime(true));
 |
 */
 
-if (file_exists($maintenance = __DIR__.'/../ruangbaca/storage/framework/maintenance.php')) {
+if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
     require $maintenance;
 }
 
@@ -31,7 +31,7 @@ if (file_exists($maintenance = __DIR__.'/../ruangbaca/storage/framework/maintena
 |
 */
 
-require __DIR__.'/../ruangbaca/vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -44,12 +44,7 @@ require __DIR__.'/../ruangbaca/vendor/autoload.php';
 |
 */
 
-$app = require_once __DIR__.'/../ruangbaca/bootstrap/app.php';
-
-// set the public path to this directory
-$app->bind('path.public', function() {
-return __DIR__;
-});
+$app = require_once __DIR__.'/../bootstrap/app.php';
 
 $kernel = $app->make(Kernel::class);
 
