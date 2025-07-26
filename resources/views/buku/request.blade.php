@@ -34,13 +34,7 @@
 
                                 <!-- Right Toolbar -->
                                 <div class="col-md-6 d-flex gap-1 align-items-center justify-content-md-end mb-3">
-                                    <div class="header-searchbox">
-                                        <!-- Searchbox toggler for small devices -->
-                                        <label for="header-search-input"
-                                            class=" header__btn d-md-none btn btn-icon rounded-pill shadow-none border-0 btn-sm"
-                                            type="button">
-                                            <i class="demo-psi-magnifi-glass"></i>
-                                        </label>
+                                    <div class="">
                                         <!-- Searchbox input -->
                                         <form class="searchbox searchbox--auto-expand searchbox--hide-btn input-group">
                                             <input id="header-search-input" class="searchbox__input form-control "
@@ -48,7 +42,7 @@
                                             <div class="searchbox__backdrop">
                                                 <button
                                                     class="searchbox__btn header__btn btn btn-icon rounded shadow-none border-0 btn-sm"
-                                                    type="button" id="button-addon2">
+                                                    type="sumbit" id="button-addon2">
                                                     <i class="demo-pli-magnifi-glass"></i>
                                                 </button>
                                             </div>
@@ -72,57 +66,72 @@
                                                 <th>Pengarang</th>
                                                 <th>Penerbit</th>
                                                 <th>No ISBN</th>
+                                                <th>Pemilik</th>
                                                 <th class="text-center">Status</th>
                                                 <th class="text-center">Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($data as $index => $buku)
-                                                <tr class="align-middle">
-                                                    <th scope="row">{{ $index + $data->firstItem() }}</th>
-                                                    <td>
-                                                        <img src="{{ asset('thumbnail-buku/' . $buku->thumbnail) }}"
-                                                            alt="" style="width: 50px;">
-                                                    </td>
-                                                    <td>{{ $buku->judul }}</td>
-                                                    <td>{{ $buku->kategori->kategori }}</td>
-                                                    <td>{{ $buku->penulis }}</td>
-                                                    <td>{{ $buku->penerbit }}</td>
-                                                    <td>{{ $buku->no_isbn }}</td>
-                                                    <td class="fs-5">
-                                                        @if ($buku->publish == 1)
-                                                            <div class="badge d-block bg-success">Publish</div>
-                                                        @else
-                                                            <div class="badge d-block bg-secondary">Pending</div>
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        <div class="d-flex gap-2 justify-content-center">
-                                                            <form action="{{ route('buku.requestUpdate', $buku->id) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                @method('PUT') {{-- Tambahkan ini untuk menggunakan method PUT --}}
-                                                                <input type="hidden" name="action" value="terima">
-                                                                {{-- Nilai "terima" untuk tombol Terima --}}
-                                                                    <button type="submit"
-                                                                        class="btn btn-sm btn-primary">Terima</button>
-                                                            </form>
-                                                            <form action="{{ route('buku.requestUpdate', $buku->id) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                @method('PUT') {{-- Tambahkan ini untuk menggunakan method PUT --}}
-                                                                <input type="hidden" name="action" value="tolak">
-                                                                {{-- Nilai "tolak" untuk tombol Tolak --}}
-                                                                    <button type="submit"
-                                                                        class="btn btn-sm btn-danger">Tolak</button>
-                                                            </form>
+                                            @if ($data->isEmpty())
+                                                <tr>
+                                                    <td colspan="9">
+                                                        <div class="col-sm-12 col-md-12 text-center">
+                                                            {{ $kosong }}
                                                         </div>
-
                                                     </td>
                                                 </tr>
-                                            @endforeach
+                                            @else
+                                                @foreach ($data as $index => $buku)
+                                                    <tr class="align-middle">
+                                                        <th scope="row">{{ $index + $data->firstItem() }}</th>
+                                                        <td>
+                                                            @if ($buku->thumbnail)
+                                                            <img src="{{ asset('storage/imgs/thumbnail-buku/' . $buku->thumbnail) }}"
+                                                                alt="{{ $buku->judul }}" style="width: 50px;">
+                                                        @else
+                                                            <img src="{{ asset('storage/imgs/default-pict.png') }}"
+                                                                alt="Foto Default" style="width: 50px;">
+                                                        @endif
+                                                        </td>
+                                                        <td>{{ $buku->judul }}</td>
+                                                        <td>{{ $buku->kategori->kategori }}</td>
+                                                        <td>{{ $buku->penulis }}</td>
+                                                        <td>{{ $buku->penerbit }}</td>
+                                                        <td>{{ $buku->no_isbn }}</td>
+                                                        <td>{{ $buku->user->nama }}</td>
+                                                        <td class="fs-5">
+                                                            @if ($buku->publish == 1)
+                                                                <div class="badge d-block bg-success">Publish</div>
+                                                            @else
+                                                                <div class="badge d-block bg-secondary">Pending</div>
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex gap-2 justify-content-center">
+                                                                <form action="{{ route('buku.requestUpdate', $buku->id) }}"
+                                                                    method="POST">
+                                                                    @csrf
+                                                                    @method('PUT') {{-- Tambahkan ini untuk menggunakan method PUT --}}
+                                                                    <input type="hidden" name="action" value="terima">
+                                                                    {{-- Nilai "terima" untuk tombol Terima --}}
+                                                                    <button type="submit"
+                                                                        class="btn btn-sm btn-primary">Terima</button>
+                                                                </form>
+                                                                <form action="{{ route('buku.requestUpdate', $buku->id) }}"
+                                                                    method="POST">
+                                                                    @csrf
+                                                                    @method('PUT') {{-- Tambahkan ini untuk menggunakan method PUT --}}
+                                                                    <input type="hidden" name="action" value="tolak">
+                                                                    {{-- Nilai "tolak" untuk tombol Tolak --}}
+                                                                    <button type="submit"
+                                                                        class="btn btn-sm btn-danger">Tolak</button>
+                                                                </form>
+                                                            </div>
 
-
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            @endif
                                         </tbody>
                                     </table>
                                 </div>

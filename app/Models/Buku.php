@@ -18,17 +18,17 @@ class Buku extends Model
 
     public function koleksi()
     {
-    	return $this->belongsTo(Koleksi::class);
+    	return $this->hasMany(Koleksi::class);
     }
 
     public function rating()
     {
-    	return $this->belongsTo(Rating::class);
+    	return $this->hasMany(Rating::class);
     }
 
     public function baca()
     {
-    	return $this->belongsTo(Baca::class);
+    	return $this->hasMany(Baca::class, 'buku_id');
     }
 
     public function kategori()
@@ -39,6 +39,25 @@ class Buku extends Model
     public function user()
     {
     	return $this->hasOne(User::class,'email','email');
+    }
+
+    public function collectedBy(User $user)
+    {
+        return $this->koleksi->contains('email', $user->email);
+    }
+
+    public function readBy(User $user)
+    {
+        return $this->baca()
+                    ->where('email', $user->email)
+                    ->orderByDesc('end_at','desc')
+                    ->first();
+    }
+
+    public function getRating()
+    {
+        return $this->rating()
+                    ->avg('score');
     }
 
 }

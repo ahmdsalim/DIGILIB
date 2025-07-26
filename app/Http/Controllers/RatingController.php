@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Rating;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RatingController extends Controller
 {
@@ -20,7 +21,6 @@ class RatingController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -28,7 +28,18 @@ class RatingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $id = $request->input('id');
+        $slug = $request->input('slug');
+
+        $rating = new Rating();
+        $rating->email = Auth::user()->email;
+        $rating->buku_id = $id;
+        $rating->score = $request->score;
+        $rating->save();
+
+        return redirect()
+            ->route('buku.detailbuku', ['id' => $id, 'slug' => $slug])
+            ->with('Rating Berhasil Di Tambahkan');
     }
 
     /**

@@ -2,13 +2,13 @@
 @section('breadcrumb')
     <ol class="breadcrumb mb-0">
         <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('sekolah.index') }}">Sekolah</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Guru</li>
+        <li class="breadcrumb-item"><a href="{{ route('sekolah.index') }}">{{$sekolah->nama}}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">List Guru</li>
     </ol>
 @endsection
 
 @section('pagetitle')
-    <h1 class="page-title mb-0 mt-2">Guru</h1>
+    <h1 class="page-title mb-0 mt-2">Daftar Guru</h1>
     <p class="lead">
         {{$sekolah->nama}}
     </p>
@@ -49,8 +49,8 @@
                                                 <span class="visually-hidden">Toggle Dropdown</span>
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" href="#">PDF</a></li>
-                                                <li><a class="dropdown-item" href="#">Excel</a></li>
+                                                <li><a class="dropdown-item" href="{{ route('guru.cetak.pdf', ['npsn' => $sekolah->npsn]) }}">PDF</a></li>
+                                                <li><a class="dropdown-item" href="{{ route('guru.export') }}">Excel</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -59,13 +59,8 @@
 
                                 <!-- Right Toolbar -->
                                 <div class="col-md-6 d-flex gap-1 align-items-center justify-content-md-end mb-3">
-                                    <div class="header-searchbox">
+                                    <div class="">
                                         <!-- Searchbox toggler for small devices -->
-                                        <label for="header-search-input"
-                                            class=" header__btn d-md-none btn btn-icon rounded-pill shadow-none border-0 btn-sm"
-                                            type="button">
-                                            <i class="demo-psi-magnifi-glass"></i>
-                                        </label>
                                         <!-- Searchbox input -->
                                         <form class="searchbox searchbox--auto-expand searchbox--hide-btn input-group">
                                             <input id="header-search-input" class="searchbox__input form-control "
@@ -73,7 +68,7 @@
                                             <div class="searchbox__backdrop">
                                                 <button
                                                     class="searchbox__btn header__btn btn btn-icon rounded shadow-none border-0 btn-sm"
-                                                    type="button" id="button-addon2">
+                                                    type="sumbit" id="button-addon2">
                                                     <i class="demo-pli-magnifi-glass"></i>
                                                 </button>
                                             </div>
@@ -100,15 +95,18 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @php
+                                                $startIndex = ($gurus->currentPage() - 1) * $gurus->perPage() + 1;
+                                            @endphp
                                             @forelse($gurus as $guru)
                                             <tr>
-                                                <th class="text-center">{{$loop->iteration}}</th>
+                                                <th class="text-center">{{$startIndex++}}</th>
                                                 <td>{{$guru->nama}}</td>
-                                                <td>{{$guru->nisn}}</td>
+                                                <td>{{$guru->nip}}</td>
                                                 <td>@if($guru->jk == 'L') Laki-laki @else Perempuan @endif</td>
                                                 <td>{{$guru->telepon}}</td>
                                                 <td class="fs-5">
-                                                    <div class="badge {{isset($guru->user) && $guru->user->active ? 'bg-success' : 'bg-danger'}}">{{isset($guru->user) && $guru->user->active ? 'Member ('.$guru->user->email.')' : 'Non-member'}}</div>
+                                                    <div class="badge {{isset($guru->user) && $guru->user->active ? 'bg-success' : 'bg-danger'}}">{{isset($guru->user) && $guru->user->active ? 'User ('.$guru->user->email.')' : 'Non-user'}}</div> 
                                                 </td>
                                                 <td>
                                                     <div class="text-nowrap text-center">

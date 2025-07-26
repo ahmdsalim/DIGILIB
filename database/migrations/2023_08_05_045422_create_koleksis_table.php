@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('koleksis', function (Blueprint $table) {
             $table->id();
-            $table->string('uuid',36);
             $table->string('email');
             $table->foreignId('buku_id')
                   ->constrained('bukus')

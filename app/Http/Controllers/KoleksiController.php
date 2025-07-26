@@ -1,65 +1,49 @@
 <?php
 
 namespace App\Http\Controllers;
-
+ 
+use App\Models\baca;
+use App\Models\buku;
+use App\Models\user;
 use App\Models\Koleksi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class KoleksiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function index(){
+        $koleksi = Koleksi::with('buku')->where('email', auth()->user()->email)->get()->take(12);
+        return view('koleksi', ['koleksi' => $koleksi]);
+        //return view('layouts.main');
+        //$koleksi = koleksi::all();
+    }
+    public function collect(Request $request){
+        $email = Auth::user()->email;
+        $buku_id = \Crypt::decryptString($request->id);
+
+        $collection = Koleksi::firstOrNew(['email' => $email, 'buku_id' => $buku_id]);
+
+        $collection->save();
+
+        if($collection){
+            return response()->json(['' ,'message' => 'collected']);
+        }
+
+        return response()->json(['message' => 'failed to save collection']);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function uncollect(Request $request)
     {
-        //
-    }
+        $email = Auth::user()->email;
+        $buku_id = \Crypt::decryptString($request->id);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $collection = Koleksi::where('email',$email)->where('buku_id',$buku_id)->delete();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Koleksi $koleksi)
-    {
-        //
-    }
+        if($collection){
+            return response()->json(['message' => 'uncollected']);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Koleksi $koleksi)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Koleksi $koleksi)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Koleksi $koleksi)
-    {
-        //
+        return response()->json(['message' => 'failed to remove collection']);
     }
 }

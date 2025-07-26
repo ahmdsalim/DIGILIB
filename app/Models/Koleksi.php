@@ -10,6 +10,8 @@ use App\Models\User;
 class Koleksi extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['email','buku_id'];
     
     public function buku()
     {
@@ -21,4 +23,8 @@ class Koleksi extends Model
     	return $this->belongsTo(User::class,'email','email');
     }
 
+    public function isLikedBy(User $user)
+    {
+        return $this->likes->contains('user_id', $user->id);
+    }
 }

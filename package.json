@@ -14,6 +14,7 @@
         "vite": "^4.4.8"
     },
     "dependencies": {
-        "sweetalert2": "^11.7.22"
+        "sweetalert2": "^11.7.22",
+        "toastify-js": "^1.12.0"
     }
 }

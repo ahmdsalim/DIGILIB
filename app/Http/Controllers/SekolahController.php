@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportSekolah;
+use DB;
 use App\Models\Sekolah;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use DB;
-use Validator;
+use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
+use PDF;
 
 class SekolahController extends Controller
 {
@@ -25,7 +28,7 @@ class SekolahController extends Controller
                       ->orWhere('provinsi','like',"%{$search}%");
             });
         }
-        $data['sekolahs'] = $query->paginate(25);
+        $data['sekolahs'] = $query->orderBy('created_at','desc')->paginate(25);
         return view('owner.sekolah.index',$data);
     }
 
@@ -159,12 +162,25 @@ class SekolahController extends Controller
 
     public function getSekolah()
     {
-        $data = Sekolah::whereNotExists(function ($query) {
-            $query->selectRaw('1')
-                ->from('users')
-                ->whereRaw('users.userable_id = sekolahs.id');
-        })->get();
+        $data = Sekolah::doesntHave('user')->get();
 
         return response()->json($data);
+    }
+
+    public function errorImport(){
+
+        return view('sekolah.error-import');
+    }
+
+    public function export(){
+        return Excel::download(new ExportSekolah, 'daftar-sekolah-digilib.xlsx');
+    }
+
+    public function cetakPdf()
+    {
+        $data = Sekolah::all();
+        view()->share('data', $data);
+        $pdf = PDF::loadview('pdf.daftar_sekolah');
+        return $pdf->download('daftar_sekolah.pdf');
     }
 }

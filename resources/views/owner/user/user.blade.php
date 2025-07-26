@@ -24,23 +24,18 @@
                             <div class="row">
                                 <!-- Left toolbar -->
                                 <div class="col-md-6 d-flex gap-1 align-items-center mb-3">
+                                @if(auth()->user()->role !== 'sekolah')                                    
                                     <a href="{{ route('users.create') }}"
                                         class="btn btn-primary hstack gap-2 align-self-center">
                                         <i class="demo-psi-add fs-5"></i>
                                         <span class="vr"></span>
                                         Tambah Data
                                     </a>
+                                    @endif
                                     <button class="btn btn-icon btn-outline-light">
                                         <i class="demo-pli-printer fs-5"></i>
                                     </button>
                                     <div class="btn-group">
-                                        <button class="btn btn-icon btn-outline-light"><svg fill="none"
-                                                stroke="currentColor" stroke-width="1.5" width="18" height="18"
-                                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m6.75 12l-3-3m0 0l-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z">
-                                                </path>
-                                            </svg></button>
 
                                         <div class="btn-group dropdown">
                                             <button class="btn btn-icon btn-outline-light" data-bs-toggle="dropdown"
@@ -54,8 +49,8 @@
                                                 <span class="visually-hidden">Toggle Dropdown</span>
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" href="#">PDF</a></li>
-                                                <li><a class="dropdown-item" href="#">Excel</a></li>
+                                                <li><a class="dropdown-item" href="{{route ('user.cetak.pdf') }}">PDF</a></li>
+                                                <li><a class="dropdown-item" href="{{ route('users.export') }}">Excel</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -64,13 +59,7 @@
 
                                 <!-- Right Toolbar -->
                                 <div class="col-md-6 d-flex gap-1 align-items-center justify-content-md-end mb-3">
-                                    <div class="header-searchbox">
-                                        <!-- Searchbox toggler for small devices -->
-                                        <label for="header-search-input"
-                                            class=" header__btn d-md-none btn btn-icon rounded-pill shadow-none border-0 btn-sm"
-                                            type="button">
-                                            <i class="demo-psi-magnifi-glass"></i>
-                                        </label>
+                                    <div class="">
                                         <!-- Searchbox input -->
                                         <form class="searchbox searchbox--auto-expand searchbox--hide-btn input-group">
                                             <input id="header-search-input" class="searchbox__input form-control "
@@ -78,7 +67,7 @@
                                             <div class="searchbox__backdrop">
                                                 <button
                                                     class="searchbox__btn header__btn btn btn-icon rounded shadow-none border-0 btn-sm"
-                                                    type="button" id="button-addon2">
+                                                    type="sumbit" id="button-addon2">
                                                     <i class="demo-pli-magnifi-glass"></i>
                                                 </button>
                                             </div>
@@ -104,9 +93,12 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @php
+                                                $startIndex = ($users->currentPage() - 1) * $users->perPage() + 1;
+                                            @endphp
                                             @forelse($users as $user)
                                             <tr>
-                                                <th class="text-center">{{$loop->iteration}}</th>
+                                                <th class="text-center">{{$startIndex++}}</th>
                                                 <td>{{$user->nama}}</td>
                                                 <td>{{$user->email}}</td>
                                                 <td class="fs-5">

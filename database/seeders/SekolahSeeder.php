@@ -15,14 +15,14 @@ class SekolahSeeder extends Seeder
     {
         Sekolah::create([
         	'npsn' => '12345678',
-        	'nama' => 'SMKN 99 Padang',
+        	'nama' => 'SMKN 99 Bandung',
         	'jenjang' => 'smk',
         	'alamat' => 'Jln. Soekarno Hatta No. 109',
-        	'provinsi' => 'Sumatera Barat',
-        	'kota' => 'Padang',
-        	'kecamatan' => 'Padang Selatan',
-        	'kelurahan' => 'Air Manis',
-        	'telepon' => '021-29271234'
+        	'provinsi' => '32-JAWA BARAT',
+        	'kota' => '3273-KOTA BANDUUNG',
+        	'kecamatan' => '3273120-UJUNG BERUNG',
+        	'kelurahan' => '3273120005-PASIR WANGI',
+        	'telepon' => '02129271234'
         ]);
     }
 }
